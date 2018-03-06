@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Popular Movies 2</string>
+    <string name="detail_error_message">Error opening movie details</string>
+
+    // Main activity views
+    <string name="iv_poster_description">Movie poster</string>
+    <string name="tv_title">Title</string>
+    <string name="tv_rating">Rating:</string>
+    <string name="tv_vote_average">0.0</string>
+
+    // Details activity
+    <string name="activity_title_movie_details">Movie Details</string>
+
+    // Extras set to intent as names
+    <string name="extra_poster">poster</string>
+    <string name="extra_title">title</string>
+    <string name="extra_release_date">release date</string>
+    <string name="extra_vote_average">vote average</string>
+    <string name="extra_plot_synopsis">plot synopsis</string>
+
+    // Menu search categories
+    <string name="menu_action_sort">Sort</string>
+    <string name="menu_sort_popular">Popular</string>
+    <string name="menu_sort_top_rated">Top Rated</string>
+</resources>
