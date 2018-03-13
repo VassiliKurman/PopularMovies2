@@ -41,41 +41,29 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                style="@style/DefaultTextView"
                 android:id="@+id/release_date_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_text_padding"
-                android:paddingRight="@dimen/default_text_padding"
                 android:paddingTop="@dimen/default_text_padding"
                 android:textSize="@dimen/details_year_text_size"
                 app:layout_constraintLeft_toRightOf="@id/poster_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                style="@style/DefaultTextView"
                 android:id="@+id/rating_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_text_padding"
-                android:paddingRight="@dimen/default_text_padding"
                 app:layout_constraintLeft_toRightOf="@id/poster_iv"
                 app:layout_constraintTop_toBottomOf="@id/release_date_tv"
                 android:text="@string/tv_rating"/>
 
             <TextView
+                style="@style/DefaultTextView"
                 android:id="@+id/vote_average_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_text_padding"
-                android:paddingRight="@dimen/default_text_padding"
                 app:layout_constraintLeft_toRightOf="@id/rating_tv"
                 app:layout_constraintTop_toBottomOf="@id/release_date_tv" />
 
             <TextView
+                style="@style/DefaultTextView"
                 android:id="@+id/plot_synopsis_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_text_padding"
-                android:paddingRight="@dimen/default_text_padding"
                 android:paddingTop="@dimen/default_text_padding"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/poster_iv" />
