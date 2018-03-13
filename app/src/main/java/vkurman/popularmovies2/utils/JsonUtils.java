@@ -46,19 +46,16 @@ public class JsonUtils {
             JSONArray resultsArray = jsonObject.optJSONArray(JSON_RESULTS);
             if(resultsArray.length() > 0) {
                 Log.d(TAG, "Objects in json results array: " + resultsArray.length());
-                Movie movie;
                 for(int i = 0; i < resultsArray.length(); i++) {
-                    movie = new Movie();
-
                     JSONObject movieJsonObject = resultsArray.optJSONObject(i);
                     // Getting individual values from json object
-                    movie.setTitle(movieJsonObject.optString(JSON_TITLE));
-                    movie.setMoviePoster(movieJsonObject.optString(JSON_POSTER_PATH));
-                    movie.setVoteAverage(String.valueOf(movieJsonObject.optDouble(JSON_VOTE_AVERAGE)));
-                    movie.setReleaseDate(movieJsonObject.optString(JSON_RELEASE_DATE));
-                    movie.setPlotSynopsis(movieJsonObject.optString(JSON_PLOT_SYNOSIS));
+                    String title = movieJsonObject.optString(JSON_TITLE);
+                    String poster = movieJsonObject.optString(JSON_POSTER_PATH);
+                    String vote = String.valueOf(movieJsonObject.optDouble(JSON_VOTE_AVERAGE));
+                    String released = movieJsonObject.optString(JSON_RELEASE_DATE);
+                    String synopsis = movieJsonObject.optString(JSON_PLOT_SYNOSIS);
 
-                    movies.add(movie);
+                    movies.add(new Movie(poster, title, released, vote, synopsis));
                 }
             }
         } catch (JSONException e) {
