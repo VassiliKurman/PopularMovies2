@@ -27,7 +27,7 @@ public class JsonUtils {
     private static final String JSON_VOTE_AVERAGE = "vote_average";
     private static final String JSON_POSTER_PATH = "poster_path";
     private static final String JSON_RELEASE_DATE = "release_date";
-    private static final String JSON_PLOT_SYNOSIS = "overview";
+    private static final String JSON_PLOT_SYNOPSIS = "overview";
 
     /**
      * Fetches and returns list of movies from json string.
@@ -53,7 +53,7 @@ public class JsonUtils {
                     String poster = movieJsonObject.optString(JSON_POSTER_PATH);
                     String vote = String.valueOf(movieJsonObject.optDouble(JSON_VOTE_AVERAGE));
                     String released = movieJsonObject.optString(JSON_RELEASE_DATE);
-                    String synopsis = movieJsonObject.optString(JSON_PLOT_SYNOSIS);
+                    String synopsis = movieJsonObject.optString(JSON_PLOT_SYNOPSIS);
 
                     movies.add(new Movie(poster, title, released, vote, synopsis));
                 }
