@@ -98,7 +98,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             Picasso.with(context)
                     .load(imagePath)
                     .placeholder(R.drawable.ic_image_area)
-                    .error(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_error_image)
                     .into(holder.posterImageView);
 
         }

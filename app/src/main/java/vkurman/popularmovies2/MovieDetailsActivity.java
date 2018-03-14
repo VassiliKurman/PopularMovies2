@@ -56,7 +56,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Picasso.with(this)
                 .load(MovieUtils.createFullIconPath(poster))
                 .placeholder(R.drawable.ic_image_area)
-                .error(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_error_image)
                 .into(ivMoviePoster);
 
         setTitle(getString(R.string.activity_title_movie_details));
