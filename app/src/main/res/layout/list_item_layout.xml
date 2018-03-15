@@ -10,4 +10,13 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/iv_poster_description"/>
 
+    <ImageView
+        android:id="@+id/iv_favourite"
+        android:src="@drawable/ic_heart_outline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_text_padding"
+        android:layout_marginTop="@dimen/default_text_padding"
+        android:contentDescription="@string/iv_favourite_icon_description"/>
+
 </FrameLayout>

@@ -41,7 +41,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                style="@style/DefaultTextView"
+                style="@style/DefaultView"
                 android:id="@+id/release_date_tv"
                 android:paddingTop="@dimen/default_text_padding"
                 android:textSize="@dimen/details_year_text_size"
@@ -49,20 +49,28 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                style="@style/DefaultTextView"
+                style="@style/DefaultView"
                 android:id="@+id/rating_tv"
                 app:layout_constraintLeft_toRightOf="@id/poster_iv"
                 app:layout_constraintTop_toBottomOf="@id/release_date_tv"
                 android:text="@string/tv_rating"/>
 
             <TextView
-                style="@style/DefaultTextView"
+                style="@style/DefaultView"
                 android:id="@+id/vote_average_tv"
                 app:layout_constraintLeft_toRightOf="@id/rating_tv"
                 app:layout_constraintTop_toBottomOf="@id/release_date_tv" />
 
+            <ImageView
+                style="@style/DefaultView"
+                android:id="@+id/iv_favourite"
+                android:src="@drawable/ic_heart_outline"
+                app:layout_constraintLeft_toRightOf="@id/poster_iv"
+                app:layout_constraintTop_toBottomOf="@id/rating_tv"
+                android:contentDescription="@string/iv_favourite_icon_description"/>
+
             <TextView
-                style="@style/DefaultTextView"
+                style="@style/DefaultView"
                 android:id="@+id/plot_synopsis_tv"
                 android:paddingTop="@dimen/default_text_padding"
                 app:layout_constraintLeft_toLeftOf="parent"

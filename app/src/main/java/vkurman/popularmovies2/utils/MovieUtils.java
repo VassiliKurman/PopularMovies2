@@ -39,7 +39,7 @@ public class MovieUtils {
     private static final String IMAGE_SIZE_W780 = "w780";
     private static final String IMAGE_SIZE_ORIGINAL = "original";
 
-    private static final String IMAGE_SIZE_DEFAULT = IMAGE_SIZE_W342;
+    private static final String IMAGE_SIZE_DEFAULT = IMAGE_SIZE_W185;
 
     /**
      * Return list of popular movies from TheMovieDb
