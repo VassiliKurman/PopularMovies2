@@ -23,6 +23,7 @@ public class JsonUtils {
     private static final String JSON_RESULTS = "results";
 
     // Movie fields Json names
+    private static final String JSON_MOVIE_ID = "movieId";
     private static final String JSON_TITLE = "title";
     private static final String JSON_VOTE_AVERAGE = "vote_average";
     private static final String JSON_POSTER_PATH = "poster_path";
@@ -49,13 +50,14 @@ public class JsonUtils {
                 for(int i = 0; i < resultsArray.length(); i++) {
                     JSONObject movieJsonObject = resultsArray.optJSONObject(i);
                     // Getting individual values from json object
+                    int movieId = movieJsonObject.optInt(JSON_MOVIE_ID);
                     String title = movieJsonObject.optString(JSON_TITLE);
                     String poster = movieJsonObject.optString(JSON_POSTER_PATH);
                     String vote = String.valueOf(movieJsonObject.optDouble(JSON_VOTE_AVERAGE));
                     String released = movieJsonObject.optString(JSON_RELEASE_DATE);
                     String synopsis = movieJsonObject.optString(JSON_PLOT_SYNOPSIS);
 
-                    movies.add(new Movie(poster, title, released, vote, synopsis));
+                    movies.add(new Movie(movieId, poster, title, released, vote, synopsis));
                 }
             }
         } catch (JSONException e) {

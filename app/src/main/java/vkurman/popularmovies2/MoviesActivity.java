@@ -177,6 +177,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             String result = null;
             try {
                 result = MovieUtils.getResponseFromTheMovieDB(searchUrl);
+                Log.d(TAG, result);
             } catch(IOException e) {
                 Log.e(TAG, "Error response from server");
             }
