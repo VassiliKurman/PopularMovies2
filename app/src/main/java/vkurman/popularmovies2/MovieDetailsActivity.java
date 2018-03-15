@@ -10,9 +10,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vkurman.popularmovies2.model.Movie;
+import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
@@ -24,10 +27,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     // Binding views
     @BindView(R.id.poster_iv) ImageView ivMoviePoster;
+    @BindView(R.id.iv_favourite) ImageView ivFavourite;
     @BindView(R.id.title_tv) TextView tvTitle;
     @BindView(R.id.release_date_tv) TextView tvReleaseDate;
     @BindView(R.id.vote_average_tv) TextView tvVoteAverage;
     @BindView(R.id.plot_synopsis_tv) TextView tvPlotSynopsis;
+
+    private Map<Long, Long> favs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +49,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         Movie movie = intent.getParcelableExtra("movie");
+        Long movieId = movie.getMovieId();
         String poster = movie.getMoviePoster();
         String title = movie.getTitle();
         String releaseDate = movie.getReleaseDate();
         String voteAverage = movie.getVoteAverage();
         String plotSynopsis = movie.getPlotSynopsis();
-
-//        String poster = intent.getStringExtra(getString(R.string.extra_poster));
-//        String title = intent.getStringExtra(getString(R.string.extra_title));
-//        String releaseDate = intent.getStringExtra(getString(R.string.extra_release_date));
-//        String voteAverage = intent.getStringExtra(getString(R.string.extra_vote_average));
-//        String plotSynopsis = intent.getStringExtra(getString(R.string.extra_plot_synopsis));
 
         // Setting text to text views
         tvTitle.setText(title);
@@ -66,6 +67,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_image_area)
                 .error(R.drawable.ic_error_image)
                 .into(ivMoviePoster);
+
+        if(favs == null) {
+            favs = MoviesPersistenceManager.getInstance(this).getFavouriteMovieIds();
+        }
+
+        if (favs.get(new Long(movieId)) != null) {
+            ivFavourite.setImageResource(R.drawable.ic_heart);
+        } else {
+            ivFavourite.setImageResource(R.drawable.ic_heart_outline);
+        }
 
         setTitle(getString(R.string.activity_title_movie_details));
     }

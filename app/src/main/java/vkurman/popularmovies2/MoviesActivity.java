@@ -1,6 +1,10 @@
 package vkurman.popularmovies2;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vkurman.popularmovies2.model.Movie;
+import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
 import vkurman.popularmovies2.utils.MovieUtils;
 
@@ -27,13 +32,13 @@ import vkurman.popularmovies2.utils.MovieUtils;
  * Created by Vassili Kurman on 25/02/2018.
  * Version 2.0
  */
-public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener {
+public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MainActivity";
     private static final String SORTING_KEY = "sort";
 
     @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
-
 
     private RecyclerView.Adapter mAdapter;
     private MoviesQueryTask moviesQueryTask;
@@ -193,5 +198,52 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             // updating adapter
             ((MoviesAdapter) mAdapter).updateMovies(movies);
         }
+    }
+
+    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
+
+        return new AsyncTaskLoader<Cursor>(this) {
+
+            Cursor mMovieData = null;
+
+            @Override
+            protected void onStartLoading(){
+                if(mMovieData != null) {
+                    deliverResult(mMovieData);
+                } else {
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    return getContentResolver().query(MoviesContract.MoviesEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            null);
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            public void deliverResult(Cursor data) {
+                mMovieData = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        ((MoviesAdapter)mAdapter).swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        ((MoviesAdapter)mAdapter).swapCursor(null);
     }
 }

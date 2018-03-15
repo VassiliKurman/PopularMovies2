@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,40 +145,40 @@ public class MoviesPersistenceManager {
         return map;
     }
 
-    /**
-     * Adds new favourite movie to local database
-     *
-     * @param movie
-     * @return long
-     */
-    public long addNewFavouriteMovie(Movie movie) {
-        if(movie == null) {
-            return -1L;
-        }
+//    /**
+//     * Adds new favourite movie to local database
+//     *
+//     * @param movie
+//     * @return long
+//     */
+//    public long addNewFavouriteMovie(Movie movie) {
+//        if(movie == null) {
+//            return -1L;
+//        }
+//
+//        ContentValues cv = new ContentValues();
+//        cv.put(MoviesContract.MoviesEntry._ID, movie.getMovieId());
+//        cv.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_POSTER, movie.getMoviePoster());
+//        cv.put(MoviesContract.MoviesEntry.COLUMN_TITLE, movie.getTitle());
+//        cv.put(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+//        cv.put(MoviesContract.MoviesEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
+//        cv.put(MoviesContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS, movie.getPlotSynopsis());
+//
+//        return mDB.insert(MoviesContract.MoviesEntry.TABLE_NAME, null, cv);
+//    }
 
-        ContentValues cv = new ContentValues();
-        cv.put(MoviesContract.MoviesEntry._ID, movie.getMovieId());
-        cv.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_POSTER, movie.getMoviePoster());
-        cv.put(MoviesContract.MoviesEntry.COLUMN_TITLE, movie.getTitle());
-        cv.put(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-        cv.put(MoviesContract.MoviesEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-        cv.put(MoviesContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS, movie.getPlotSynopsis());
-
-        return mDB.insert(MoviesContract.MoviesEntry.TABLE_NAME, null, cv);
-    }
-
-    /**
-     * Removes favourite movie from local database.
-     *
-     * @param id
-     * @return long - movie id
-     */
-    public boolean removeFavouriteMovie(long id) {
-        if(id < 0) {
-            return false;
-        }
-
-        return mDB.delete(MoviesContract.MoviesEntry.TABLE_NAME,
-                MoviesContract.MoviesEntry._ID + "="+id, null) > 0;
-    }
+//    /**
+//     * Removes favourite movie from local database.
+//     *
+//     * @param id
+//     * @return long - movie id
+//     */
+//    public boolean removeFavouriteMovie(long id) {
+//        if(id < 0) {
+//            return false;
+//        }
+//
+//        return mDB.delete(MoviesContract.MoviesEntry.TABLE_NAME,
+//                MoviesContract.MoviesEntry._ID + "="+id, null) > 0;
+//    }
 }
