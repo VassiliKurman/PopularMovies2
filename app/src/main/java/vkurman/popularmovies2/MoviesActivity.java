@@ -117,6 +117,10 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
                 item = menu.findItem(R.id.top_rate);
                 item.setChecked(true);
                 break;
+            case R.id.favourite:
+                item = menu.findItem(R.id.favourite);
+                item.setChecked(true);
+                break;
         }
 
         return true;
@@ -146,6 +150,18 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
                     mToast.cancel();
                 }
                 mToast = Toast.makeText(this, "top rated selected", Toast.LENGTH_LONG);
+                mToast.show();
+                return true;
+            case R.id.favourite:
+                item.setChecked(true);
+                sortingId = item.getItemId();
+                // TODO display favourite movies
+//                moviesQueryTask = new MoviesQueryTask();
+//                moviesQueryTask.execute(MovieUtils.createTopRatedMovieUrl());
+                if(mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(this, "favourite selected", Toast.LENGTH_LONG);
                 mToast.show();
                 return true;
         }
