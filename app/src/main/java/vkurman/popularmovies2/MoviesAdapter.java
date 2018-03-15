@@ -53,6 +53,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         void onMovieClicked(Movie movie);
     }
 
+    public interface FavouriteClickListener {
+        void onFavouriteMovieClicked(View view, Movie movie);
+    }
+
     /**
      * Constructor for Adapter that accepts a number of items to display and ClickListener.
      *
