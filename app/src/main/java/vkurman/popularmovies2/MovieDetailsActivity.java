@@ -22,11 +22,11 @@ import vkurman.popularmovies2.utils.MovieUtils;
 public class MovieDetailsActivity extends AppCompatActivity {
 
     // Binding views
-    @BindView(R.id.poster_iv) private ImageView ivMoviePoster;
-    @BindView(R.id.title_tv) private TextView tvTitle;
-    @BindView(R.id.release_date_tv) private TextView tvReleaseDate;
-    @BindView(R.id.vote_average_tv) private TextView tvVoteAverage;
-    @BindView(R.id.plot_synopsis_tv) private TextView tvPlotSynopsis;
+    @BindView(R.id.poster_iv) ImageView ivMoviePoster;
+    @BindView(R.id.title_tv) TextView tvTitle;
+    @BindView(R.id.release_date_tv) TextView tvReleaseDate;
+    @BindView(R.id.vote_average_tv) TextView tvVoteAverage;
+    @BindView(R.id.plot_synopsis_tv) TextView tvPlotSynopsis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
