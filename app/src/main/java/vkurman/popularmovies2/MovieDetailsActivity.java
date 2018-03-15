@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
@@ -41,11 +42,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
             closeOnError();
         }
 
-        String poster = intent.getStringExtra(getString(R.string.extra_poster));
-        String title = intent.getStringExtra(getString(R.string.extra_title));
-        String releaseDate = intent.getStringExtra(getString(R.string.extra_release_date));
-        String voteAverage = intent.getStringExtra(getString(R.string.extra_vote_average));
-        String plotSynopsis = intent.getStringExtra(getString(R.string.extra_plot_synopsis));
+        Movie movie = intent.getParcelableExtra("movie");
+        String poster = movie.getMoviePoster();
+        String title = movie.getTitle();
+        String releaseDate = movie.getReleaseDate();
+        String voteAverage = movie.getVoteAverage();
+        String plotSynopsis = movie.getPlotSynopsis();
+
+//        String poster = intent.getStringExtra(getString(R.string.extra_poster));
+//        String title = intent.getStringExtra(getString(R.string.extra_title));
+//        String releaseDate = intent.getStringExtra(getString(R.string.extra_release_date));
+//        String voteAverage = intent.getStringExtra(getString(R.string.extra_vote_average));
+//        String plotSynopsis = intent.getStringExtra(getString(R.string.extra_plot_synopsis));
 
         // Setting text to text views
         tvTitle.setText(title);

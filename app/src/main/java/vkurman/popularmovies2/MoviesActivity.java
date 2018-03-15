@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vkurman.popularmovies2.model.Movie;
+import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
@@ -32,6 +33,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
     private static final String SORTING_KEY = "sort";
 
     @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
+
 
     private RecyclerView.Adapter mAdapter;
     private MoviesQueryTask moviesQueryTask;
@@ -84,11 +86,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
     public void onMovieClicked(Movie movie) {
         if(movie != null) {
             Intent intent = new Intent(MoviesActivity.this, MovieDetailsActivity.class);
-            intent.putExtra(getString(R.string.extra_poster), movie.getMoviePoster());
-            intent.putExtra(getString(R.string.extra_title), movie.getTitle());
-            intent.putExtra(getString(R.string.extra_release_date), movie.getReleaseDate());
-            intent.putExtra(getString(R.string.extra_vote_average), movie.getVoteAverage());
-            intent.putExtra(getString(R.string.extra_plot_synopsis), movie.getPlotSynopsis());
+            intent.putExtra("movie", movie);
             startActivity(intent);
         } else {
             if(mToast != null) {
@@ -156,8 +154,9 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
                 item.setChecked(true);
                 sortingId = item.getItemId();
                 // TODO display favourite movies
-//                moviesQueryTask = new MoviesQueryTask();
-//                moviesQueryTask.execute(MovieUtils.createTopRatedMovieUrl());
+                List<Movie> movies = MoviesPersistenceManager.getInstance(this).getFavouriteMovies();
+                // updating adapter
+                ((MoviesAdapter) mAdapter).updateMovies(movies);
                 if(mToast != null) {
                     mToast.cancel();
                 }

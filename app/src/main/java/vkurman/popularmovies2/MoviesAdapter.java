@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Map;
 
 import vkurman.popularmovies2.model.Movie;
+import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
@@ -33,6 +35,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      * Reference to list of items.
      */
     private List<Movie> movies;
+    private Map<Long, Long> favourites;
 
     /**
      * The interface that receives onClick messages.
@@ -48,7 +51,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      * @param listener Listener for list item clicks
      */
     MoviesAdapter(List<Movie> listOfItems, MovieClickListener listener) {
-        movies = listOfItems;
+        this.movies = listOfItems;
         mMovieClickListener = listener;
     }
 
@@ -90,9 +93,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         if(position >= 0 && position < movies.size()) {
             final Movie movie = movies.get(position);
+            final long movieId = movie.getMovieId();
 
             String imagePath = MovieUtils.createFullIconPath(movie.getMoviePoster());
+
             Log.d(TAG, "Movie poster full path: " + imagePath);
+
+            holder.itemView.setTag(movieId);
 
             Context context = holder.posterImageView.getContext();
             Picasso.with(context)
@@ -101,6 +108,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                     .error(R.drawable.ic_error_image)
                     .into(holder.posterImageView);
 
+            // Making sure that favourites not null
+            if(favourites == null) {
+                favourites = MoviesPersistenceManager.getInstance(context).getFavouriteMovieIds();
+            }
+
+            if (favourites.get(new Long(movieId)) != null) {
+                holder.favouriteImageView.setImageResource(R.drawable.ic_heart);
+            } else {
+                holder.favouriteImageView.setImageResource(R.drawable.ic_heart_outline);
+            }
         }
     }
 
@@ -129,6 +146,24 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         notifyDataSetChanged();
     }
 
+    // TODO
+    void favouriteClicked(View view, Movie movie) {
+        if(view.getId() == R.id.iv_favourite) {
+            if(favourites == null) {
+                favourites = MoviesPersistenceManager.getInstance(view.getContext()).getFavouriteMovieIds();
+            }
+            if(favourites.containsKey(movie.getMovieId())) {
+                MoviesPersistenceManager.getInstance(view.getContext()).removeFavouriteMovie(movie.getMovieId());
+                favourites.remove(movie.getMovieId());
+                ((ImageView)view).setImageResource(R.drawable.ic_heart_outline);
+            } else {
+                Long id = MoviesPersistenceManager.getInstance(view.getContext()).addNewFavouriteMovie(movie);
+                favourites.put(id, id);
+                ((ImageView)view).setImageResource(R.drawable.ic_heart);
+            }
+        }
+    }
+
     /**
      * Cache of the children views for a list item.
      */
@@ -136,6 +171,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             implements View.OnClickListener {
 
         ImageView posterImageView;
+        ImageView favouriteImageView;
 
         /**
          * Constructor for ViewHolder.
@@ -145,9 +181,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         MovieViewHolder(View itemView) {
             super(itemView);
 
+            // Retrieve ImageView's from parent FrameLayout view group
             posterImageView = itemView.findViewById(R.id.iv_list_poster);
+            favouriteImageView = itemView.findViewById(R.id.iv_favourite);
 
-            itemView.setOnClickListener(this);
+            // Set separate click listeners to poster and favourite image
+            posterImageView.setOnClickListener(this);
+            favouriteImageView.setOnClickListener(this);
         }
 
         /**
@@ -160,12 +200,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             if(movies == null) {
                 return;
             }
-
             int position = getAdapterPosition();
-
             if(position >= 0 && position < movies.size()) {
                 Movie movie = movies.get(position);
-                mMovieClickListener.onMovieClicked(movie);
+                if(view.getId() == R.id.iv_favourite) {
+                    // Sending message to adapter that image for favourite movie is clicked
+                    favouriteClicked(view, movie);
+                } else {
+                    mMovieClickListener.onMovieClicked(movie);
+                }
             }
         }
     }
