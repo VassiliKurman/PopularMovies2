@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     @BindView(R.id.release_date_tv) TextView tvReleaseDate;
     @BindView(R.id.vote_average_tv) TextView tvVoteAverage;
     @BindView(R.id.plot_synopsis_tv) TextView tvPlotSynopsis;
+    @BindView(R.id.btn_reviews) Button btnReviews;
+    @BindView(R.id.btn_trailers) Button btnTrailers;
 
     private Movie movie;
     private Map<Long, Long> favourites;
@@ -72,6 +75,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         tvReleaseDate.setText(releaseDate.substring(0, 4));
         tvVoteAverage.setText(voteAverage);
         tvPlotSynopsis.setText(plotSynopsis);
+        // Setting OnClickListener
+        btnReviews.setOnClickListener(this);
+        btnTrailers.setOnClickListener(this);
+        ivFavourite.setOnClickListener(this);
 
         Picasso.with(this)
                 .load(MovieUtils.createFullIconPath(poster))
@@ -146,7 +153,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        // Sending message to adapter that image for favourite movie is clicked
-        favouriteClicked(view, movie);
+        if(view == btnReviews) {
+            // TODO display ReviewsActivity
+            Toast.makeText(this, "Reviews clicked!", Toast.LENGTH_LONG).show();
+        } else if (view == btnTrailers) {
+            // TODO display trailers
+            Toast.makeText(this, "Trailers clicked!", Toast.LENGTH_LONG).show();
+        } else if(view == ivFavourite) {
+            // TODO change favourite
+            Toast.makeText(this, "Favourites clicked!", Toast.LENGTH_LONG).show();
+            // Sending message to adapter that image for favourite movie is clicked
+            favouriteClicked(view, movie);
+        }
     }
+
+//    private void displayReviews() {
+//        Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
+//        intent.putExtra("movie", movie);
+//        startActivity(intent);
+//    }
 }

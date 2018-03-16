@@ -68,6 +68,19 @@
                 app:layout_constraintLeft_toRightOf="@id/poster_iv"
                 app:layout_constraintTop_toBottomOf="@id/rating_tv"
                 android:contentDescription="@string/iv_favourite_icon_description"/>
+            <Button
+                style="@style/DefaultView"
+                android:id="@+id/btn_reviews"
+                app:layout_constraintLeft_toRightOf="@id/poster_iv"
+                app:layout_constraintTop_toBottomOf="@id/iv_details_favourite"
+                android:text="@string/btn_reviews" />
+
+            <Button
+                style="@style/DefaultView"
+                android:id="@+id/btn_trailers"
+                app:layout_constraintLeft_toRightOf="@id/poster_iv"
+                app:layout_constraintTop_toBottomOf="@id/btn_reviews"
+                android:text="@string/btn_trailers" />
 
             <TextView
                 style="@style/DefaultView"
