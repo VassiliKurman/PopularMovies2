@@ -110,6 +110,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * Closes and displays message when error occurs
+     */
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
@@ -154,8 +157,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if(view == btnReviews) {
-            // TODO display ReviewsActivity
-            Toast.makeText(this, "Reviews clicked!", Toast.LENGTH_LONG).show();
+            displayReviews();
         } else if (view == btnTrailers) {
             // TODO display trailers
             Toast.makeText(this, "Trailers clicked!", Toast.LENGTH_LONG).show();
@@ -167,9 +169,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-//    private void displayReviews() {
-//        Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
-//        intent.putExtra("movie", movie);
-//        startActivity(intent);
-//    }
+    /**
+     * Creating Intent and displaying new Activity with movie reviews
+     */
+    private void displayReviews() {
+        Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
+    }
 }
