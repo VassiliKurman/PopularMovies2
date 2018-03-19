@@ -1,5 +1,5 @@
 # PopularMovies2
-Popular Movies, Stage 2 is an Android App project created for Android Developer Nanodegree Program.
+Popular Movies 2 is a stage 2 Android App project created for Android Developer Nanodegree Program.
 
 Major features that came from stage 1 app:
   * Upon launch the grid arrangement of movie posters are presented to the user.
