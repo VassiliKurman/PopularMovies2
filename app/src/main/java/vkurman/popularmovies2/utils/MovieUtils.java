@@ -9,7 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import vkurman.popularmovies2.model.Movie;
@@ -29,6 +28,9 @@ public class MovieUtils {
     private static final String API_CATEGORY_POPULAR = "popular";
     private static final String API_CATEGORY_TOP_RATED = "top_rated";
     private static final String API_URL_PARAMETER = "?api_key=";
+
+    private static final String API_TRAILERS = "/videos";
+    private static final String API_REVIEWS = "/reviews";
 
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     // Available image sizes
@@ -135,6 +137,46 @@ public class MovieUtils {
      */
     public static URL createTopRatedMovieUrl() {
         String path = API_BASE_URL + API_CATEGORY_TOP_RATED + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
+
+        Log.d(TAG, "Path: " + path);
+
+        try {
+            return new URL(path);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "Error building URL!");
+        }
+
+        return null;
+    }
+
+    /**
+     * Constructing and returning URL object to retrieve trailers for movies.
+     *
+     * @param movieId
+     * @return URL
+     */
+    public static URL createTrailersUrl(String movieId) {
+        String path = API_BASE_URL + movieId + API_TRAILERS + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
+
+        Log.d(TAG, "Path: " + path);
+
+        try {
+            return new URL(path);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "Error building URL!");
+        }
+
+        return null;
+    }
+
+    /**
+     * Constructing and returning URL object to retrieve reviews for movies.
+     *
+     * @param movieId
+     * @return URL
+     */
+    public static URL createReviewsUrl(String movieId) {
+        String path = API_BASE_URL + movieId + API_REVIEWS + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
 
         Log.d(TAG, "Path: " + path);
 
