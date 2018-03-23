@@ -162,8 +162,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                 startActivity(intent);
             }
         } else if (view == btnTrailers) {
-            // TODO display trailers
-            Toast.makeText(this, "Trailers clicked!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(MovieDetailsActivity.this, MovieVideosActivity.class);
+            intent.putExtra("movie", movie);
+            startActivity(intent);
         } else if(view == ivFavourite) {
             // TODO change favourite
             Toast.makeText(this, "Favourites clicked!", Toast.LENGTH_LONG).show();

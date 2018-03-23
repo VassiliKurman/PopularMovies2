@@ -11,6 +11,7 @@ import java.util.List;
 
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.model.Review;
+import vkurman.popularmovies2.model.Video;
 
 /**
  * Project Popular Movies stage 2.
@@ -36,6 +37,16 @@ public class JsonUtils {
     private static final String JSON_REVIEW_AUTHOR = "author";
     private static final String JSON_REVIEW_CONTENT = "content";
     private static final String JSON_REVIEW_URL = "url";
+
+    // Video name fields from json file
+    private static final String JSON_VIDEO_ID = "id";
+    private static final String JSON_VIDEO_ISO639_1 = "iso_639_1";
+    private static final String JSON_VIDEO_ISO3166_1 = "iso_3166_1";
+    private static final String JSON_VIDEO_KEY = "key";
+    private static final String JSON_VIDEO_NAME = "name";
+    private static final String JSON_VIDEO_SITE = "site";
+    private static final String JSON_VIDEO_SIZE = "size";
+    private static final String JSON_VIDEO_TYPE = "type";
 
     /**
      * Fetches and returns list of movies from json string.
@@ -108,4 +119,44 @@ public class JsonUtils {
 
         return reviews;
     }
+    /**
+     * Fetches and returns list of videos from json string.
+     *
+     * @param json - string in json format
+     * @return List<Video>
+     */
+    public static List<Video> parseVideosJson(String json) {
+
+        final List<Video> videos = new ArrayList<>();
+
+        try {
+            // Parsing json string to json object
+            JSONObject jsonObject = new JSONObject(json);
+            // Getting json array results from json object
+            JSONArray resultsArray = jsonObject.optJSONArray(JSON_RESULTS);
+            if(resultsArray.length() > 0) {
+                Log.d(TAG, "Objects in json results array: " + resultsArray.length());
+                for(int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject reviewJsonObject = resultsArray.optJSONObject(i);
+                    // Getting individual values from json object
+
+                    String id = String.valueOf(reviewJsonObject.optLong(JSON_VIDEO_ID));
+                    String iso_639_1 = reviewJsonObject.optString(JSON_VIDEO_ISO639_1);
+                    String iso_3166_1 = reviewJsonObject.optString(JSON_VIDEO_ISO3166_1);
+                    String key = reviewJsonObject.optString(JSON_VIDEO_KEY);
+                    String name = reviewJsonObject.optString(JSON_VIDEO_NAME);
+                    String site = reviewJsonObject.optString(JSON_VIDEO_SITE);
+                    int size = reviewJsonObject.optInt(JSON_VIDEO_SIZE);
+                    String type = reviewJsonObject.optString(JSON_VIDEO_TYPE);
+
+                    videos.add(new Video(id, iso_639_1, iso_3166_1, key, name, site, size, type));
+                }
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, "Error parse Video Json: " + e);
+        }
+
+        return videos;
+    }
+
 }
