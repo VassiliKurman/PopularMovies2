@@ -19,13 +19,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".MovieDetailsActivity" />
+        <activity android:name=".MovieReviewsActivity" />
 
         <provider
             android:name=".persistance.MoviesContentProvider"
             android:authorities="vkurman.popularmovies2"
             android:exported="false" />
-
-        <activity android:name=".MovieReviewsActivity"></activity>
     </application>
 
 </manifest>

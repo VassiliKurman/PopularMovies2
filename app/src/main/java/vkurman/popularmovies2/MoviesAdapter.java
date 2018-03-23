@@ -1,7 +1,6 @@
 package vkurman.popularmovies2;
 
 import android.app.LoaderManager;
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -51,10 +50,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      */
     public interface MovieClickListener {
         void onMovieClicked(Movie movie);
-    }
-
-    public interface FavouriteClickListener {
-        void onFavouriteMovieClicked(View view, Movie movie);
     }
 
     /**
@@ -109,8 +104,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             final long movieId = movie.getMovieId();
 
             String imagePath = MovieUtils.createFullIconPath(movie.getMoviePoster());
-
-            Log.d(TAG, "Movie poster full path: " + imagePath);
 
             holder.itemView.setTag(movieId);
 
@@ -233,6 +226,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
          */
         MovieViewHolder(View itemView) {
             super(itemView);
+
 
             // Retrieve ImageView's from parent FrameLayout view group
             posterImageView = itemView.findViewById(R.id.iv_list_poster);

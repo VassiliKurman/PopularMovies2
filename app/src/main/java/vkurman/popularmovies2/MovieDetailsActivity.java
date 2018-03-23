@@ -1,9 +1,7 @@
 package vkurman.popularmovies2;
 
-import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +37,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     @BindView(R.id.release_date_tv) TextView tvReleaseDate;
     @BindView(R.id.vote_average_tv) TextView tvVoteAverage;
     @BindView(R.id.plot_synopsis_tv) TextView tvPlotSynopsis;
+
     @BindView(R.id.btn_reviews) Button btnReviews;
     @BindView(R.id.btn_trailers) Button btnTrailers;
 
@@ -157,7 +156,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if(view == btnReviews) {
-            displayReviews();
+            if(movie != null) {
+                Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
+                intent.putExtra("movie", movie);
+                startActivity(intent);
+            }
         } else if (view == btnTrailers) {
             // TODO display trailers
             Toast.makeText(this, "Trailers clicked!", Toast.LENGTH_LONG).show();
@@ -167,14 +170,5 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             // Sending message to adapter that image for favourite movie is clicked
             favouriteClicked(view, movie);
         }
-    }
-
-    /**
-     * Creating Intent and displaying new Activity with movie reviews
-     */
-    private void displayReviews() {
-        Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
-        intent.putExtra("movie", movie);
-        startActivity(intent);
     }
 }
