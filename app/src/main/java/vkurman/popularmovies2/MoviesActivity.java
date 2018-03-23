@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import vkurman.popularmovies2.adapters.MoviesAdapter;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
@@ -81,7 +82,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
 
     /**
      * This is where callback is received from
-     * {@link vkurman.popularmovies2.MoviesAdapter.MovieClickListener}
+     * {@link MoviesAdapter.MovieClickListener}
      *
      * This callback is invoked when item in the list is clicked.
      *

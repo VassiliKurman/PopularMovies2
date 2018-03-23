@@ -1,4 +1,4 @@
-package vkurman.popularmovies2;
+package vkurman.popularmovies2.adapters;
 
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Map;
 
+import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
@@ -58,7 +58,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      * @param listOfItems list of items to display
      * @param listener Listener for list item clicks
      */
-    MoviesAdapter(List<Movie> listOfItems, MovieClickListener listener) {
+    public MoviesAdapter(List<Movie> listOfItems, MovieClickListener listener) {
         this.movies = listOfItems;
         mMovieClickListener = listener;
     }
@@ -146,13 +146,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      *
      * @param movies - list of movies
      */
-    void updateMovies(List<Movie> movies) {
+    public void updateMovies(List<Movie> movies) {
         this.movies.clear();
         this.movies.addAll(movies);
         notifyDataSetChanged();
     }
 
-    void favouriteClicked(View view, Movie movie) {
+    public void favouriteClicked(View view, Movie movie) {
         if(view.getId() == R.id.iv_favourite) {
             if(favourites == null) {
                 favourites = MoviesPersistenceManager.getInstance(view.getContext()).getFavouriteMovieIds();
