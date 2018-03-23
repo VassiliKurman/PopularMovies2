@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,8 +28,10 @@ import vkurman.popularmovies2.model.Review;
  */
 public class MovieReviewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Review>> {
 
+    @BindView(R.id.tv_reviews_title) TextView tvTitle;
     @BindView(R.id.rv_reviews) RecyclerView mRecyclerView;
 
+    private static final String TITLE = "Reviews";
     private ReviewsAdapter mAdapter;
     private Movie movie;
 
@@ -52,7 +55,8 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
             return;
         }
 
-        setTitle(movie.getTitle());
+        tvTitle.setText(movie.getTitle());
+        setTitle(TITLE);
 
         // Setting recycle view for reviews
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);

@@ -7,13 +7,8 @@
         tools:context="vkurman.popularmovies2.MovieDetailsActivity">
 
         <TextView
-            android:id="@+id/title_tv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/details_title_height"
-            android:background="@color/colorAccent"
-            android:paddingLeft="@dimen/title_text_padding"
-            android:paddingRight="@dimen/title_text_padding"
-            android:textSize="@dimen/details_title_text_size" />
+            android:id="@+id/tv_details_title"
+            style="@style/TitleView" />
 
         <ScrollView
             android:id="@+id/sv_main"

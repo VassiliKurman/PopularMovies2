@@ -33,7 +33,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     // Binding views
     @BindView(R.id.poster_iv) ImageView ivMoviePoster;
     @BindView(R.id.iv_details_favourite) ImageView ivFavourite;
-    @BindView(R.id.title_tv) TextView tvTitle;
+    @BindView(R.id.tv_details_title) TextView tvTitle;
     @BindView(R.id.release_date_tv) TextView tvReleaseDate;
     @BindView(R.id.vote_average_tv) TextView tvVoteAverage;
     @BindView(R.id.plot_synopsis_tv) TextView tvPlotSynopsis;
