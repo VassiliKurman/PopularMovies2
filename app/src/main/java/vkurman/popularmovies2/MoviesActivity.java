@@ -33,8 +33,8 @@ import vkurman.popularmovies2.utils.MovieUtils;
  * Created by Vassili Kurman on 25/02/2018.
  * Version 2.0
  */
-public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener {//,
+        //LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MainActivity";
     private static final String SORTING_KEY = "sort";
@@ -201,50 +201,50 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
         }
     }
 
-    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
-
-        return new AsyncTaskLoader<Cursor>(this) {
-
-            Cursor mMovieData = null;
-
-            @Override
-            protected void onStartLoading(){
-                if(mMovieData != null) {
-                    deliverResult(mMovieData);
-                } else {
-                    forceLoad();
-                }
-            }
-
-            @Override
-            public Cursor loadInBackground() {
-                try {
-                    return getContentResolver().query(MoviesContract.MoviesEntry.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            null);
-                } catch (Exception e) {
-                    Log.e(TAG, "Failed to asynchronously load data.");
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            public void deliverResult(Cursor data) {
-                mMovieData = data;
-                super.deliverResult(data);
-            }
-        };
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        ((MoviesAdapter)mAdapter).swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        ((MoviesAdapter)mAdapter).swapCursor(null);
-    }
+//    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
+//
+//        return new AsyncTaskLoader<Cursor>(this) {
+//
+//            Cursor mMovieData = null;
+//
+//            @Override
+//            protected void onStartLoading(){
+//                if(mMovieData != null) {
+//                    deliverResult(mMovieData);
+//                } else {
+//                    forceLoad();
+//                }
+//            }
+//
+//            @Override
+//            public Cursor loadInBackground() {
+//                try {
+//                    return getContentResolver().query(MoviesContract.MoviesEntry.CONTENT_URI,
+//                            null,
+//                            null,
+//                            null,
+//                            null);
+//                } catch (Exception e) {
+//                    Log.e(TAG, "Failed to asynchronously load data.");
+//                    e.printStackTrace();
+//                    return null;
+//                }
+//            }
+//
+//            public void deliverResult(Cursor data) {
+//                mMovieData = data;
+//                super.deliverResult(data);
+//            }
+//        };
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+//        ((MoviesAdapter)mAdapter).swapCursor(cursor);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//        ((MoviesAdapter)mAdapter).swapCursor(null);
+//    }
 }
