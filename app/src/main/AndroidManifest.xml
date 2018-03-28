@@ -26,7 +26,6 @@
             android:authorities="vkurman.popularmovies2"
             android:exported="false" />
 
-        <activity android:name=".MovieVideosActivity"></activity>
     </application>
 
 </manifest>
