@@ -120,7 +120,7 @@ public class JsonUtils {
         return reviews;
     }
     /**
-     * Fetches and returns list of videos from json string.
+     * Fetches and returns list of videos objects to use for trailers from json string.
      *
      * @param json - string in json format
      * @return List<Video>
