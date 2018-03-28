@@ -1,5 +1,6 @@
 package vkurman.popularmovies2.utils;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.IOException;
@@ -71,6 +72,20 @@ public class MovieUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * Build and returns Uri for specified youtube trailer.
+     *
+     * @param trailerKey
+     * @return Uri
+     */
+    public static Uri getYoutubeTrailerUri(String trailerKey) {
+        String path = YOUTUBE_TRAILER_BASE_URL + trailerKey;
+
+        Log.d(TAG, "Youtube trailer uri: " + path);
+
+        return Uri.parse(path);
     }
 
     /**

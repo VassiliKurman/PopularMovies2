@@ -1,6 +1,8 @@
 package vkurman.popularmovies2.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,8 +70,8 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
                 return;
             }
 
-            Context context = holder.ivImage.getContext();
-            String key = video.getKey();
+            final Context context = holder.ivImage.getContext();
+            final String key = video.getKey();
 
             Log.d("VideoAdapter", "Movie ID: " + key);
 
@@ -78,6 +80,19 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
                     .placeholder(R.drawable.ic_image_area)
                     .error(R.drawable.ic_error_image)
                     .into(holder.ivImage);
+
+            holder.ivImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri file = MovieUtils.getYoutubeTrailerUri(key);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(file);
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                    }
+
+                }
+            });
         }
     }
 
