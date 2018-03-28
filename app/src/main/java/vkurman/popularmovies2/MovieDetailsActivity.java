@@ -53,7 +53,6 @@ public class MovieDetailsActivity extends AppCompatActivity
     @BindView(R.id.rv_videos) RecyclerView mRecyclerView;
 
     @BindView(R.id.btn_reviews) Button btnReviews;
-//    @BindView(R.id.btn_trailers) Button btnTrailers;
 
     private Movie movie;
     private VideosAdapter mAdapter;
@@ -185,12 +184,6 @@ public class MovieDetailsActivity extends AppCompatActivity
                 intent.putExtra("movie", movie);
                 startActivity(intent);
             }
-//        } else if (view == btnTrailers) {
-//            if(movie != null) {
-//                Intent intent = new Intent(MovieDetailsActivity.this, MovieVideosActivity.class);
-//                intent.putExtra("movie", movie);
-//                startActivity(intent);
-//            }
         } else if(view == ivFavourite) {
             // TODO change favourite
             Toast.makeText(this, "Favourites clicked!", Toast.LENGTH_LONG).show();
