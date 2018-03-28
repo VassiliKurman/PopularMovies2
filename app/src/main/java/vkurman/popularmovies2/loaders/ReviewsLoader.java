@@ -35,7 +35,7 @@ public class ReviewsLoader extends AsyncTaskLoader<List<Review>> {
 
         URL url = MovieUtils.createReviewsUrl(movieId);
         try {
-            String json = MovieUtils.getResponseFromTheMovieDB(url);
+            String json = MovieUtils.getJsonResponseFromWeb(url);
             return JsonUtils.parseReviewsJson(json);
         } catch (IOException e) {
             e.printStackTrace();

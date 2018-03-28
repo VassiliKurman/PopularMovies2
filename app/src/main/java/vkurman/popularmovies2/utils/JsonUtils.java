@@ -137,17 +137,20 @@ public class JsonUtils {
             if(resultsArray.length() > 0) {
                 Log.d(TAG, "Objects in json results array: " + resultsArray.length());
                 for(int i = 0; i < resultsArray.length(); i++) {
-                    JSONObject reviewJsonObject = resultsArray.optJSONObject(i);
+                    JSONObject videoJsonObject = resultsArray.optJSONObject(i);
+                    Log.d("JsonUtils", "Video json: " + videoJsonObject);
                     // Getting individual values from json object
 
-                    String id = String.valueOf(reviewJsonObject.optLong(JSON_VIDEO_ID));
-                    String iso_639_1 = reviewJsonObject.optString(JSON_VIDEO_ISO639_1);
-                    String iso_3166_1 = reviewJsonObject.optString(JSON_VIDEO_ISO3166_1);
-                    String key = reviewJsonObject.optString(JSON_VIDEO_KEY);
-                    String name = reviewJsonObject.optString(JSON_VIDEO_NAME);
-                    String site = reviewJsonObject.optString(JSON_VIDEO_SITE);
-                    int size = reviewJsonObject.optInt(JSON_VIDEO_SIZE);
-                    String type = reviewJsonObject.optString(JSON_VIDEO_TYPE);
+                    String id = videoJsonObject.optString(JSON_VIDEO_ID);
+                    String iso_639_1 = videoJsonObject.optString(JSON_VIDEO_ISO639_1);
+                    String iso_3166_1 = videoJsonObject.optString(JSON_VIDEO_ISO3166_1);
+                    String key = videoJsonObject.optString(JSON_VIDEO_KEY);
+                    String name = videoJsonObject.optString(JSON_VIDEO_NAME);
+                    String site = videoJsonObject.optString(JSON_VIDEO_SITE);
+                    int size = videoJsonObject.optInt(JSON_VIDEO_SIZE);
+                    String type = videoJsonObject.optString(JSON_VIDEO_TYPE);
+
+                    Log.d("JsonUtils", "Movie ID:" + id);
 
                     videos.add(new Video(id, iso_639_1, iso_3166_1, key, name, site, size, type));
                 }

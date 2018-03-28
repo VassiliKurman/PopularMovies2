@@ -42,7 +42,7 @@ public class MoviesLoader extends AsyncTaskLoader<List<Movie>> {
         }
 
         try {
-            String json = MovieUtils.getResponseFromTheMovieDB(url);
+            String json = MovieUtils.getJsonResponseFromWeb(url);
             return JsonUtils.parseMovieJson(json);
         } catch (IOException e) {
             e.printStackTrace();

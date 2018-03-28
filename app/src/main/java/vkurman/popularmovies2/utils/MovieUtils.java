@@ -44,47 +44,10 @@ public class MovieUtils {
 
     private static final String IMAGE_SIZE_DEFAULT = IMAGE_SIZE_W185;
 
-    /**
-     * Return list of popular movies from TheMovieDb
-     *
-     * @return List<Movie>
-     */
-    public static List<Movie> getPopularMovies() {
-        List<Movie> movies = new ArrayList<>();
-        try {
-            String response = getResponseFromTheMovieDB(createPopularMovieUrl());
-            if(response != null) {
-                return parseJson(response);
-            } else {
-                Log.e(TAG, "Response from TheMovieDB is null!");
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting response");
-        }
-        // Return empty list if movies not retrieved
-        return movies;
-    }
-
-    /**
-     * Return list of top rated movies from TheMovieDb
-     *
-     * @return List<Movie>
-     */
-    public static List<Movie> getTopRatedMovies() {
-        List<Movie> movies = new ArrayList<>();
-        try {
-            String response = getResponseFromTheMovieDB(createTopRatedMovieUrl());
-            if(response != null) {
-                return parseJson(response);
-            } else {
-                Log.e(TAG, "Response from TheMovieDB is null!");
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting response");
-        }
-        // Return empty list if movies not retrieved
-        return movies;
-    }
+    // Youtube
+    private static final String YOUTUBE_IMAGE_BASE_URL = "http://img.youtube.com/vi/";
+    private static final String YOUTUBE_IMAGE_FILE = "/0.jpg";
+    private static final String YOUTUBE_TRAILER_BASE_URL = "https://www.youtube.com/watch?v=";
 
     /**
      * Returns response from specified URL in json format.
@@ -93,7 +56,7 @@ public class MovieUtils {
      * @return String - response from server in json format
      * @throws IOException - throws when can't open url connection
      */
-    public static String getResponseFromTheMovieDB(URL url) throws IOException {
+    public static String getJsonResponseFromWeb(URL url) throws IOException {
         if(url != null) {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
@@ -138,7 +101,7 @@ public class MovieUtils {
     public static URL createTopRatedMovieUrl() {
         String path = API_BASE_URL + API_CATEGORY_TOP_RATED + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
 
-        Log.d(TAG, "Path: " + path);
+        Log.d(TAG, "Top rated movies path: " + path);
 
         try {
             return new URL(path);
@@ -158,7 +121,7 @@ public class MovieUtils {
     public static URL createTrailersUrl(String movieId) {
         String path = API_BASE_URL + movieId + API_TRAILERS + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
 
-        Log.d(TAG, "Path: " + path);
+        Log.d(TAG, "Trailers path: " + path);
 
         try {
             return new URL(path);
@@ -178,7 +141,7 @@ public class MovieUtils {
     public static URL createReviewsUrl(String movieId) {
         String path = API_BASE_URL + movieId + API_REVIEWS + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
 
-        Log.d(TAG, "Path: " + path);
+        Log.d(TAG, "Reviews path: " + path);
 
         try {
             return new URL(path);
@@ -210,5 +173,21 @@ public class MovieUtils {
             return null;
         }
         return IMAGE_BASE_URL + IMAGE_SIZE_DEFAULT + imagePath;
+    }
+
+    /**
+     * Constructing and returning URL object to retrieve trailer image for movies from youtube.
+     *
+     * @param videoId
+     * @return String
+     */
+    public static String createYoutubeTrailerImageUrl(String videoId) {
+        if(videoId == null || videoId.isEmpty()) {
+            return null;
+        }
+
+        String path = YOUTUBE_IMAGE_BASE_URL + videoId + YOUTUBE_IMAGE_FILE;
+        Log.d("MovieUtils", "Youtube path: " + path);
+        return path;
     }
 }

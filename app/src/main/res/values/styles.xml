@@ -24,4 +24,11 @@
         <item name="android:textSize">@dimen/details_title_text_size</item>
     </style>
 
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_margin">@dimen/default_text_padding</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
 </resources>

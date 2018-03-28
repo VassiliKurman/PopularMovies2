@@ -26,10 +26,10 @@ import vkurman.popularmovies2.model.Video;
 public class MovieVideosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Video>> {
 
     @BindView(R.id.tv_videos_title) TextView tvTitle;
-    @BindView(R.id.rv_videos) RecyclerView mRecyclerView;
+//    @BindView(R.id.rv_videos) RecyclerView mRecyclerView;
 
     private static final String TITLE = "Trailers";
-    private VideosAdapter mAdapter;
+//    private VideosAdapter mAdapter;
     private Movie movie;
 
     @Override
@@ -55,14 +55,14 @@ public class MovieVideosActivity extends AppCompatActivity implements LoaderMana
         tvTitle.setText(movie.getTitle());
         setTitle(TITLE);
 
-        // Setting recycle view for reviews
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new VideosAdapter(new ArrayList<Video>());
-        mRecyclerView.setAdapter(mAdapter);
+//        // Setting recycle view for trailers
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        mAdapter = new VideosAdapter(new ArrayList<Video>());
+//        mRecyclerView.setAdapter(mAdapter);
 
         // Setting loaders
-        getSupportLoaderManager().initLoader(0, null, this).forceLoad();
+//        getSupportLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
     @Override
@@ -96,12 +96,12 @@ public class MovieVideosActivity extends AppCompatActivity implements LoaderMana
             return;
         }
 
-        if(mAdapter == null) {
-            mAdapter = new VideosAdapter(data);
-            mRecyclerView.setAdapter(mAdapter);
-        } else {
-            mAdapter.updateVideos(data);
-        }
+//        if(mAdapter == null) {
+//            mAdapter = new VideosAdapter(data);
+//            mRecyclerView.setAdapter(mAdapter);
+//        } else {
+//            mAdapter.updateVideos(data);
+//        }
     }
 
     @Override

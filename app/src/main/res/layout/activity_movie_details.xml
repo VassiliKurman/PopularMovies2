@@ -71,19 +71,37 @@
                     app:layout_constraintTop_toBottomOf="@id/iv_details_favourite"
                     android:text="@string/btn_reviews" />
 
-                <Button
-                    style="@style/DefaultView"
-                    android:id="@+id/btn_trailers"
-                    app:layout_constraintLeft_toRightOf="@id/poster_iv"
-                    app:layout_constraintTop_toBottomOf="@id/btn_reviews"
-                    android:text="@string/btn_trailers" />
-
                 <TextView
                     style="@style/DefaultView"
                     android:id="@+id/plot_synopsis_tv"
                     android:paddingTop="@dimen/default_text_padding"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/poster_iv" />
+
+                <View
+                    android:id="@+id/divider_trailers"
+                    style="@style/HorizontalDivider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/plot_synopsis_tv"/>
+
+                <TextView
+                    android:id="@+id/tv_trailers_text"
+                    style="@style/DefaultView"
+                    android:text="@string/text_trailers"
+                    android:textSize="@dimen/details_title_text_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_trailers"/>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_videos"
+                    android:scrollbars="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_trailers_text"/>
+
 
             </android.support.constraint.ConstraintLayout>
         </ScrollView>

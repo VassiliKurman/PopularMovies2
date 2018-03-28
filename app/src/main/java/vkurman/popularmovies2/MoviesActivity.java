@@ -1,10 +1,6 @@
 package vkurman.popularmovies2;
 
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +20,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import vkurman.popularmovies2.adapters.MoviesAdapter;
 import vkurman.popularmovies2.model.Movie;
-import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
 import vkurman.popularmovies2.utils.MovieUtils;
 
@@ -181,7 +176,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             URL searchUrl = urls[0];
             String result = null;
             try {
-                result = MovieUtils.getResponseFromTheMovieDB(searchUrl);
+                result = MovieUtils.getJsonResponseFromWeb(searchUrl);
                 Log.d(TAG, result);
             } catch(IOException e) {
                 Log.e(TAG, "Error response from server");

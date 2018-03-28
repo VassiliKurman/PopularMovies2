@@ -11,7 +11,7 @@
     // Details activity
     <string name="activity_title_movie_details">Movie Details</string>
     <string name="btn_reviews">Reviews</string>
-    <string name="btn_trailers">Trailers</string>
+    <string name="text_trailers">Trailers</string>
 
     // Extras set to intent as names
     <string name="extra_poster">poster</string>

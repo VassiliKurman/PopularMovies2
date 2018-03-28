@@ -2,15 +2,19 @@ package vkurman.popularmovies2.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.model.Video;
+import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
  * VideosAdapter
@@ -64,7 +68,16 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
                 return;
             }
 
-            holder.ivImage.setBackgroundResource(R.drawable.ic_error_image);
+            Context context = holder.ivImage.getContext();
+            String key = video.getKey();
+
+            Log.d("VideoAdapter", "Movie ID: " + key);
+
+            Picasso.with(context)
+                    .load(MovieUtils.createYoutubeTrailerImageUrl(key))
+                    .placeholder(R.drawable.ic_image_area)
+                    .error(R.drawable.ic_error_image)
+                    .into(holder.ivImage);
         }
     }
 
@@ -76,6 +89,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
 
     public void updateVideos(List<Video> videos) {
         this.videos = videos;
+        Log.d("VideoAdapter", "Videos: " + videos.size());
         notifyDataSetChanged();
     }
 }

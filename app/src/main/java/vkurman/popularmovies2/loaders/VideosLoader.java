@@ -3,6 +3,7 @@ package vkurman.popularmovies2.loaders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,9 +33,10 @@ public class VideosLoader extends AsyncTaskLoader<List<Video>> {
             return null;
         }
 
-        URL url = MovieUtils.createReviewsUrl(movieId);
+        URL url = MovieUtils.createTrailersUrl(movieId);
         try {
-            String json = MovieUtils.getResponseFromTheMovieDB(url);
+            String json = MovieUtils.getJsonResponseFromWeb(url);
+            Log.d("VideosLoader", "Json: " + json);
             return JsonUtils.parseVideosJson(json);
         } catch (IOException e) {
             e.printStackTrace();
