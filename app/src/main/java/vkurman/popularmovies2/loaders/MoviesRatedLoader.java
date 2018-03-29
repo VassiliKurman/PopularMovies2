@@ -8,34 +8,29 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.utils.JsonUtils;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
- * MoviesLoader
+ * MoviesRatedLoader is Loader for rated movies
  * Created by Vassili Kurman on 23/03/2018.
  * Version 1.0
  */
-public class MoviesLoader extends AsyncTaskLoader<List<Movie>> {
+public class MoviesRatedLoader extends AsyncTaskLoader<List<Movie>> {
 
-    private int sortingId;
+    /**
+     * MoviesLoader id
+     */
+    public static final int ID = 102;
 
-    public MoviesLoader(@NonNull Context context, @NonNull int sortingId) {
+    public MoviesRatedLoader(@NonNull Context context) {
         super(context);
-        this.sortingId = sortingId;
     }
 
     @Override
     public List<Movie> loadInBackground() {
-        URL url = null;
-
-        if(sortingId == -1 || sortingId == R.id.popular) {
-            url = MovieUtils.createPopularMovieUrl();
-        } else if(sortingId == R.id.top_rate) {
-            url = MovieUtils.createTopRatedMovieUrl();
-        }
+        URL url = MovieUtils.createTopRatedMovieUrl();
 
         if(url == null) {
             return null;

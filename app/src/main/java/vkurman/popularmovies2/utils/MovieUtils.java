@@ -8,10 +8,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Scanner;
-
-import vkurman.popularmovies2.model.Movie;
 
 /**
  * Project Popular Movies stage 2.
@@ -164,16 +161,6 @@ public class MovieUtils {
         }
 
         return null;
-    }
-
-    /**
-     * Parses json string anf returns list of movies.
-     *
-     * @param json - response from server in json format
-     * @return List<Movie>
-     */
-    public static List<Movie> parseJson(String json) {
-        return JsonUtils.parseMovieJson(json);
     }
 
     /**

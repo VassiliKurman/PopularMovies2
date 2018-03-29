@@ -76,6 +76,11 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
         return reviews == null ? 0 : reviews.size();
     }
 
+    /**
+     * Updates reviews.
+     *
+     * @param reviews
+     */
     public void updateReviews(List<Review> reviews) {
         this.reviews = reviews;
         notifyDataSetChanged();

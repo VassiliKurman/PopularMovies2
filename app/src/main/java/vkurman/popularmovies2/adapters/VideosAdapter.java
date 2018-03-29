@@ -19,7 +19,7 @@ import vkurman.popularmovies2.model.Video;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
- * VideosAdapter
+ * VideosAdapter is an Adapter to display
  * Created by Vassili Kurman on 23/03/2018.
  * Version 1.0
  */

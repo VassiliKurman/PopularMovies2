@@ -65,7 +65,7 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
         mRecyclerView.setAdapter(mAdapter);
 
         // Setting loaders
-        getSupportLoaderManager().initLoader(0, null, this).forceLoad();
+        getSupportLoaderManager().initLoader(ReviewsLoader.ID, null, this).forceLoad();
     }
 
     @Override

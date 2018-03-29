@@ -1,46 +1,43 @@
 package vkurman.popularmovies2;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vkurman.popularmovies2.adapters.MoviesAdapter;
+import vkurman.popularmovies2.loaders.MoviesFavouriteLoader;
+import vkurman.popularmovies2.loaders.MoviesPopularLoader;
+import vkurman.popularmovies2.loaders.MoviesRatedLoader;
 import vkurman.popularmovies2.model.Movie;
-import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
-import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
  * Project Popular Movies stage 2.
  * Created by Vassili Kurman on 25/02/2018.
  * Version 2.0
  */
-public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.MovieClickListener {//,
-        //LoaderManager.LoaderCallbacks<Cursor> {
+public class MoviesActivity extends AppCompatActivity implements
+        MoviesAdapter.MovieClickListener, LoaderManager.LoaderCallbacks<List<Movie>> {
 
-    private static final String TAG = "MainActivity";
     private static final String SORTING_KEY = "sort";
 
     @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
 
-    private RecyclerView.Adapter mAdapter;
-    private MoviesQueryTask moviesQueryTask;
+    private MoviesAdapter mAdapter;
     private int sortingId = -1;
-
-    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +55,12 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             sortingId = savedInstanceState.getInt(SORTING_KEY);
         }
 
-        moviesQueryTask = new MoviesQueryTask();
-        moviesQueryTask.execute(
-                (sortingId == -1 || sortingId == R.id.popular) ?
-                        MovieUtils.createPopularMovieUrl()
-                        : MovieUtils.createTopRatedMovieUrl());
-
         // specifying an adapter and passing empty list at start
         mAdapter = new MoviesAdapter(new ArrayList<Movie>(), this);
         mRecyclerView.setAdapter(mAdapter);
+
+        // Setting loaders
+        getSupportLoaderManager().initLoader(MoviesPopularLoader.ID, null, this).forceLoad();
     }
 
     @Override
@@ -90,12 +84,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             intent.putExtra("movie", movie);
             startActivity(intent);
         } else {
-            if(mToast != null) {
-                mToast.cancel();
-            }
-
-            mToast = Toast.makeText(this, "Movie not set!", Toast.LENGTH_LONG);
-            mToast.show();
+            Toast.makeText(this, "Movie not set!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -131,115 +120,61 @@ public class MoviesActivity extends AppCompatActivity implements MoviesAdapter.M
             case R.id.popular:
                 item.setChecked(true);
                 sortingId = item.getItemId();
-                moviesQueryTask = new MoviesQueryTask();
-                moviesQueryTask.execute(MovieUtils.createPopularMovieUrl());
-                if(mToast != null) {
-                    mToast.cancel();
+                if(getSupportLoaderManager().getLoader(MoviesPopularLoader.ID) == null) {
+                    getSupportLoaderManager().initLoader(MoviesPopularLoader.ID, null, this).forceLoad();
+                } else {
+                    getSupportLoaderManager().getLoader(MoviesPopularLoader.ID).forceLoad();
                 }
-                mToast = Toast.makeText(this, "popular selected", Toast.LENGTH_LONG);
-                mToast.show();
-
                 return true;
             case R.id.top_rate:
                 item.setChecked(true);
                 sortingId = item.getItemId();
-                moviesQueryTask = new MoviesQueryTask();
-                moviesQueryTask.execute(MovieUtils.createTopRatedMovieUrl());
-                if(mToast != null) {
-                    mToast.cancel();
+                if(getSupportLoaderManager().getLoader(MoviesRatedLoader.ID) == null) {
+                    getSupportLoaderManager().initLoader(MoviesRatedLoader.ID, null, this).forceLoad();
+                } else {
+                    getSupportLoaderManager().getLoader(MoviesRatedLoader.ID).forceLoad();
                 }
-                mToast = Toast.makeText(this, "top rated selected", Toast.LENGTH_LONG);
-                mToast.show();
                 return true;
             case R.id.favourite:
                 item.setChecked(true);
                 sortingId = item.getItemId();
-                // TODO display favourite movies
-                List<Movie> movies = MoviesPersistenceManager.getInstance(this).getFavouriteMovies();
-                // updating adapter
-                ((MoviesAdapter) mAdapter).updateMovies(movies);
-                if(mToast != null) {
-                    mToast.cancel();
+                if(getSupportLoaderManager().getLoader(MoviesFavouriteLoader.ID) == null) {
+                    getSupportLoaderManager().initLoader(MoviesFavouriteLoader.ID, null, this).forceLoad();
+                } else {
+                    getSupportLoaderManager().getLoader(MoviesFavouriteLoader.ID).forceLoad();
                 }
-                mToast = Toast.makeText(this, "favourite selected", Toast.LENGTH_LONG);
-                mToast.show();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public class MoviesQueryTask extends AsyncTask<URL, Void, String> {
+    @NonNull
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, @Nullable Bundle args) {
+        if(id == MoviesPopularLoader.ID) {
+            return new MoviesPopularLoader(this);
+        } else if(id == MoviesRatedLoader.ID) {
+            return new MoviesRatedLoader(this);
+        } else if(id == MoviesFavouriteLoader.ID) {
+            return new MoviesFavouriteLoader(this);
+        }
+        return null;
+    }
 
-        @Override
-        protected String doInBackground(URL... urls) {
-            URL searchUrl = urls[0];
-            String result = null;
-            try {
-                result = MovieUtils.getJsonResponseFromWeb(searchUrl);
-                Log.d(TAG, result);
-            } catch(IOException e) {
-                Log.e(TAG, "Error response from server");
-            }
-
-            return result;
+    @Override
+    public void onLoadFinished(@NonNull Loader<List<Movie>> loader, List<Movie> data) {
+        if(data == null) {
+            return;
         }
 
-        @Override
-        protected void onPostExecute(String s) {
-            if(s == null) {
-                return;
-            }
-            List<Movie> movies = MovieUtils.parseJson(s);
-            // updating adapter
-            ((MoviesAdapter) mAdapter).updateMovies(movies);
+        if(mAdapter == null) {
+            mAdapter = new MoviesAdapter(data, this);
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.updateMovies(data);
         }
     }
 
-//    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
-//
-//        return new AsyncTaskLoader<Cursor>(this) {
-//
-//            Cursor mMovieData = null;
-//
-//            @Override
-//            protected void onStartLoading(){
-//                if(mMovieData != null) {
-//                    deliverResult(mMovieData);
-//                } else {
-//                    forceLoad();
-//                }
-//            }
-//
-//            @Override
-//            public Cursor loadInBackground() {
-//                try {
-//                    return getContentResolver().query(MoviesContract.MoviesEntry.CONTENT_URI,
-//                            null,
-//                            null,
-//                            null,
-//                            null);
-//                } catch (Exception e) {
-//                    Log.e(TAG, "Failed to asynchronously load data.");
-//                    e.printStackTrace();
-//                    return null;
-//                }
-//            }
-//
-//            public void deliverResult(Cursor data) {
-//                mMovieData = data;
-//                super.deliverResult(data);
-//            }
-//        };
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        ((MoviesAdapter)mAdapter).swapCursor(cursor);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        ((MoviesAdapter)mAdapter).swapCursor(null);
-//    }
+    @Override
+    public void onLoaderReset(@NonNull Loader<List<Movie>> loader) {}
 }

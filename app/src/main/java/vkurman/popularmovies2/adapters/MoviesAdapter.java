@@ -41,7 +41,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     /**
      * Reference to list of items.
      */
-    private Cursor mCursor;
     private List<Movie> movies;
     private Map<Long, Long> favourites;
 
@@ -147,15 +146,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      * @param movies - list of movies
      */
     public void updateMovies(List<Movie> movies) {
-        this.movies.clear();
-        this.movies.addAll(movies);
+        this.movies = movies;
         notifyDataSetChanged();
     }
 
     public void favouriteClicked(View view, Movie movie) {
         if(view.getId() == R.id.iv_favourite) {
             if(favourites == null) {
-                favourites = MoviesPersistenceManager.getInstance(view.getContext()).getFavouriteMovieIds();
+                loadFavouriteMovieIds(view);
             }
             if(favourites.containsKey(movie.getMovieId())) {
                 long id = movie.getMovieId();
@@ -169,8 +167,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                         null,
                         (LoaderManager.LoaderCallbacks<Cursor>)context);
 
-                favourites.remove(movie.getMovieId());
                 ((ImageView)view).setImageResource(R.drawable.ic_heart_outline);
+                favourites.remove(movie.getMovieId());
             } else {
                 long id = movie.getMovieId();
                 ContentValues cv = new ContentValues();
@@ -183,32 +181,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
                 view.getContext().getContentResolver().insert(MoviesContract.MoviesEntry.CONTENT_URI, cv);
 
+                ((ImageView)view).setImageResource(R.drawable.ic_heart);
+
                 // Adding to favourites map
                 favourites.put(id, id);
-                ((ImageView)view).setImageResource(R.drawable.ic_heart);
             }
         }
     }
 
     /**
-     * When data changes and a re-query occurs, this function swaps the old Cursor
-     * with a newly updated Cursor (Cursor cursor) that is passed in.
+     * Loading Favourite movies from content provider
+     * @param view
      */
-    public Cursor swapCursor(Cursor cursor) {
-        // check if this cursor is the same as the previous cursor (mCursor)
-        if (mCursor == cursor) {
-            return null;
-        }
-        Cursor temp = mCursor;
-        this.mCursor = cursor;
-
-        //check if this is a valid cursor, then update the cursor
-        if (cursor != null) {
-            this.notifyDataSetChanged();
-        }
-        return temp;
+    private void loadFavouriteMovieIds(View view) {
+        favourites = MoviesPersistenceManager.getInstance(view.getContext()).getFavouriteMovieIds();
     }
-
 
     /**
      * Cache of the children views for a list item.
@@ -226,7 +213,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
          */
         MovieViewHolder(View itemView) {
             super(itemView);
-
 
             // Retrieve ImageView's from parent FrameLayout view group
             posterImageView = itemView.findViewById(R.id.iv_list_poster);
