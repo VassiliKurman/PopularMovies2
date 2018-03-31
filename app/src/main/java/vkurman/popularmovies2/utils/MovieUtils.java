@@ -19,7 +19,7 @@ public class MovieUtils {
     private static final String TAG = "MovieUtils";
 
     // TODO enter TheMovieDB API key here
-    private static final String THEMOVIEDB_API_KEY = "";
+    private static final String THEMOVIEDB_API_KEY = "PutYourKeyHere";
 
     private static final String API_BASE_URL = "http://api.themoviedb.org/3/movie/";
     private static final String API_CATEGORY_POPULAR = "popular";
