@@ -23,7 +23,7 @@ public class ReviewsLoader extends AsyncTaskLoader<List<Review>> {
     /**
      * ReviewsLoader id
      */
-    public static final int ID = 102;
+    public static final int ID = 104;
 
     private String movieId;
 

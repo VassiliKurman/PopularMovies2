@@ -20,6 +20,12 @@ import vkurman.popularmovies2.utils.MovieUtils;
  */
 
 public class VideosLoader extends AsyncTaskLoader<List<Video>> {
+
+    /**
+     * ReviewsLoader id
+     */
+    public static final int ID = 105;
+
     private String movieId;
 
     public VideosLoader(@NonNull Context context, @NonNull String movieId) {
