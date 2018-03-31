@@ -36,7 +36,9 @@ import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
- * Project Popular Movies stage 2.
+ * MovieDetailsActivity is displaying movie details and allows movie to add to favourites,
+ * to read movie reviews and to watch movie trailers.
+ *
  * Created by Vassili Kurman on 25/02/2018.
  * Version 1.0
  */
@@ -91,7 +93,6 @@ public class MovieDetailsActivity extends AppCompatActivity
         tvPlotSynopsis.setText(plotSynopsis);
         // Setting OnClickListener
         btnReviews.setOnClickListener(this);
-//        btnTrailers.setOnClickListener(this);
         ivFavourite.setOnClickListener(this);
 
         Picasso.with(this)
@@ -155,7 +156,8 @@ public class MovieDetailsActivity extends AppCompatActivity
                 AppCompatActivity context = (AppCompatActivity) view.getContext();
                 context.getContentResolver().delete(uri, null, null);
 
-                favourites.remove(movie.getMovieId());
+                // Changing favourite button appearance
+                favourites.remove(id);
                 ((ImageView)view).setImageResource(R.drawable.ic_heart_outline);
             } else {
                 long id = movie.getMovieId();
@@ -169,7 +171,7 @@ public class MovieDetailsActivity extends AppCompatActivity
 
                 view.getContext().getContentResolver().insert(MoviesContract.MoviesEntry.CONTENT_URI, cv);
 
-                // Adding to favourites map
+                // Changing favourite button appearance
                 favourites.put(id, id);
                 ((ImageView)view).setImageResource(R.drawable.ic_heart);
             }
