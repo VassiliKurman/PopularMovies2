@@ -2,7 +2,9 @@ package vkurman.popularmovies2;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,9 +60,16 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     @BindView(R.id.btn_reviews) Button btnReviews;
 
+    private final static String TAG = "MovieDetailsActivity";
+
+    // Reference to Movie object
     private Movie movie;
+    // MovieAdapter for Trailers RecycleView
     private VideosAdapter mAdapter;
-    private Map<Long, Long> favourites;
+    // Map of favourite movies
+    private Map<Long, Long> favourites = new TreeMap<>();;
+    // Indicator that data changed for result intent
+    private boolean dataChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +83,8 @@ public class MovieDetailsActivity extends AppCompatActivity
         if (intent == null) {
             closeOnError();
         }
+
+        dataChanged = false;
 
         movie = intent.getParcelableExtra("movie");
         // Return from method if movie not set
@@ -101,11 +114,9 @@ public class MovieDetailsActivity extends AppCompatActivity
                 .error(R.drawable.ic_error_image)
                 .into(ivMoviePoster);
 
-        if(favourites == null) {
-            favourites = MoviesPersistenceManager.getInstance(this).getFavouriteMovieIds();
-        }
+        loadFavourites();
 
-        if (favourites.get(new Long(movieId)) != null) {
+        if (favourites.get(movieId) != null) {
             ivFavourite.setImageResource(R.drawable.ic_heart);
         } else {
             ivFavourite.setImageResource(R.drawable.ic_heart_outline);
@@ -119,13 +130,39 @@ public class MovieDetailsActivity extends AppCompatActivity
         mAdapter = new VideosAdapter(new ArrayList<Video>());
         mRecyclerView.setAdapter(mAdapter);
 
-        getSupportLoaderManager().initLoader(0, null, this).forceLoad();
+        getSupportLoaderManager().initLoader(VideosLoader.ID, null, this).forceLoad();
     }
+
+    /**
+     * Loading favourites into the map
+     */
+    private void loadFavourites() {
+        if(favourites != null) {
+            favourites.clear();
+        }
+
+        String[] projection = new String[] {MoviesContract.MoviesEntry.COLUMN_MOVIE_ID};
+        Cursor cursor = getContentResolver().query(
+                MoviesContract.MoviesEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+            Long id = cursor.getLong(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID));
+            favourites.put(id, id);
+        }
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult((dataChanged) ? 1 : 2);
                 finish();
                 return true;
             default:
@@ -144,25 +181,35 @@ public class MovieDetailsActivity extends AppCompatActivity
     // TODO fix issue with favourite in details
     void favouriteClicked(View view, Movie movie) {
         if(view.getId() == R.id.iv_details_favourite) {
-            if(favourites == null) {
-                favourites = MoviesPersistenceManager.getInstance(view.getContext()).getFavouriteMovieIds();
-            }
+            boolean added = true;
+
             if(favourites.containsKey(movie.getMovieId())) {
+                added = false;
+                dataChanged = !dataChanged;
+
                 long id = movie.getMovieId();
-                String stringId = Long.toString(id);
+//                String stringId = Long.toString(id);
                 Uri uri = MoviesContract.MoviesEntry.CONTENT_URI;
-                uri = uri.buildUpon().appendPath(stringId).build();
+//                uri = uri.buildUpon().appendPath(stringId).build();
+                uri = uri.buildUpon().build();
+
+                // New 2 lines
+                String where = MoviesContract.MoviesEntry.COLUMN_MOVIE_ID + "=?";
+                String[] selectionArgs = new String[]{String.valueOf(movie.getMovieId())};
 
                 AppCompatActivity context = (AppCompatActivity) view.getContext();
-                context.getContentResolver().delete(uri, null, null);
+//                context.getContentResolver().delete(uri, null, null);
+                context.getContentResolver().delete(uri, where, selectionArgs);
 
                 // Changing favourite button appearance
                 favourites.remove(id);
                 ((ImageView)view).setImageResource(R.drawable.ic_heart_outline);
             } else {
+                dataChanged = !dataChanged;
+
                 long id = movie.getMovieId();
                 ContentValues cv = new ContentValues();
-                cv.put(MoviesContract.MoviesEntry._ID, movie.getMovieId());
+                cv.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID, movie.getMovieId());
                 cv.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_POSTER, movie.getMoviePoster());
                 cv.put(MoviesContract.MoviesEntry.COLUMN_TITLE, movie.getTitle());
                 cv.put(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
@@ -174,6 +221,12 @@ public class MovieDetailsActivity extends AppCompatActivity
                 // Changing favourite button appearance
                 favourites.put(id, id);
                 ((ImageView)view).setImageResource(R.drawable.ic_heart);
+            }
+
+            if(added) {
+                Toast.makeText(this, "Added to favourites!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Removed from favourites!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -187,8 +240,6 @@ public class MovieDetailsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         } else if(view == ivFavourite) {
-            // TODO change favourite
-            Toast.makeText(this, "Favourites clicked!", Toast.LENGTH_LONG).show();
             // Sending message to adapter that image for favourite movie is clicked
             favouriteClicked(view, movie);
         }

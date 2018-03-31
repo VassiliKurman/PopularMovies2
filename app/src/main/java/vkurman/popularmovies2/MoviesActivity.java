@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -33,10 +34,12 @@ public class MoviesActivity extends AppCompatActivity implements
         MoviesAdapter.MovieClickListener, LoaderManager.LoaderCallbacks<List<Movie>> {
 
     private static final String SORTING_KEY = "sort";
+    private static final int REQUEST_CODE = 1001;
 
     @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
 
     private MoviesAdapter mAdapter;
+    private int mMovieLoaderId;
     private int sortingId = -1;
 
     @Override
@@ -55,12 +58,15 @@ public class MoviesActivity extends AppCompatActivity implements
             sortingId = savedInstanceState.getInt(SORTING_KEY);
         }
 
+        mMovieLoaderId = MoviesPopularLoader.ID;
+
         // specifying an adapter and passing empty list at start
-        mAdapter = new MoviesAdapter(new ArrayList<Movie>(), this);
+        mAdapter = new MoviesAdapter(mMovieLoaderId, new ArrayList<Movie>(), this);
         mRecyclerView.setAdapter(mAdapter);
 
+
         // Setting loaders
-        getSupportLoaderManager().initLoader(MoviesPopularLoader.ID, null, this).forceLoad();
+        getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
     }
 
     @Override
@@ -82,9 +88,25 @@ public class MoviesActivity extends AppCompatActivity implements
         if(movie != null) {
             Intent intent = new Intent(MoviesActivity.this, MovieDetailsActivity.class);
             intent.putExtra("movie", movie);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE);
         } else {
             Toast.makeText(this, "Movie not set!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE) {
+            if(resultCode == 1) {
+                // TODO change
+                Log.d("MovieActivity", "Result changed");
+                mAdapter.notifyDataSetChanged();
+                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
+                } else {
+                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
+                }
+            }
         }
     }
 
@@ -120,28 +142,31 @@ public class MoviesActivity extends AppCompatActivity implements
             case R.id.popular:
                 item.setChecked(true);
                 sortingId = item.getItemId();
-                if(getSupportLoaderManager().getLoader(MoviesPopularLoader.ID) == null) {
-                    getSupportLoaderManager().initLoader(MoviesPopularLoader.ID, null, this).forceLoad();
+                mMovieLoaderId = MoviesPopularLoader.ID;
+                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
                 } else {
-                    getSupportLoaderManager().getLoader(MoviesPopularLoader.ID).forceLoad();
+                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
                 }
                 return true;
             case R.id.top_rate:
                 item.setChecked(true);
                 sortingId = item.getItemId();
-                if(getSupportLoaderManager().getLoader(MoviesRatedLoader.ID) == null) {
-                    getSupportLoaderManager().initLoader(MoviesRatedLoader.ID, null, this).forceLoad();
+                mMovieLoaderId = MoviesRatedLoader.ID;
+                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
                 } else {
-                    getSupportLoaderManager().getLoader(MoviesRatedLoader.ID).forceLoad();
+                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
                 }
                 return true;
             case R.id.favourite:
                 item.setChecked(true);
                 sortingId = item.getItemId();
-                if(getSupportLoaderManager().getLoader(MoviesFavouriteLoader.ID) == null) {
-                    getSupportLoaderManager().initLoader(MoviesFavouriteLoader.ID, null, this).forceLoad();
+                mMovieLoaderId = MoviesFavouriteLoader.ID;
+                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
                 } else {
-                    getSupportLoaderManager().getLoader(MoviesFavouriteLoader.ID).forceLoad();
+                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
                 }
                 return true;
         }
@@ -168,10 +193,10 @@ public class MoviesActivity extends AppCompatActivity implements
         }
 
         if(mAdapter == null) {
-            mAdapter = new MoviesAdapter(data, this);
+            mAdapter = new MoviesAdapter(mMovieLoaderId, data, this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.updateMovies(data);
+            mAdapter.updateMovies(mRecyclerView.getContext(), data);
         }
     }
 

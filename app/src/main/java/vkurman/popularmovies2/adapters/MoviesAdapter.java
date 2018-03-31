@@ -12,13 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import vkurman.popularmovies2.R;
+import vkurman.popularmovies2.loaders.MoviesFavouriteLoader;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
@@ -32,7 +35,7 @@ import vkurman.popularmovies2.utils.MovieUtils;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private static final String TAG = "MovieAdapter";
-    private static final int MOVIE_LOADER_ID = 0;
+    private int mMovieLoaderId = 0;
 
     /**
      * An on-click handler that allows for an Activity to interface with RecyclerView
@@ -57,9 +60,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      * @param listOfItems list of items to display
      * @param listener Listener for list item clicks
      */
-    public MoviesAdapter(List<Movie> listOfItems, MovieClickListener listener) {
+    public MoviesAdapter(int movieLoaderId, List<Movie> listOfItems, MovieClickListener listener) {
+        mMovieLoaderId = movieLoaderId;
         this.movies = listOfItems;
         mMovieClickListener = listener;
+        favourites = new TreeMap<>();
     }
 
     /**
@@ -115,10 +120,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
             // Making sure that favourites not null
             if(favourites == null) {
-                favourites = MoviesPersistenceManager.getInstance(context).getFavouriteMovieIds();
+//                favourites = MoviesPersistenceManager.getInstance(context).getFavouriteMovieIds();
+                loadFavouriteMovieIds(context);
             }
 
-            if (favourites.get(new Long(movieId)) != null) {
+            if (favourites.get(movieId) != null) {
                 holder.favouriteImageView.setImageResource(R.drawable.ic_heart);
             } else {
                 holder.favouriteImageView.setImageResource(R.drawable.ic_heart_outline);
@@ -145,34 +151,37 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      *
      * @param movies - list of movies
      */
-    public void updateMovies(List<Movie> movies) {
+    public void updateMovies(Context context, List<Movie> movies) {
         this.movies = movies;
+        loadFavouriteMovieIds(context);
         notifyDataSetChanged();
     }
 
     public void favouriteClicked(View view, Movie movie) {
+        if(favourites == null) {
+            loadFavouriteMovieIds(view.getContext());
+        }
+
         if(view.getId() == R.id.iv_favourite) {
-            if(favourites == null) {
-                loadFavouriteMovieIds(view);
-            }
             if(favourites.containsKey(movie.getMovieId())) {
-                long id = movie.getMovieId();
-                String stringId = Long.toString(id);
                 Uri uri = MoviesContract.MoviesEntry.CONTENT_URI;
-                uri = uri.buildUpon().appendPath(stringId).build();
+                uri = uri.buildUpon().build();
+
+                String where = MoviesContract.MoviesEntry.COLUMN_MOVIE_ID + "=?";
+                String[] selectionArgs = new String[]{String.valueOf(movie.getMovieId())};
 
                 AppCompatActivity context = (AppCompatActivity) view.getContext();
-                context.getContentResolver().delete(uri, null, null);
-                context.getLoaderManager().restartLoader(MOVIE_LOADER_ID,
-                        null,
-                        (LoaderManager.LoaderCallbacks<Cursor>)context);
+                context.getContentResolver().delete(uri, where, selectionArgs);
 
                 ((ImageView)view).setImageResource(R.drawable.ic_heart_outline);
+                // Removing from favourites map
                 favourites.remove(movie.getMovieId());
+                // Displaying toast
+                Toast.makeText(context, "Removed from favourites!", Toast.LENGTH_SHORT).show();
             } else {
                 long id = movie.getMovieId();
                 ContentValues cv = new ContentValues();
-                cv.put(MoviesContract.MoviesEntry._ID, movie.getMovieId());
+                cv.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID, movie.getMovieId());
                 cv.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_POSTER, movie.getMoviePoster());
                 cv.put(MoviesContract.MoviesEntry.COLUMN_TITLE, movie.getTitle());
                 cv.put(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
@@ -185,16 +194,33 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
                 // Adding to favourites map
                 favourites.put(id, id);
+                // Displaying toast
+                Toast.makeText(view.getContext(), "Added to favourites!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     /**
      * Loading Favourite movies from content provider
-     * @param view
+     * @param context
      */
-    private void loadFavouriteMovieIds(View view) {
-        favourites = MoviesPersistenceManager.getInstance(view.getContext()).getFavouriteMovieIds();
+    private void loadFavouriteMovieIds(Context context) {
+        if(favourites != null) {
+            favourites.clear();
+        }
+
+        String[] projection = new String[] {MoviesContract.MoviesEntry.COLUMN_MOVIE_ID};
+        Cursor cursor = context.getContentResolver().query(
+                MoviesContract.MoviesEntry.CONTENT_URI,
+                    projection,
+                null,
+                null,
+                null
+                );
+        while (cursor.moveToNext()) {
+            Long id = cursor.getLong(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID));
+            favourites.put(id, id);
+        }
     }
 
     /**

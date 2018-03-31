@@ -27,17 +27,17 @@ public class MoviesPersistenceManager {
      * In Java 1.4 and earlier the volatile keyword is improper
      * synchronised for double-checked locking
      */
-    private volatile static MoviesPersistenceManager manager;
-    private MoviesDbHelper dbHelper;
-    private SQLiteDatabase mDB;
-    private boolean isWritableDB;
+//    private volatile static MoviesPersistenceManager manager;
+//    private MoviesDbHelper dbHelper;
+//    private SQLiteDatabase mDB;
+//    private boolean isWritableDB;
 
-    private MoviesPersistenceManager(Context context) {
-        // creating instance of MoviesDbHelper
-        this.dbHelper = new MoviesDbHelper(context);
-        this.mDB = dbHelper.getWritableDatabase();
-        isWritableDB = false;
-    }
+//    private MoviesPersistenceManager(Context context) {
+//        // creating instance of MoviesDbHelper
+//        this.dbHelper = new MoviesDbHelper(context);
+//        this.mDB = dbHelper.getWritableDatabase();
+//        isWritableDB = false;
+//    }
 
     /**
      * This method is checking if the instance of current class exists
@@ -46,111 +46,111 @@ public class MoviesPersistenceManager {
      *
      * @return MoviesPersistenceManager object
      */
-    public static MoviesPersistenceManager getInstance(Context context) {
-        // Double-checked locking with synchronisation
-        if(manager == null) {
-            synchronized (MoviesPersistenceManager.class) {
-                if(manager == null) {
-                    manager = new MoviesPersistenceManager(context);
-                }
-            }
-        }
-        // Under either circumstance this returns the instance
-        return manager;
-    }
+//    public static MoviesPersistenceManager getInstance(Context context) {
+//        // Double-checked locking with synchronisation
+//        if(manager == null) {
+//            synchronized (MoviesPersistenceManager.class) {
+//                if(manager == null) {
+//                    manager = new MoviesPersistenceManager(context);
+//                }
+//            }
+//        }
+//        // Under either circumstance this returns the instance
+//        return manager;
+//    }
 
     /**
      * Returns true if database is writable, otherwise false;
      *
      * @return boolean
      */
-    public boolean isWritableDB() {
-        return isWritableDB;
-    }
+//    public boolean isWritableDB() {
+//        return isWritableDB;
+//    }
 
     /**
      * Switches db to readable mode.
      */
-    public void switchToWritableDb() {
-        if(!isWritableDB) {
-            mDB = dbHelper.getWritableDatabase();
-            isWritableDB = true;
-        }
-    }
+//    public void switchToWritableDb() {
+//        if(!isWritableDB) {
+//            mDB = dbHelper.getWritableDatabase();
+//            isWritableDB = true;
+//        }
+//    }
 
     /**
      * Switches database to readable mode.
      */
-    public void switchToReadableDb() {
-        if(isWritableDB) {
-            mDB = dbHelper.getReadableDatabase();
-            isWritableDB = false;
-        }
-    }
+//    public void switchToReadableDb() {
+//        if(isWritableDB) {
+//            mDB = dbHelper.getReadableDatabase();
+//            isWritableDB = false;
+//        }
+//    }
 
     /**
      * Retrieves all favourite movies saved in local database
      *
      * @return List<Movie>
      */
-    public List<Movie> getFavouriteMovies() {
-        List<Movie> list = new ArrayList<>();
-
-        try(Cursor cursor =  mDB.query(
-                MoviesContract.MoviesEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                MoviesContract.MoviesEntry._ID
-        )) {
-            while (cursor.moveToNext()) {
-                Integer id = cursor.getInt(cursor.getColumnIndex(MoviesContract.MoviesEntry._ID));
-                String poster = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_POSTER));
-                String title = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_TITLE));
-                String release = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE));
-                String vote = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_VOTE_AVERAGE));
-                String plot = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS));
-                list.add(new Movie(id, poster, title, release, vote, plot));
-            }
-        }
-
-        return list;
-    }
+//    public List<Movie> getFavouriteMovies() {
+//        List<Movie> list = new ArrayList<>();
+//
+//        try(Cursor cursor =  mDB.query(
+//                MoviesContract.MoviesEntry.TABLE_NAME,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                MoviesContract.MoviesEntry._ID
+//        )) {
+//            while (cursor.moveToNext()) {
+//                Integer id = cursor.getInt(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID));
+//                String poster = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_POSTER));
+//                String title = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_TITLE));
+//                String release = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE));
+//                String vote = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_VOTE_AVERAGE));
+//                String plot = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_PLOT_SYNOPSIS));
+//                list.add(new Movie(id, poster, title, release, vote, plot));
+//            }
+//        }
+//
+//        return list;
+//    }
 
     /**
      * Retrieves all id's from favourite movies saved in local database
      *
      * @return Map<Integer, Integer>
      */
-    public Map<Long, Long> getFavouriteMovieIds() {
-        Map<Long, Long> map = new TreeMap<>();
+//    public Map<Long, Long> getFavouriteMovieIds() {
+//        Map<Long, Long> map = new TreeMap<>();
+//
+//        try(Cursor cursor =  mDB.query(
+//                MoviesContract.MoviesEntry.TABLE_NAME,
+//                new String[] {MoviesContract.MoviesEntry._ID},
+//                null,
+//                null,
+//                null,
+//                null,
+//                MoviesContract.MoviesEntry._ID
+//        )) {
+//            while (cursor.moveToNext()) {
+//                Long id = cursor.getLong(cursor.getColumnIndex(MoviesContract.MoviesEntry._ID));
+//                map.put(id, id);
+//            }
+//        }
+//
+//        return map;
+//    }
 
-        try(Cursor cursor =  mDB.query(
-                MoviesContract.MoviesEntry.TABLE_NAME,
-                new String[] {MoviesContract.MoviesEntry._ID},
-                null,
-                null,
-                null,
-                null,
-                MoviesContract.MoviesEntry._ID
-        )) {
-            while (cursor.moveToNext()) {
-                Long id = cursor.getLong(cursor.getColumnIndex(MoviesContract.MoviesEntry._ID));
-                map.put(id, id);
-            }
-        }
-
-        return map;
-    }
-
-//    /**
-//     * Adds new favourite movie to local database
-//     *
-//     * @param movie
-//     * @return long
-//     */
+    /**
+     * Adds new favourite movie to local database
+     *
+     * @param movie
+     * @return long
+     */
 //    public long addNewFavouriteMovie(Movie movie) {
 //        if(movie == null) {
 //            return -1L;
@@ -167,12 +167,12 @@ public class MoviesPersistenceManager {
 //        return mDB.insert(MoviesContract.MoviesEntry.TABLE_NAME, null, cv);
 //    }
 
-//    /**
-//     * Removes favourite movie from local database.
-//     *
-//     * @param id
-//     * @return long - movie id
-//     */
+    /**
+     * Removes favourite movie from local database.
+     *
+     * @param id
+     * @return long - movie id
+     */
 //    public boolean removeFavouriteMovie(long id) {
 //        if(id < 0) {
 //            return false;

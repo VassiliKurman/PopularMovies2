@@ -23,6 +23,8 @@ public class MoviesContentProvider extends ContentProvider {
     public static final int MOVIES = 100;
     // constant for single movie
     public static final int MOVIE_WITH_ID = 101;
+    // constant for movie id's column
+    public static final int MOVIE_IDS = 102;
     // static UriMatcher
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -40,6 +42,8 @@ public class MoviesContentProvider extends ContentProvider {
         uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_MOVIES, MOVIES);
         // single item UriMatcher
         uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_MOVIES + "/#", MOVIE_WITH_ID);
+        // items ids only UriMatcher
+        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_MOVIES + "/#", MOVIE_IDS);
 
         return uriMatcher;
     }
@@ -70,7 +74,6 @@ public class MoviesContentProvider extends ContentProvider {
                         sortOrder);
                 break;
             case MOVIE_WITH_ID:
-
                 String id = uri.getPathSegments().get(1);
                 String mSelection = "_id=?";
                 String[] mSelectionArgs = new String[]{id};
@@ -79,6 +82,18 @@ public class MoviesContentProvider extends ContentProvider {
                         projection,
                         mSelection,
                         mSelectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            case MOVIE_IDS:
+                String column = "movieId";
+                String[] mProjection = new String[]{column};
+
+                returnCursor = db.query(MoviesContract.MoviesEntry.TABLE_NAME,
+                        mProjection,
+                        selection,
+                        selectionArgs,
                         null,
                         null,
                         sortOrder);
@@ -102,6 +117,9 @@ public class MoviesContentProvider extends ContentProvider {
                 // directory
                 return "vnd.android.cursor.dir" + "/" + MoviesContract.AUTHORITY + "/" + MoviesContract.PATH_MOVIES;
             case MOVIE_WITH_ID:
+                // single item type
+                return "vnd.android.cursor.item" + "/" + MoviesContract.AUTHORITY + "/" + MoviesContract.PATH_MOVIES;
+            case MOVIE_IDS:
                 // single item type
                 return "vnd.android.cursor.item" + "/" + MoviesContract.AUTHORITY + "/" + MoviesContract.PATH_MOVIES;
             default:
@@ -145,7 +163,7 @@ public class MoviesContentProvider extends ContentProvider {
                 break;
             case MOVIE_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                String mWhereClause = "_id=?";
+                String mWhereClause = MoviesContract.MoviesEntry.COLUMN_MOVIE_ID + "=?";
                 String[] mWhereArgs = new String[]{id};
                 deletedItems = db.delete(MoviesContract.MoviesEntry.TABLE_NAME,
                         mWhereClause,

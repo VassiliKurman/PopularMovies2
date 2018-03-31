@@ -41,7 +41,7 @@ public class MoviesFavouriteLoader extends AsyncTaskLoader<List<Movie>> {
                         null)
         ) {
             while (cursor.moveToNext()) {
-                Integer id = cursor.getInt(cursor.getColumnIndex(MoviesContract.MoviesEntry._ID));
+                Long id = cursor.getLong(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID));
                 String poster = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_POSTER));
                 String title = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_TITLE));
                 String release = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE));
