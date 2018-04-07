@@ -69,6 +69,7 @@
                     android:id="@+id/btn_reviews"
                     app:layout_constraintLeft_toRightOf="@id/poster_iv"
                     app:layout_constraintTop_toBottomOf="@id/iv_details_favourite"
+                    android:background="@drawable/rounded_border_button"
                     android:text="@string/btn_reviews" />
 
                 <TextView

@@ -26,4 +26,8 @@
     <string name="menu_sort_top_rated">Top Rated</string>
     <string name="menu_sort_favourite">Favourite</string>
 
+    // Activity Reviews
+    <string name="text_expand">Expand</string>
+    <string name="text_collapse">Collapse</string>
+
 </resources>

@@ -2,7 +2,11 @@
 <resources>
     <color name="colorPrimary">#414a4c</color>
     <color name="colorPrimaryDark">#0e1111</color>
-    <color name="colorAccent">#119b92</color>
+    <color name="colorAccent">#b88c8c</color>
     <color name="colorError">#ff0000</color>
     <color name="colorWaiting">#0000ff</color>
+    <color name="colorGray">#d6c7c7</color>
+    <color name="colorBorder">#9fb9bf</color>
+    <color name="colorLayout">#aec8ce</color>
+    <color name="colorButton">#b88c8c</color>
 </resources>

@@ -6,6 +6,7 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
 
@@ -29,12 +30,14 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
         // each data item is just a string in this case
         public TextView mAuthor;
         public TextView mContent;
+        public Button mExpandableButton;
 
         public ReviewsViewHolder(View view) {
             super(view);
 
             mAuthor = view.findViewById(R.id.tv_author);
             mContent = view.findViewById(R.id.tv_review);
+            mExpandableButton = view.findViewById(R.id.btn_expand);
         }
     }
 
@@ -70,33 +73,26 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
             holder.mContent.setText(review.getContent());
             final int maxLines = 5;
             final ReviewsViewHolder mHolder = holder;
+            if(mHolder.mContent.length() > maxLines) {
+                mHolder.mExpandableButton.setVisibility(View.VISIBLE);
+            } else {
+                mHolder.mExpandableButton.setVisibility(View.GONE);
+            }
             mHolder.mContent.setMaxLines(maxLines);
 
-            mHolder.mContent.setOnClickListener(new View.OnClickListener() {
+            mHolder.mExpandableButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mHolder.mContent.getMaxLines() == maxLines) {
                         mHolder.mContent.setMaxLines(mHolder.mContent.length());
+                        mHolder.mExpandableButton.setText(R.string.text_collapse);
                     } else {
                         mHolder.mContent.setMaxLines(maxLines);
+                        mHolder.mExpandableButton.setText(R.string.text_expand);
                     }
                 }
             });
         }
-
-
-
-//        final boolean isExpanded = position == mExpandedPosition;
-//        holder.details.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-//        holder.itemView.setActivated(isExpanded);
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mExpandedPosition = isExpanded ? -1 : position;
-//                TransitionManager.beginDelayedTransition(recyclerView);
-//                notifyDataSetChanged();
-//            }
-//        });
     }
 
     // Return the size of list (invoked by the layout manager)
