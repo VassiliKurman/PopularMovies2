@@ -2,6 +2,7 @@ package vkurman.popularmovies2.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import vkurman.popularmovies2.model.Review;
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsViewHolder> {
 
     private List<Review> reviews;
+    private int mExpandedPosition = -1;
 
     /**
      * Provides a reference to the views for each data item.
@@ -66,8 +68,35 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
             }
             holder.mAuthor.setText(review.getAuthor());
             holder.mContent.setText(review.getContent());
+            final int maxLines = 5;
+            final ReviewsViewHolder mHolder = holder;
+            mHolder.mContent.setMaxLines(maxLines);
 
+            mHolder.mContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mHolder.mContent.getMaxLines() == maxLines) {
+                        mHolder.mContent.setMaxLines(mHolder.mContent.length());
+                    } else {
+                        mHolder.mContent.setMaxLines(maxLines);
+                    }
+                }
+            });
         }
+
+
+
+//        final boolean isExpanded = position == mExpandedPosition;
+//        holder.details.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+//        holder.itemView.setActivated(isExpanded);
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mExpandedPosition = isExpanded ? -1 : position;
+//                TransitionManager.beginDelayedTransition(recyclerView);
+//                notifyDataSetChanged();
+//            }
+//        });
     }
 
     // Return the size of list (invoked by the layout manager)
