@@ -17,18 +17,19 @@ package vkurman.popularmovies2.retrofit;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import vkurman.popularmovies2.model.MoviesQueryResponse;
 
 /**
- * SOService
+ * TMDBService
  * Created by Vassili Kurman on 10/09/2018.
  * Version 1.0
  */
-public interface SOService {
-    @GET("/movie/popular?api_key=61432b79f78a07baf64cbdf3729ca824&language=en-US&page=1")
-    Call<MoviesQueryResponse> getPopularMovies();
+public interface TMDBService {
+    @GET("/movie/popular?api_key={api_key}&language=en-US&page=1")
+    Call<MoviesQueryResponse> getPopularMovies(@Path("api_key") String apiKey);
 
-    @GET("/movie/popular?api_key=61432b79f78a07baf64cbdf3729ca824&language=en-US")
-    Call<MoviesQueryResponse> getPopularMovies(@Query("page") int page);
+    @GET("/movie/popular?api_key={api_key}&language=en-US")
+    Call<MoviesQueryResponse> getPopularMovies(@Path("api_key") String apiKey, @Query("page") int page);
 }
