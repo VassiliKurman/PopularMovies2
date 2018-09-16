@@ -30,7 +30,13 @@ public class MoviesRatedLoader extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     public List<Movie> loadInBackground() {
-        URL url = MovieUtils.createTopRatedMovieUrl();
+        URL url = MovieUtils.createTopRatedMovieUrl(
+                getContext().getString(
+                        getContext().getResources().getIdentifier(
+                                "api_key",
+                                "string",
+                                getContext().getPackageName()))
+        );
 
         if(url == null) {
             return null;

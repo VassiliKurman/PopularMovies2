@@ -1,16 +1,35 @@
+/*
+ * Copyright (C) 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package vkurman.popularmovies2;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -36,7 +55,9 @@ public class MoviesActivity extends AppCompatActivity implements
     private static final String SORTING_KEY = "sort";
     private static final int REQUEST_CODE = 1001;
 
-    @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
+    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view) NavigationView navigationView;
 
     private MoviesAdapter mAdapter;
     private int mMovieLoaderId;
@@ -46,9 +67,33 @@ public class MoviesActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
-
         // Binding views
         ButterKnife.bind(this);
+        // Setting Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // TODO
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
 
         // use a grid layout manager
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -61,9 +106,8 @@ public class MoviesActivity extends AppCompatActivity implements
         mMovieLoaderId = MoviesPopularLoader.ID;
 
         // specifying an adapter and passing empty list at start
-        mAdapter = new MoviesAdapter(mMovieLoaderId, new ArrayList<Movie>(), this);
+        mAdapter = new MoviesAdapter(new ArrayList<Movie>(), this);
         mRecyclerView.setAdapter(mAdapter);
-
 
         // Setting loaders
         getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
@@ -111,67 +155,52 @@ public class MoviesActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        if (sortingId == -1){
-            return true;
-        }
-        MenuItem item;
-        switch (sortingId){
-            case R.id.popular:
-                item = menu.findItem(R.id.popular);
-                item.setChecked(true);
-                break;
-            case R.id.top_rate:
-                item = menu.findItem(R.id.top_rate);
-                item.setChecked(true);
-                break;
-            case R.id.favourite:
-                item = menu.findItem(R.id.favourite);
-                item.setChecked(true);
-                break;
-        }
-
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.popular:
-                item.setChecked(true);
-                sortingId = item.getItemId();
-                mMovieLoaderId = MoviesPopularLoader.ID;
-                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
-                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
-                } else {
-                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
-                }
-                return true;
-            case R.id.top_rate:
-                item.setChecked(true);
-                sortingId = item.getItemId();
-                mMovieLoaderId = MoviesRatedLoader.ID;
-                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
-                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
-                } else {
-                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
-                }
-                return true;
-            case R.id.favourite:
-                item.setChecked(true);
-                sortingId = item.getItemId();
-                mMovieLoaderId = MoviesFavouriteLoader.ID;
-                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
-                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
-                } else {
-                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
-                }
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.popular:
+//                item.setChecked(true);
+//                sortingId = item.getItemId();
+//                mMovieLoaderId = MoviesPopularLoader.ID;
+//                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+//                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
+//                } else {
+//                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
+//                }
+//                return true;
+//            case R.id.top_rate:
+//                item.setChecked(true);
+//                sortingId = item.getItemId();
+//                mMovieLoaderId = MoviesRatedLoader.ID;
+//                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+//                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
+//                } else {
+//                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
+//                }
+//                return true;
+//            case R.id.favourite:
+//                item.setChecked(true);
+//                sortingId = item.getItemId();
+//                mMovieLoaderId = MoviesFavouriteLoader.ID;
+//                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+//                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, this).forceLoad();
+//                } else {
+//                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
+//                }
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @NonNull
     @Override
@@ -193,7 +222,7 @@ public class MoviesActivity extends AppCompatActivity implements
         }
 
         if(mAdapter == null) {
-            mAdapter = new MoviesAdapter(mMovieLoaderId, data, this);
+            mAdapter = new MoviesAdapter(data, this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.updateMovies(mRecyclerView.getContext(), data);

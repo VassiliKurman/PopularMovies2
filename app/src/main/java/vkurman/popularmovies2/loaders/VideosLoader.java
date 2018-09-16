@@ -39,7 +39,13 @@ public class VideosLoader extends AsyncTaskLoader<List<Video>> {
             return null;
         }
 
-        URL url = MovieUtils.createTrailersUrl(movieId);
+        URL url = MovieUtils.createTrailersUrl(
+                movieId,
+                getContext().getString(
+                        getContext().getResources().getIdentifier(
+                                "api_key",
+                                "string",
+                                getContext().getPackageName())));
         try {
             String json = MovieUtils.getJsonResponseFromWeb(url);
             Log.d("VideosLoader", "Json: " + json);

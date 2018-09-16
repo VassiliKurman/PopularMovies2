@@ -32,7 +32,12 @@ public class MoviesPopularLoader  extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     public List<Movie> loadInBackground() {
-        URL url = MovieUtils.createPopularMovieUrl();
+        URL url = MovieUtils.createPopularMovieUrl(
+                getContext().getString(
+                        getContext().getResources().getIdentifier(
+                                "api_key",
+                                "string",
+                                getContext().getPackageName())));
 
         if(url == null) {
             return null;

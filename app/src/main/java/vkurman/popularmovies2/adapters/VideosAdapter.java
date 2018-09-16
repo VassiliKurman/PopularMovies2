@@ -75,7 +75,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
 
             Log.d("VideoAdapter", "Movie ID: " + key);
 
-            Picasso.with(context)
+            Picasso.get()
                     .load(MovieUtils.createYoutubeTrailerImageUrl(key))
                     .placeholder(R.drawable.ic_image_area)
                     .error(R.drawable.ic_error_image)

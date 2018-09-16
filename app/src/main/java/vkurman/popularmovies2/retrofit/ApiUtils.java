@@ -21,9 +21,9 @@ package vkurman.popularmovies2.retrofit;
  * Version 1.0
  */
 public class ApiUtils {
-    public static final String BASE_URL = "https://api.themoviedb.org/3/";
+    public static final String BASE_URL = "https://api.themoviedb.org/3";
 
-    public static TMDBService getSOService() {
+    public static TMDBService getTMDBService() {
         return RetrofitClient.getClient(BASE_URL).create(TMDBService.class);
     }
 }

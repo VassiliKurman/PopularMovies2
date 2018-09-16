@@ -1,6 +1,20 @@
+/*
+ * Copyright (C) 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package vkurman.popularmovies2.adapters;
 
-import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -21,10 +35,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import vkurman.popularmovies2.R;
-import vkurman.popularmovies2.loaders.MoviesFavouriteLoader;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.persistance.MoviesContract;
-import vkurman.popularmovies2.persistance.MoviesPersistenceManager;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
@@ -33,9 +45,6 @@ import vkurman.popularmovies2.utils.MovieUtils;
  * Version 2.0
  */
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
-
-    private static final String TAG = "MovieAdapter";
-    private int mMovieLoaderId = 0;
 
     /**
      * An on-click handler that allows for an Activity to interface with RecyclerView
@@ -60,8 +69,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      * @param listOfItems list of items to display
      * @param listener Listener for list item clicks
      */
-    public MoviesAdapter(int movieLoaderId, List<Movie> listOfItems, MovieClickListener listener) {
-        mMovieLoaderId = movieLoaderId;
+    public MoviesAdapter(List<Movie> listOfItems, MovieClickListener listener) {
         this.movies = listOfItems;
         mMovieClickListener = listener;
         favourites = new TreeMap<>();
@@ -112,7 +120,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             holder.itemView.setTag(movieId);
 
             Context context = holder.posterImageView.getContext();
-            Picasso.with(context)
+            Picasso.get()
                     .load(imagePath)
                     .placeholder(R.drawable.ic_image_area)
                     .error(R.drawable.ic_error_image)
@@ -120,7 +128,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
             // Making sure that favourites not null
             if(favourites == null) {
-//                favourites = MoviesPersistenceManager.getInstance(context).getFavouriteMovieIds();
                 loadFavouriteMovieIds(context);
             }
 
@@ -157,7 +164,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         notifyDataSetChanged();
     }
 
-    public void favouriteClicked(View view, Movie movie) {
+    private void favouriteClicked(View view, Movie movie) {
         if(favourites == null) {
             loadFavouriteMovieIds(view.getContext());
         }
@@ -202,7 +209,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     /**
      * Loading Favourite movies from content provider
-     * @param context
+     * @param context - Context
      */
     private void loadFavouriteMovieIds(Context context) {
         if(favourites != null) {
@@ -221,6 +228,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             Long id = cursor.getLong(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID));
             favourites.put(id, id);
         }
+        cursor.close();
     }
 
     /**

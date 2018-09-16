@@ -9,4 +9,5 @@
     <color name="colorBorder">#9fb9bf</color>
     <color name="colorLayout">#aec8ce</color>
     <color name="colorButton">#b88c8c</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>

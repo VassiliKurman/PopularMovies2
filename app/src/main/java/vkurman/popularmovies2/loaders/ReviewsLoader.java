@@ -38,7 +38,13 @@ public class ReviewsLoader extends AsyncTaskLoader<List<Review>> {
             return null;
         }
 
-        URL url = MovieUtils.createReviewsUrl(movieId);
+        URL url = MovieUtils.createReviewsUrl(
+                movieId,
+                getContext().getString(
+                        getContext().getResources().getIdentifier(
+                                "api_key",
+                                "string",
+                                getContext().getPackageName())));
         try {
             String json = MovieUtils.getJsonResponseFromWeb(url);
             return JsonUtils.parseReviewsJson(json);

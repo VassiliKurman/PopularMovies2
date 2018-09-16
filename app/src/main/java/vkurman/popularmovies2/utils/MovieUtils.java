@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package vkurman.popularmovies2.utils;
 
 import android.net.Uri;
@@ -17,9 +32,6 @@ import java.util.Scanner;
  */
 public class MovieUtils {
     private static final String TAG = "MovieUtils";
-
-    // TODO enter TheMovieDB API key here
-    private static final String THEMOVIEDB_API_KEY = "PutYourKeyHere";
 
     private static final String API_BASE_URL = "http://api.themoviedb.org/3/movie/";
     private static final String API_CATEGORY_POPULAR = "popular";
@@ -74,7 +86,7 @@ public class MovieUtils {
     /**
      * Build and returns Uri for specified youtube trailer.
      *
-     * @param trailerKey
+     * @param trailerKey - String
      * @return Uri
      */
     public static Uri getYoutubeTrailerUri(String trailerKey) {
@@ -90,8 +102,8 @@ public class MovieUtils {
      *
      * @return URL
      */
-    public static URL createPopularMovieUrl() {
-        String path = API_BASE_URL + API_CATEGORY_POPULAR + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
+    public static URL createPopularMovieUrl(String apiKey) {
+        String path = API_BASE_URL + API_CATEGORY_POPULAR + API_URL_PARAMETER + apiKey;
 
         Log.d(TAG, "Path: " + path);
 
@@ -109,8 +121,8 @@ public class MovieUtils {
      *
      * @return URL
      */
-    public static URL createTopRatedMovieUrl() {
-        String path = API_BASE_URL + API_CATEGORY_TOP_RATED + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
+    public static URL createTopRatedMovieUrl(String apiKey) {
+        String path = API_BASE_URL + API_CATEGORY_TOP_RATED + API_URL_PARAMETER + apiKey;
 
         Log.d(TAG, "Top rated movies path: " + path);
 
@@ -126,11 +138,12 @@ public class MovieUtils {
     /**
      * Constructing and returning URL object to retrieve trailers for movies.
      *
-     * @param movieId
+     * @param movieId - String
+     * @param apiKey - String
      * @return URL
      */
-    public static URL createTrailersUrl(String movieId) {
-        String path = API_BASE_URL + movieId + API_TRAILERS + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
+    public static URL createTrailersUrl(String movieId, String apiKey) {
+        String path = API_BASE_URL + movieId + API_TRAILERS + API_URL_PARAMETER + apiKey;
 
         Log.d(TAG, "Trailers path: " + path);
 
@@ -146,11 +159,12 @@ public class MovieUtils {
     /**
      * Constructing and returning URL object to retrieve reviews for movies.
      *
-     * @param movieId
+     * @param movieId - String
+     * @param apiKey - String
      * @return URL
      */
-    public static URL createReviewsUrl(String movieId) {
-        String path = API_BASE_URL + movieId + API_REVIEWS + API_URL_PARAMETER + THEMOVIEDB_API_KEY;
+    public static URL createReviewsUrl(String movieId, String apiKey) {
+        String path = API_BASE_URL + movieId + API_REVIEWS + API_URL_PARAMETER + apiKey;
 
         Log.d(TAG, "Reviews path: " + path);
 
@@ -179,7 +193,7 @@ public class MovieUtils {
     /**
      * Constructing and returning URL object to retrieve trailer image for movies from youtube.
      *
-     * @param videoId
+     * @param videoId - String
      * @return String
      */
     public static String createYoutubeTrailerImageUrl(String videoId) {
