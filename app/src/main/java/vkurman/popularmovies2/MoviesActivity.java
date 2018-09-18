@@ -90,7 +90,35 @@ public class MoviesActivity extends AppCompatActivity implements
                         // TODO
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
-
+                        switch (menuItem.getItemId()) {
+                            case R.id.navigation_drawer_movies_popular:
+                                sortingId = menuItem.getItemId();
+                                mMovieLoaderId = MoviesPopularLoader.ID;
+                                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+                                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, MoviesActivity.this).forceLoad();
+                                } else {
+                                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
+                                }
+                                return true;
+                            case R.id.navigation_drawer_movies_top_rated:
+                                sortingId = menuItem.getItemId();
+                                mMovieLoaderId = MoviesRatedLoader.ID;
+                                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+                                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, MoviesActivity.this).forceLoad();
+                                } else {
+                                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
+                                }
+                                return true;
+                            case R.id.navigation_drawer_movies_favourites:
+                                sortingId = menuItem.getItemId();
+                                mMovieLoaderId = MoviesFavouriteLoader.ID;
+                                if(getSupportLoaderManager().getLoader(mMovieLoaderId) == null) {
+                                    getSupportLoaderManager().initLoader(mMovieLoaderId, null, MoviesActivity.this).forceLoad();
+                                } else {
+                                    getSupportLoaderManager().getLoader(mMovieLoaderId).forceLoad();
+                                }
+                                return true;
+                        }
                         return true;
                     }
                 });
