@@ -14,34 +14,74 @@
         android:id="@+id/group_main"
         android:checkableBehavior="single">
         <item
+            android:title="@string/navigation_drawer_title_discover">
+            <menu>
+                <group
+                    android:id="@+id/group_discover">
+                    <item
+                        android:id="@+id/navigation_drawer_discover_movies"
+                        android:icon="@drawable/ic_magnify"
+                        android:title="@string/navigation_drawer_title_discover_movies" />
+                    <item
+                        android:id="@+id/navigation_drawer_discover_tv_shows"
+                        android:icon="@drawable/ic_magnify"
+                        android:title="@string/navigation_drawer_title_discover_tv_shows" />
+                </group>
+            </menu>
+        </item>
+        <item
             android:title="@string/navigation_drawer_title_movies">
             <menu>
                 <group
                     android:id="@+id/group_movies">
                     <item
                         android:id="@+id/navigation_drawer_movies_latest"
-                        android:icon="@drawable/ic_movie_roll"
+                        android:icon="@drawable/ic_filmstrip"
                         android:title="@string/navigation_drawer_title_movies_latest" />
                     <item
                         android:id="@+id/navigation_drawer_movies_now_playing"
-                        android:icon="@drawable/ic_movie_roll"
+                        android:icon="@drawable/ic_filmstrip"
                         android:title="@string/navigation_drawer_title_movies_now_playing" />
                     <item
                         android:id="@+id/navigation_drawer_movies_popular"
-                        android:icon="@drawable/ic_movie_roll"
+                        android:icon="@drawable/ic_filmstrip"
                         android:title="@string/navigation_drawer_title_movies_popular" />
                     <item
                         android:id="@+id/navigation_drawer_movies_top_rated"
-                        android:icon="@drawable/ic_movie_roll"
+                        android:icon="@drawable/ic_filmstrip"
                         android:title="@string/navigation_drawer_title_movies_top_rated" />
                     <item
                         android:id="@+id/navigation_drawer_movies_upcoming"
-                        android:icon="@drawable/ic_movie_roll"
+                        android:icon="@drawable/ic_filmstrip"
                         android:title="@string/navigation_drawer_title_movies_upcoming" />
                     <item
                         android:id="@+id/navigation_drawer_movies_favourites"
-                        android:icon="@drawable/ic_movie_roll"
+                        android:icon="@drawable/ic_filmstrip"
                         android:title="@string/navigation_drawer_title_movies_favourites" />
+                </group>
+            </menu>
+        </item>
+        <item
+            android:title="@string/navigation_drawer_title_tv_shows">
+            <menu>
+                <group
+                    android:id="@+id/group_tv_shows">
+                    <item
+                        android:id="@+id/navigation_drawer_tv_shows_popular"
+                        android:icon="@drawable/ic_movie_roll"
+                        android:title="@string/navigation_drawer_title_tv_shows_popular" />
+                    <item
+                        android:id="@+id/navigation_drawer_tv_shows_top_rated"
+                        android:icon="@drawable/ic_movie_roll"
+                        android:title="@string/navigation_drawer_title_tv_shows_top_rated" />
+                    <item
+                        android:id="@+id/navigation_drawer_tv_shows_on_tv"
+                        android:icon="@drawable/ic_movie_roll"
+                        android:title="@string/navigation_drawer_title_tv_shows_on_tv" />
+                    <item
+                        android:id="@+id/navigation_drawer_tv_shows_airing_today"
+                        android:icon="@drawable/ic_movie_roll"
+                        android:title="@string/navigation_drawer_title_tv_shows_airing_today" />
                 </group>
             </menu>
         </item>

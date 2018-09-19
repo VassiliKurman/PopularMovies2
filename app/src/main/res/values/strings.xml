@@ -24,6 +24,10 @@
     <string name="link_navigation_drawer_image">https://pixabay.com/en/movie-projector-projector-55122/</string>
     <string name="author_navigation_drawer_image">DasWortgewand</string>
 
+    <string name="navigation_drawer_title_discover">Discover</string>
+    <string name="navigation_drawer_title_discover_movies">Movies</string>
+    <string name="navigation_drawer_title_discover_tv_shows">TV Shows</string>
+
     <string name="navigation_drawer_title_movies">Movies</string>
     <string name="navigation_drawer_title_movies_latest">Latest</string>
     <string name="navigation_drawer_title_movies_now_playing">Now Playing</string>
@@ -31,6 +35,12 @@
     <string name="navigation_drawer_title_movies_top_rated">Top Rated</string>
     <string name="navigation_drawer_title_movies_upcoming">Upcoming</string>
     <string name="navigation_drawer_title_movies_favourites">Favourites</string>
+
+    <string name="navigation_drawer_title_tv_shows">TV Shows</string>
+    <string name="navigation_drawer_title_tv_shows_popular">Popular</string>
+    <string name="navigation_drawer_title_tv_shows_top_rated">Top Rated</string>
+    <string name="navigation_drawer_title_tv_shows_on_tv">On TV</string>
+    <string name="navigation_drawer_title_tv_shows_airing_today">Airing Today</string>
 
     <string name="navigation_drawer_title_people">People</string>
     <string name="navigation_drawer_title_people_movie_credits">Movie Credits</string>
