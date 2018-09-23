@@ -90,7 +90,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @NonNull
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.list_item_layout;
+        int layoutIdForListItem = R.layout.list_movie_layout;
 
         LayoutInflater inflater = LayoutInflater.from(context);
 

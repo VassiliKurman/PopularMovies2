@@ -79,7 +79,7 @@ public class RetrofitTVsAdapter extends RecyclerView.Adapter<RetrofitTVsAdapter.
     @Override
     public RetrofitTVsAdapter.TVsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.list_item_layout;
+        int layoutIdForListItem = R.layout.list_tv_show_layout;
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
