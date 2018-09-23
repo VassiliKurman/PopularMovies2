@@ -20,13 +20,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Result is a list of results that comes within {@link MoviesQueryResponse}
- * from server when querying for a popular or top rated movies.
- *
- * Created by Vassili Kurman on 10/09/2018.
+ * KnownFor is a part of {@link ResultPerson @ResultPerson} response.
+ * Created by Vassili Kurman on 22/09/2018.
  * Version 1.0
  */
-public class Result {
+public class KnownFor {
+    @SerializedName("vote_average")
+    @Expose
+    private Double voteAverage;
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
@@ -36,9 +37,9 @@ public class Result {
     @SerializedName("video")
     @Expose
     private Boolean video;
-    @SerializedName("vote_average")
+    @SerializedName("media_type")
     @Expose
-    private Double voteAverage;
+    private String mediaType;
     @SerializedName("title")
     @Expose
     private String title;
@@ -69,6 +70,26 @@ public class Result {
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+    @SerializedName("original_name")
+    @Expose
+    private String originalName;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("first_air_date")
+    @Expose
+    private String firstAirDate;
+    @SerializedName("origin_country")
+    @Expose
+    private List<String> originCountry = null;
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(Double voteAverage) {
+        this.voteAverage = voteAverage;
+    }
 
     public Integer getVoteCount() {
         return voteCount;
@@ -94,12 +115,12 @@ public class Result {
         this.video = video;
     }
 
-    public Double getVoteAverage() {
-        return voteAverage;
+    public String getMediaType() {
+        return mediaType;
     }
 
-    public void setVoteAverage(Double voteAverage) {
-        this.voteAverage = voteAverage;
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
     }
 
     public String getTitle() {
@@ -180,5 +201,37 @@ public class Result {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFirstAirDate() {
+        return firstAirDate;
+    }
+
+    public void setFirstAirDate(String firstAirDate) {
+        this.firstAirDate = firstAirDate;
+    }
+
+    public List<String> getOriginCountry() {
+        return originCountry;
+    }
+
+    public void setOriginCountry(List<String> originCountry) {
+        this.originCountry = originCountry;
     }
 }

@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vkurman.popularmovies2.retrofit;
+package vkurman.popularmovies2.listeners;
 
 /**
- * ApiUtils - class has the base URL as a static variable and also provide the
- * {@link TMDBService @TMDBService} interface to our application through the
- * getTMDBService() static method.
- * <p>
- * Created by Vassili Kurman on 10/09/2018.
+ * ResultListener for adapters.
+ * Created by Vassili Kurman on 23/09/2018.
  * Version 1.0
- * </p>
  */
-public class ApiUtils {
-    public static final String BASE_URL = "https://api.themoviedb.org/3/";
-
-    public static TMDBService getTMDBService() {
-        return RetrofitClient.getClient(BASE_URL).create(TMDBService.class);
-    }
+public interface ResultListener {
+    void onResultClick(long id);
 }

@@ -20,13 +20,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * MoviesQueryResponse is a server response when querying for
- * a popular or top rated movies.
- *
- * Created by Vassili Kurman on 10/09/2018.
+ * TVQueryResponse is a server response.
+ * Created by Vassili Kurman on 22/09/2018.
  * Version 1.0
  */
-public class MoviesQueryResponse {
+public class TVQueryResponse {
     @SerializedName("page")
     @Expose
     private Integer page;
@@ -38,7 +36,7 @@ public class MoviesQueryResponse {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<ResultMovie> results = null;
+    private List<ResultTV> results = null;
 
     public Integer getPage() {
         return page;
@@ -64,11 +62,11 @@ public class MoviesQueryResponse {
         this.totalPages = totalPages;
     }
 
-    public List<ResultMovie> getResults() {
+    public List<ResultTV> getResults() {
         return results;
     }
 
-    public void setResults(List<ResultMovie> results) {
+    public void setResults(List<ResultTV> results) {
         this.results = results;
     }
 }

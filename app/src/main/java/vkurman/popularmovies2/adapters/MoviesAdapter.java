@@ -158,7 +158,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
      *
      * @param movies - list of movies
      */
-    public void updateMovies(Context context, List<Movie> movies) {
+    public void updateData(Context context, List<Movie> movies) {
         this.movies = movies;
         loadFavouriteMovieIds(context);
         notifyDataSetChanged();

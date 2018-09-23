@@ -15,46 +15,66 @@
  */
 package vkurman.popularmovies2.retrofit;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import vkurman.popularmovies2.model.MoviesQueryResponse;
+import vkurman.popularmovies2.model.PeopleQueryResponse;
+import vkurman.popularmovies2.model.TVQueryResponse;
 
 /**
- * TMDBService
+ * TMDBService - interface contains methods that are used to execute HTTP requests
+ * such as GET, POST, PUT, PATCH, and DELETE.
  * Created by Vassili Kurman on 10/09/2018.
  * Version 1.0
  */
 public interface TMDBService {
 
-    @GET("/movie/latest?api_key={api_key}&language=en-US&page=1")
-    Call<MoviesQueryResponse> getLatestMovies(@Path("api_key") String apiKey);
+    /**
+     *
+     * @param selection - String for {@link Path @Path} which should be popular, top_rated and etc.
+     * @param options - should include api_key as minimum
+     * @return Call<MoviesQueryResponse>
+     */
+    @GET("discover/{selection}")
+    Call<MoviesQueryResponse> discoverMovies(@Path("selection") String selection, @QueryMap Map<String, String> options);
 
-    @GET("/movie/latest?api_key={api_key}&language=en-US")
-    Call<MoviesQueryResponse> getLatestMovies(@Path("api_key") String apiKey, @Query("page") int page);
+    /**
+     *
+     * @param selection - String for {@link Path @Path} which should be popular, top_rated and etc.
+     * @param options - should include api_key as minimum
+     * @return Call<TVQueryResponse>
+     */
+    @GET("discover/{selection}")
+    Call<TVQueryResponse> discoverTVs(@Path("selection") String selection, @QueryMap Map<String, String> options);
 
-    @GET("/movie/now_playing?api_key={api_key}&language=en-US&page=1")
-    Call<MoviesQueryResponse> getNowPlayingMovies(@Path("api_key") String apiKey);
+    /**
+     *
+     * @param selection - String for {@link Path @Path} which should be popular, top_rated and etc.
+     * @param options - should include api_key as minimum
+     * @return Call<MoviesQueryResponse>
+     */
+    @GET("movie/{selection}")
+    Call<MoviesQueryResponse> getMovies(@Path("selection") String selection, @QueryMap Map<String, String> options);
 
-    @GET("/movie/now_playing?api_key={api_key}&language=en-US")
-    Call<MoviesQueryResponse> getNowPlayingMovies(@Path("api_key") String apiKey, @Query("page") int page);
+    /**
+     *
+     * @param selection - String for {@link Path @Path} which should be popular, top_rated and etc.
+     * @param options - should include api_key as minimum
+     * @return Call<TVQueryResponse>
+     */
+    @GET("tv/{selection}")
+    Call<TVQueryResponse> getTV(@Path("selection") String selection, @QueryMap Map<String, String> options);
 
-    @GET("/movie/popular?api_key={api_key}&language=en-US&page=1")
-    Call<MoviesQueryResponse> getPopularMovies(@Path("api_key") String apiKey);
-
-    @GET("/movie/popular?api_key={api_key}&language=en-US")
-    Call<MoviesQueryResponse> getPopularMovies(@Path("api_key") String apiKey, @Query("page") int page);
-
-    @GET("/movie/top_rated?api_key={api_key}&language=en-US&page=1")
-    Call<MoviesQueryResponse> getTopRatedMovies(@Path("api_key") String apiKey);
-
-    @GET("/movie/top_rated?api_key={api_key}&language=en-US")
-    Call<MoviesQueryResponse> getTopRatedMovies(@Path("api_key") String apiKey, @Query("page") int page);
-
-    @GET("/movie/upcoming?api_key={api_key}&language=en-US&page=1")
-    Call<MoviesQueryResponse> getUpcomingMovies(@Path("api_key") String apiKey);
-
-    @GET("/movie/upcoming?api_key={api_key}&language=en-US")
-    Call<MoviesQueryResponse> getUpcomingMovies(@Path("api_key") String apiKey, @Query("page") int page);
+    /**
+     *
+     * @param selection - String for {@link Path @Path} which should be popular.
+     * @param options - should include api_key as minimum
+     * @return Call<PeopleQueryResponse>
+     */
+    @GET("person/{selection}")
+    Call<PeopleQueryResponse> getPeople(@Path("selection") String selection, @QueryMap Map<String, String> options);
 }

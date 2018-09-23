@@ -9,24 +9,28 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.-->
-<FrameLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_list_poster"
+        android:id="@+id/iv_list_poster_person"
         android:layout_width="match_parent"
         android:adjustViewBounds="true"
         android:layout_height="match_parent"
-        android:contentDescription="@string/iv_poster_description"/>
+        android:contentDescription="@string/iv_person_poster_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
-        android:id="@+id/iv_favourite"
-        android:src="@drawable/ic_heart_outline"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tv_list_poster_person"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_text_padding"
-        android:layout_marginTop="@dimen/default_text_padding"
-        android:contentDescription="@string/iv_favourite_icon_description"/>
-</FrameLayout>
+        android:maxLines="1"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@id/iv_list_poster_person"
+        app:layout_constraintEnd_toEndOf="@id/iv_list_poster_person"
+        app:layout_constraintBottom_toBottomOf="@id/iv_list_poster_person"/>
+</android.support.constraint.ConstraintLayout>

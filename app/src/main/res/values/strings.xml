@@ -13,8 +13,23 @@
     <string name="app_name">Popular Movies 2</string>
     <string name="detail_error_message">Error opening movie details</string>
 
+    // Toolbar title
+    <string name="toolbar_title_discover_movies">Discover Movies</string>
+    <string name="toolbar_title_discover_tv_shows">Discover TV Shows</string>
+    <string name="toolbar_title_movies_now_playing">Now Playing Movies</string>
+    <string name="toolbar_title_movies_popular">Popular Movies</string>
+    <string name="toolbar_title_movies_top_rated">Top Rated Movies</string>
+    <string name="toolbar_title_movies_upcoming">Upcoming Movies</string>
+    <string name="toolbar_title_movies_favourites">Favourites Movies</string>
+    <string name="toolbar_title_tv_shows_popular">Popular Shows</string>
+    <string name="toolbar_title_tv_shows_top_rated">Top Rated Shows</string>
+    <string name="toolbar_title_tv_shows_on_tv">On TV Shows</string>
+    <string name="toolbar_title_tv_shows_airing_today">Airing Today Shows</string>
+    <string name="toolbar_title_people_popular">Popular People</string>
+
     // Main activity views
     <string name="iv_poster_description">Movie poster</string>
+    <string name="iv_person_poster_description">Person poster</string>
     <string name="iv_favourite_icon_description">Favourite icon</string>
     <string name="tv_title">Title</string>
     <string name="tv_rating">Rating</string>
@@ -29,7 +44,6 @@
     <string name="navigation_drawer_title_discover_tv_shows">TV Shows</string>
 
     <string name="navigation_drawer_title_movies">Movies</string>
-    <string name="navigation_drawer_title_movies_latest">Latest</string>
     <string name="navigation_drawer_title_movies_now_playing">Now Playing</string>
     <string name="navigation_drawer_title_movies_popular">Popular</string>
     <string name="navigation_drawer_title_movies_top_rated">Top Rated</string>
@@ -43,9 +57,6 @@
     <string name="navigation_drawer_title_tv_shows_airing_today">Airing Today</string>
 
     <string name="navigation_drawer_title_people">People</string>
-    <string name="navigation_drawer_title_people_movie_credits">Movie Credits</string>
-    <string name="navigation_drawer_title_people_tv_credits">TV Credits</string>
-    <string name="navigation_drawer_title_people_latest">Latest</string>
     <string name="navigation_drawer_title_people_popular">Popular</string>
 
     // Toolbar

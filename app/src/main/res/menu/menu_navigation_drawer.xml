@@ -35,10 +35,6 @@
                 <group
                     android:id="@+id/group_movies">
                     <item
-                        android:id="@+id/navigation_drawer_movies_latest"
-                        android:icon="@drawable/ic_filmstrip"
-                        android:title="@string/navigation_drawer_title_movies_latest" />
-                    <item
                         android:id="@+id/navigation_drawer_movies_now_playing"
                         android:icon="@drawable/ic_filmstrip"
                         android:title="@string/navigation_drawer_title_movies_now_playing" />
@@ -90,18 +86,6 @@
             <menu>
                 <group
                     android:id="@+id/group_people">
-                    <item
-                        android:id="@+id/navigation_drawer_people_movie_credits"
-                        android:icon="@drawable/ic_people"
-                        android:title="@string/navigation_drawer_title_people_movie_credits" />
-                    <item
-                        android:id="@+id/navigation_drawer_people_tv_credits"
-                        android:icon="@drawable/ic_people"
-                        android:title="@string/navigation_drawer_title_people_tv_credits" />
-                    <item
-                        android:id="@+id/navigation_drawer_people_latest"
-                        android:icon="@drawable/ic_people"
-                        android:title="@string/navigation_drawer_title_people_latest" />
                     <item
                         android:id="@+id/navigation_drawer_people_popular"
                         android:icon="@drawable/ic_people"
