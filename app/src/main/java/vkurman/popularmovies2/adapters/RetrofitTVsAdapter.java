@@ -46,7 +46,7 @@ public class RetrofitTVsAdapter extends RecyclerView.Adapter<RetrofitTVsAdapter.
 
     public class TVsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        @BindView(R.id.iv_list_poster) ImageView posterImageView;
+        @BindView(R.id.iv_list_poster_tv_show) ImageView posterImageView;
 
         TVsViewHolder(View itemView, ResultListener resultListener) {
             super(itemView);

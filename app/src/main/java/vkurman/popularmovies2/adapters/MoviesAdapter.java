@@ -249,7 +249,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             super(itemView);
 
             // Retrieve ImageView's from parent FrameLayout view group
-            posterImageView = itemView.findViewById(R.id.iv_list_poster);
+            posterImageView = itemView.findViewById(R.id.iv_list_poster_movie);
             favouriteImageView = itemView.findViewById(R.id.iv_favourite);
 
             // Set separate click listeners to poster and favourite image

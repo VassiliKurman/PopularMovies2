@@ -15,7 +15,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_list_poster"
+        android:id="@+id/iv_list_poster_tv_show"
         android:layout_width="match_parent"
         android:adjustViewBounds="true"
         android:layout_height="match_parent"
