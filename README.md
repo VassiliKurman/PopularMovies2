@@ -73,3 +73,15 @@ Popular Movies 2 is a stage 2 Android App project created for Android Developer 
   * Allow users to read reviews of a selected movie.
   * Allow users to mark a movie as a favorite in the details view by tapping a button(star). This is for a local movies collection that does not require an API request.
   * Modified the existing sorting criteria for the main view to include an additional pivot to show user favorites collection.
+
+## Additional information
+This app has been updated since project review and some new features have been added. The 'udacity-accepted' branch has original project that has been passed by Udacity's project reviewer.
+Following libraries are used in original version:
+  * Picasso for handling and cashing images
+  * Butterknife for binding resources
+Following new features has been added since project review:
+  * Redesigned UI
+  * Introduced Navigation Drawer to the main screen
+  * Introduced Collapsible Toolbar to the project
+  * Added new section "TV Shows" and "People" to Navigation Drawer
+  * Introduced Retrofit 2 library to the project to handle network requests
