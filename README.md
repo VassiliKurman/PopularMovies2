@@ -76,9 +76,11 @@ Popular Movies 2 is a stage 2 Android App project created for Android Developer 
 
 ## Additional information
 This app has been updated since project review and some new features have been added. The 'udacity-accepted' branch has original project that has been passed by Udacity's project reviewer.
+
 Following libraries are used in original version:
   * Picasso for handling and cashing images
   * Butterknife for binding resources
+  
 Following new features has been added since project review:
   * Redesigned UI
   * Introduced Navigation Drawer to the main screen
