@@ -53,4 +53,9 @@ public class MoviesConstants {
 
     // Navigation drawer people
     public static final String PATH_SELECTION_PEOPLE_PUPOLAR = "popular";
+
+    // Intent extras
+    public static final String INTENT_EXTRA_MOVIE_ID = "movieId";
+    public static final String INTENT_EXTRA_SHOW_ID = "showId";
+    public static final String INTENT_EXTRA_PERSON_ID = "personId";
 }

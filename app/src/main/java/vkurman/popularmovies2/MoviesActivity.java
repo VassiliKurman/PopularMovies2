@@ -56,6 +56,7 @@ import vkurman.popularmovies2.model.ResultMovie;
 import vkurman.popularmovies2.model.TVQueryResponse;
 import vkurman.popularmovies2.retrofit.ApiUtils;
 import vkurman.popularmovies2.retrofit.TMDBService;
+import vkurman.popularmovies2.ui.PersonDetailsActivity;
 import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
@@ -416,6 +417,8 @@ public class MoviesActivity extends AppCompatActivity implements
 
     @Override
     public void onResultClick(long id) {
-        Toast.makeText(MoviesActivity.this, "Post id is" + id, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, PersonDetailsActivity.class);
+        intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+        startActivity(intent);
     }
 }

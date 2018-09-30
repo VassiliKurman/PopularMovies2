@@ -16,9 +16,11 @@
     <dimen name="default_margin_sides">8dp</dimen>
     <dimen name="default_margin_top_bottom">4dp</dimen>
     <dimen name="title_text_padding">16dp</dimen>
+    <dimen name="details_title_height">70dp</dimen>
     <dimen name="details_title_text_size">24sp</dimen>
     <dimen name="details_year_text_size">20sp</dimen>
-    <dimen name="details_title_height">70dp</dimen>
+    <dimen name="details_subtitle_text_size">20sp</dimen>
+    <dimen name="details_normal_text_size">16sp</dimen>
 
     <!-- Navigation drawer -->
     <dimen name="navigation_header_default_padding">16dp</dimen>

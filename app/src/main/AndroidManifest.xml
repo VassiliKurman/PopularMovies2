@@ -14,12 +14,14 @@
         <activity android:name=".MoviesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".MovieDetailsActivity" />
         <activity android:name=".MovieReviewsActivity" />
+        <activity android:name=".ui.PersonDetailsActivity" />
 
         <provider
             android:name=".persistance.MoviesContentProvider"
