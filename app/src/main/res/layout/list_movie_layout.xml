@@ -9,10 +9,21 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.-->
-<FrameLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/cardview_layout_margin_left"
+    android:layout_marginEnd="@dimen/cardview_layout_margin_rigth"
+    android:layout_marginTop="@dimen/cardview_layout_margin_top"
+    android:layout_marginBottom="@dimen/cardview_layout_margin_bottom"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    android:elevation="@dimen/cardview_elevation"
+    app:pressedTranslationZ="@dimen/cardview_elevation_raised" >
 
     <ImageView
         android:id="@+id/iv_list_poster_movie"
@@ -29,4 +40,4 @@
         android:layout_marginStart="@dimen/default_text_padding"
         android:layout_marginTop="@dimen/default_text_padding"
         android:contentDescription="@string/iv_favourite_icon_description"/>
-</FrameLayout>
+</android.support.v7.widget.CardView>
