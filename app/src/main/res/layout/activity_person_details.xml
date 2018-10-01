@@ -56,20 +56,20 @@
                 android:id="@+id/poster_iv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintHorizontal_weight="50"
                 android:layout_marginEnd="@dimen/default_margin_sides"
                 android:layout_marginStart="@dimen/default_margin_sides"
                 android:layout_marginTop="@dimen/default_margin_top_bottom"
-                android:adjustViewBounds="true"
                 android:contentDescription="@string/iv_poster_description"
-                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent=".5"/>
 
             <TextView
                 android:id="@+id/tv_details_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_text_padding"
                 android:textSize="@dimen/details_title_text_size"
@@ -78,13 +78,51 @@
                 app:layout_constraintTop_toBottomOf="@id/poster_iv" />
 
             <TextView
-                android:id="@+id/tv_details_biography_title"
+                android:id="@+id/tv_details_birthday_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_text_padding"
                 android:textSize="@dimen/details_subtitle_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_name"
+                android:text="@string/text_birthday"/>
+
+            <TextView
+                android:id="@+id/tv_details_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_text_padding"
+                android:textSize="@dimen/details_normal_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_birthday_title" />
+
+            <TextView
+                android:id="@+id/tv_details_place_of_birth_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_text_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_birthday"
+                android:text="@string/text_place_of_birth"/>
+
+            <TextView
+                android:id="@+id/tv_details_place_of_birth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_text_padding"
+                android:textSize="@dimen/details_normal_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth_title" />
+
+            <TextView
+                android:id="@+id/tv_details_biography_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_text_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth"
                 android:text="@string/text_biography"/>
 
             <TextView

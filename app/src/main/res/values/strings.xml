@@ -69,6 +69,8 @@
     <string name="btn_reviews">Reviews</string>
     <string name="text_trailers">Trailers</string>
     <string name="text_biography">Biography</string>
+    <string name="text_birthday">Birthday</string>
+    <string name="text_place_of_birth">Place of birth</string>
 
     // Extras set to intent as names
     <string name="extra_poster">poster</string>

@@ -55,6 +55,8 @@ public class PersonDetailsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.poster_iv) ImageView ivPoster;
     @BindView(R.id.tv_details_name) TextView tvName;
+    @BindView(R.id.tv_details_birthday) TextView tvBirthday;
+    @BindView(R.id.tv_details_place_of_birth) TextView tvPlaceOfBirth;
     @BindView(R.id.tv_details_biography) TextView tvBiography;
 
     private TMDBService mService;
@@ -112,9 +114,10 @@ public class PersonDetailsActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     PersonModel personModel = response.body();
                     Log.d(TAG, "Person retrieved: " + personModel.getName());
-                    // TODO load data
                     tvName.setText(personModel.getName());
                     tvBiography.setText(personModel.getBiography());
+                    tvBirthday.setText(personModel.getBirthday());
+                    tvPlaceOfBirth.setText(personModel.getPlaceOfBirth());
 
                     Picasso.get()
                             .load(MovieUtils.createFullIconPath(personModel.getProfilePath()))
