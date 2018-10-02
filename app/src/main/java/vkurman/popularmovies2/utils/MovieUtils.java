@@ -57,8 +57,6 @@ public class MovieUtils {
     private static final String IMAGE_SIZE_W780 = "w780";
     private static final String IMAGE_SIZE_ORIGINAL = "original";
 
-    private static final String IMAGE_SIZE_DEFAULT = IMAGE_SIZE_W185;
-
     // Youtube
     private static final String YOUTUBE_IMAGE_BASE_URL = "http://img.youtube.com/vi/";
     private static final String YOUTUBE_IMAGE_FILE = "/0.jpg";
@@ -189,11 +187,24 @@ public class MovieUtils {
      * @param imagePath - partial path to the image retrieved from json
      * @return String
      */
-    public static String createFullIconPath(String imagePath) {
+    public static String createFullPosterPath(String imagePath) {
         if(imagePath == null || imagePath.isEmpty()) {
             return null;
         }
-        return IMAGE_BASE_URL + IMAGE_SIZE_DEFAULT + imagePath;
+        return IMAGE_BASE_URL + IMAGE_SIZE_W342 + imagePath;
+    }
+
+    /**
+     * Creates and returns full path to movie poster.
+     *
+     * @param imagePath - partial path to the image retrieved from json
+     * @return String
+     */
+    public static String createFullBackdropPath(String imagePath) {
+        if(imagePath == null || imagePath.isEmpty()) {
+            return null;
+        }
+        return IMAGE_BASE_URL + IMAGE_SIZE_W780 + imagePath;
     }
 
     /**

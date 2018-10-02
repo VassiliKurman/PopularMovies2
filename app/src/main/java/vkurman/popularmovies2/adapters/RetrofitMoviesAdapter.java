@@ -110,7 +110,7 @@ public class RetrofitMoviesAdapter extends RecyclerView.Adapter<RetrofitMoviesAd
             final ResultMovie result = mResults.get(position);
             final long resultId = result.getId();
 
-            String imagePath = MovieUtils.createFullIconPath(result.getPosterPath());
+            String imagePath = MovieUtils.createFullPosterPath(result.getPosterPath());
 
             holder.itemView.setTag(resultId);
 

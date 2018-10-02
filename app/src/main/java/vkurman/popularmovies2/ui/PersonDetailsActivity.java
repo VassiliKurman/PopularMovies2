@@ -120,7 +120,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
                     tvPlaceOfBirth.setText(personModel.getPlaceOfBirth());
 
                     Picasso.get()
-                            .load(MovieUtils.createFullIconPath(personModel.getProfilePath()))
+                            .load(MovieUtils.createFullPosterPath(personModel.getProfilePath()))
                             .placeholder(R.drawable.ic_image_area)
                             .error(R.drawable.ic_error_image)
                             .into(ivPoster);

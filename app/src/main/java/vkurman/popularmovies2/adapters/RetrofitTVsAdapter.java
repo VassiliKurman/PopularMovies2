@@ -97,7 +97,7 @@ public class RetrofitTVsAdapter extends RecyclerView.Adapter<RetrofitTVsAdapter.
             final ResultTV result = mResults.get(position);
             final long resultId = result.getId();
 
-            String imagePath = MovieUtils.createFullIconPath(result.getBackdropPath());
+            String imagePath = MovieUtils.createFullBackdropPath(result.getBackdropPath());
 
             holder.itemView.setTag(resultId);
             holder.mVoteAverage.setText(MovieUtils.formatPercentage(result.getVoteAverage()));

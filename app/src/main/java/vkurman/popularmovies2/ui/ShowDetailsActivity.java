@@ -133,13 +133,13 @@ public class ShowDetailsActivity extends AppCompatActivity {
                     }
 
                     Picasso.get()
-                            .load(MovieUtils.createFullIconPath(showModel.getBackdropPath()))
+                            .load(MovieUtils.createFullBackdropPath(showModel.getBackdropPath()))
                             .placeholder(R.drawable.ic_image_area)
                             .error(R.drawable.ic_error_image)
                             .into(ivBackdrop);
 
                     Picasso.get()
-                            .load(MovieUtils.createFullIconPath(showModel.getPosterPath()))
+                            .load(MovieUtils.createFullPosterPath(showModel.getPosterPath()))
                             .placeholder(R.drawable.ic_image_area)
                             .error(R.drawable.ic_error_image)
                             .into(ivPoster);

@@ -97,7 +97,7 @@ public class RetrofitPeopleAdapter extends RecyclerView.Adapter<RetrofitPeopleAd
             final ResultPerson result = mResults.get(position);
             final long resultId = result.getId();
 
-            String imagePath = MovieUtils.createFullIconPath(result.getProfilePath());
+            String imagePath = MovieUtils.createFullPosterPath(result.getProfilePath());
 
             holder.itemView.setTag(resultId);
 

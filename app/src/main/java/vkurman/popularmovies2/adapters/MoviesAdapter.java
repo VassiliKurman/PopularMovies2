@@ -115,7 +115,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             final Movie movie = movies.get(position);
             final long movieId = movie.getMovieId();
 
-            String imagePath = MovieUtils.createFullIconPath(movie.getMoviePoster());
+            String imagePath = MovieUtils.createFullPosterPath(movie.getMoviePoster());
 
             holder.itemView.setTag(movieId);
 

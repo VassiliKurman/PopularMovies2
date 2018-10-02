@@ -131,13 +131,13 @@ public class MovieDetailsActivity extends AppCompatActivity
         ivFavourite.setOnClickListener(this);
 
         Picasso.get()
-                .load(MovieUtils.createFullIconPath(poster))
+                .load(MovieUtils.createFullBackdropPath(poster))
                 .placeholder(R.drawable.ic_image_area)
                 .error(R.drawable.ic_error_image)
                 .into(ivBackdrop);
 
         Picasso.get()
-                .load(MovieUtils.createFullIconPath(poster))
+                .load(MovieUtils.createFullPosterPath(poster))
                 .placeholder(R.drawable.ic_image_area)
                 .error(R.drawable.ic_error_image)
                 .into(ivMoviePoster);
