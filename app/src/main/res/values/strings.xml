@@ -11,7 +11,7 @@
 
 <resources>
     <string name="app_name">Popular Movies 2</string>
-    <string name="detail_error_message">Error opening movie details</string>
+    <string name="detail_error_message">Error opening details</string>
 
     // Toolbar title
     <string name="toolbar_title_discover_movies">Discover Movies</string>
@@ -71,6 +71,12 @@
     <string name="text_biography">Biography</string>
     <string name="text_birthday">Birthday</string>
     <string name="text_place_of_birth">Place of birth</string>
+
+    // TV Show Details Activity
+    <string name="iv_tv_show_backdrop">TV Show backdrop</string>
+    <string name="iv_tv_show_poster">TV Show poster</string>
+    <string name="text_tv_show_overview">Overview</string>
+    <string name="text_tv_show_crew">Crew</string>
 
     // Extras set to intent as names
     <string name="extra_poster">poster</string>

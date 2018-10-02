@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,35 +38,36 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vkurman.popularmovies2.R;
-import vkurman.popularmovies2.model.PersonModel;
+import vkurman.popularmovies2.model.Crew;
+import vkurman.popularmovies2.model.ShowModel;
 import vkurman.popularmovies2.retrofit.ApiUtils;
-import vkurman.popularmovies2.retrofit.TMDBService;
 import vkurman.popularmovies2.utils.MovieUtils;
 import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
- * Displays details about person.
- * Created by Vassili Kurman on 30/09/2018.
+ * Displays details about tv show.
+ * Created by Vassili Kurman on 02/10/2018.
  * Version 1.0
  */
-public class PersonDetailsActivity extends AppCompatActivity {
+public class ShowDetailsActivity extends AppCompatActivity {
 
-    private final static String TAG = PersonDetailsActivity.class.getSimpleName();
+    private final static String TAG = ShowDetailsActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.poster_iv) ImageView ivPoster;
-    @BindView(R.id.tv_details_name) TextView tvName;
-    @BindView(R.id.tv_details_birthday) TextView tvBirthday;
-    @BindView(R.id.tv_details_place_of_birth) TextView tvPlaceOfBirth;
-    @BindView(R.id.tv_details_biography) TextView tvBiography;
+    @BindView(R.id.iv_backdrop) ImageView ivBackdrop;
+    @BindView(R.id.iv_poster) ImageView ivPoster;
+    @BindView(R.id.tv_details_title) TextView tvTitle;
+    @BindView(R.id.tv_details_year) TextView tvYear;
+    @BindView(R.id.tv_details_overview_text) TextView tvOverview;
+    @BindView(R.id.tv_details_crew_title) TextView tvCrewTitle;
+    @BindView(R.id.tv_details_crew_text) TextView tvCrew;
 
-    private TMDBService mService;
-    private long personId;
+    private long showId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_person_details);
+        setContentView(R.layout.activity_show_details);
         // Binding views
         ButterKnife.bind(this);
         // Setting Toolbar
@@ -75,11 +77,9 @@ public class PersonDetailsActivity extends AppCompatActivity {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mService = ApiUtils.getTMDBService();
-
         Intent intent = getIntent();
         if (intent != null) {
-            personId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, -1L);
+            showId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, -1L);
         } else {
             closeOnError();
         }
@@ -88,7 +88,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
         final Map<String, String> data = new HashMap<>();
         data.put("api_key", getString(R.string.api_key));
         data.put("language", "en-US");
-        mService.getPerson(personId, data).enqueue(getPersonCallback());
+        ApiUtils.getTMDBService().getShow(showId, data).enqueue(getShowCallback());
     }
 
     @Override
@@ -103,38 +103,57 @@ public class PersonDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates and Callback<PersonModel> callback for retrofit enqueue method.
+     * Creates and returns movies callback for retrofit enqueue method.
      *
-     * @return - Callback<PersonModel>
+     * @return - Callback<ShowModel>
      */
-    private Callback<PersonModel> getPersonCallback() {
-        return new Callback<PersonModel>() {
+    private Callback<ShowModel> getShowCallback() {
+        return new Callback<ShowModel>() {
             @Override
-            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
+            public void onResponse(Call<ShowModel> call, Response<ShowModel> response) {
                 if(response.isSuccessful()) {
-                    PersonModel personModel = response.body();
-                    Log.d(TAG, "Person retrieved: " + personModel.getName());
-                    tvName.setText(personModel.getName());
-                    tvBiography.setText(personModel.getBiography());
-                    tvBirthday.setText(personModel.getBirthday());
-                    tvPlaceOfBirth.setText(personModel.getPlaceOfBirth());
+                    ShowModel showModel = response.body();
+                    Log.d(TAG, "Show retrieved: " + showModel.getName());
+
+                    // Setting title for Toolbar
+                    toolbar.setTitle(showModel.getName());
+                    // Setting details
+                    tvTitle.setText(showModel.getName());
+                    tvYear.setText(MovieUtils.createYearSpanText(showModel.getFirstAirDate(), showModel.getLastAirDate()));
+                    tvOverview.setText(showModel.getOverview());
+                    if(showModel.getCreatedBy() != null && !showModel.getCreatedBy().isEmpty()) {
+                        // TODO create horizontal RecyclerView
+                        tvCrewTitle.setVisibility(View.VISIBLE);
+                        String crew = "";
+                        for(Crew c: showModel.getCreatedBy()) {
+                            crew = (crew.isEmpty()) ? c.getName() : crew + ", " + c.getName();
+                        }
+                        tvCrew.setText(crew);
+                        tvCrew.setVisibility(View.VISIBLE);
+                    }
 
                     Picasso.get()
-                            .load(MovieUtils.createFullIconPath(personModel.getProfilePath()))
+                            .load(MovieUtils.createFullIconPath(showModel.getBackdropPath()))
+                            .placeholder(R.drawable.ic_image_area)
+                            .error(R.drawable.ic_error_image)
+                            .into(ivBackdrop);
+
+                    Picasso.get()
+                            .load(MovieUtils.createFullIconPath(showModel.getPosterPath()))
                             .placeholder(R.drawable.ic_image_area)
                             .error(R.drawable.ic_error_image)
                             .into(ivPoster);
                 } else {
                     int statusCode  = response.code();
                     // handle request errors depending on status code
-                    Log.d(TAG, "Error status code: " + statusCode);
+                    Log.e(TAG, "Error status code: " + statusCode);
                 }
             }
 
             @Override
-            public void onFailure(Call<PersonModel> call, Throwable t) {
+            public void onFailure(Call<ShowModel> call, Throwable t) {
                 showErrorMessage();
-                Log.d(TAG, "error loading from API");
+                Log.e(TAG, "error loading from API");
 
             }
         };

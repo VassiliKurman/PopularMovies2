@@ -21,9 +21,11 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import vkurman.popularmovies2.model.MovieModel;
 import vkurman.popularmovies2.model.MoviesQueryResponse;
 import vkurman.popularmovies2.model.PeopleQueryResponse;
 import vkurman.popularmovies2.model.PersonModel;
+import vkurman.popularmovies2.model.ShowModel;
 import vkurman.popularmovies2.model.TVQueryResponse;
 
 /**
@@ -81,10 +83,28 @@ public interface TMDBService {
 
     /**
      *
+     * @param id - String for {@link Path @Path} which should be movie id.
+     * @param options - should include api_key as minimum
+     * @return Call<MovieModel>
+     */
+    @GET("movie/{id}")
+    Call<MovieModel> getMovie(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
      * @param id - String for {@link Path @Path} which should be persons id.
      * @param options - should include api_key as minimum
-     * @return Call<PeopleQueryResponse>
+     * @return Call<PersonModel>
      */
     @GET("person/{id}")
-    Call<PersonModel> getPerson(@Path("id") String id, @QueryMap Map<String, String> options);
+    Call<PersonModel> getPerson(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be show id.
+     * @param options - should include api_key as minimum
+     * @return Call<ShowModel>
+     */
+    @GET("tv/{id}")
+    Call<ShowModel> getShow(@Path("id") Long id, @QueryMap Map<String, String> options);
 }

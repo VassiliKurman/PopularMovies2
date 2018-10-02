@@ -205,4 +205,19 @@ public class MovieUtils {
         Log.d("MovieUtils", "Youtube path: " + path);
         return path;
     }
+
+    /**
+     * Constructing and returning String to display from - to years as text.
+     *
+     * @param startYear - String
+     * @param endYear - String
+     * @return String
+     */
+    public static String createYearSpanText(String startYear, String endYear) {
+        if(startYear == null || startYear == null) {
+            return null;
+        }
+
+        return "("+startYear.substring(0, 4) + "-" + endYear.substring(0, 4)+")";
+    }
 }

@@ -22,6 +22,7 @@
         <activity android:name=".MovieDetailsActivity" />
         <activity android:name=".MovieReviewsActivity" />
         <activity android:name=".ui.PersonDetailsActivity" />
+        <activity android:name=".ui.ShowDetailsActivity" />
 
         <provider
             android:name=".persistance.MoviesContentProvider"

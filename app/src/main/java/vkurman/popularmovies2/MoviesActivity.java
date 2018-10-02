@@ -57,6 +57,7 @@ import vkurman.popularmovies2.model.TVQueryResponse;
 import vkurman.popularmovies2.retrofit.ApiUtils;
 import vkurman.popularmovies2.retrofit.TMDBService;
 import vkurman.popularmovies2.ui.PersonDetailsActivity;
+import vkurman.popularmovies2.ui.ShowDetailsActivity;
 import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
@@ -405,7 +406,7 @@ public class MoviesActivity extends AppCompatActivity implements
             @Override
             public void onFailure(Call<PeopleQueryResponse> call, Throwable t) {
                 showErrorMessage();
-                Log.d("MoviesActivity", "error loading from API");
+                Log.d(TAG, "error loading from API");
 
             }
         };
@@ -417,8 +418,12 @@ public class MoviesActivity extends AppCompatActivity implements
 
     @Override
     public void onResultClick(long id) {
-        Intent intent = new Intent(this, PersonDetailsActivity.class);
-        intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+//        Intent intent = new Intent(this, PersonDetailsActivity.class);
+//        intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+//        startActivity(intent);
+
+        Intent intent = new Intent(this, ShowDetailsActivity.class);
+        intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
         startActivity(intent);
     }
 }
