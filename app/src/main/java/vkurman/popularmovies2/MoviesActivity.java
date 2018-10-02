@@ -420,18 +420,33 @@ public class MoviesActivity extends AppCompatActivity implements
         };
     }
 
+    /**
+     * Displays error message.
+     */
     private void showErrorMessage() {
         Toast.makeText(this, "Error retrieving data from TMDB", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResultClick(long id) {
-//        Intent intent = new Intent(this, PersonDetailsActivity.class);
-//        intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
-//        startActivity(intent);
-
-        Intent intent = new Intent(this, ShowDetailsActivity.class);
-        intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
-        startActivity(intent);
+        if(mAdapter instanceof RetrofitMoviesAdapter) {
+            Intent intent = new Intent(this, MovieDetailsActivity.class);
+            intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
+            startActivity(intent);
+        } else if(mAdapter instanceof MoviesAdapter) {
+            Intent intent = new Intent(this, MovieDetailsActivity.class);
+            intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
+            startActivity(intent);
+        } else if(mAdapter instanceof RetrofitTVsAdapter) {
+            Intent intent = new Intent(this, ShowDetailsActivity.class);
+            intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
+            startActivity(intent);
+        } else if(mAdapter instanceof RetrofitPeopleAdapter) {
+            Intent intent = new Intent(this, PersonDetailsActivity.class);
+            intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, getString(R.string.error_identifying_adapter), Toast.LENGTH_SHORT).show();
+        }
     }
 }

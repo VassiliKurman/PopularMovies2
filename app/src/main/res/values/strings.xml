@@ -95,4 +95,7 @@
     <string name="text_expand">Expand</string>
     <string name="text_collapse">Collapse</string>
 
+    <!-- Error messages -->
+    <string name="error_identifying_adapter">Error in identifying adapter</string>
+
 </resources>
