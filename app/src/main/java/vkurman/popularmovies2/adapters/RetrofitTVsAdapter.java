@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -46,7 +47,10 @@ public class RetrofitTVsAdapter extends RecyclerView.Adapter<RetrofitTVsAdapter.
 
     public class TVsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        @BindView(R.id.iv_list_poster_tv_show) ImageView posterImageView;
+        @BindView(R.id.iv_list_tv_show_backdrop) ImageView mBackdrop;
+        @BindView(R.id.tv_list_tv_show_vote_average) TextView mVoteAverage;
+        @BindView(R.id.tv_list_tv_show_name) TextView mName;
+        @BindView(R.id.tv_list_tv_show_date) TextView mDate;
 
         TVsViewHolder(View itemView, ResultListener resultListener) {
             super(itemView);
@@ -54,7 +58,7 @@ public class RetrofitTVsAdapter extends RecyclerView.Adapter<RetrofitTVsAdapter.
             ButterKnife.bind(this, itemView);
             mResultListener = resultListener;
             // Set separate click listeners to poster and favourite image
-            posterImageView.setOnClickListener(this);
+            mBackdrop.setOnClickListener(this);
         }
 
         @Override
@@ -93,15 +97,18 @@ public class RetrofitTVsAdapter extends RecyclerView.Adapter<RetrofitTVsAdapter.
             final ResultTV result = mResults.get(position);
             final long resultId = result.getId();
 
-            String imagePath = MovieUtils.createFullIconPath(result.getPosterPath());
+            String imagePath = MovieUtils.createFullIconPath(result.getBackdropPath());
 
             holder.itemView.setTag(resultId);
+            holder.mVoteAverage.setText(MovieUtils.formatPercentage(result.getVoteAverage()));
+            holder.mName.setText(result.getName());
+            holder.mDate.setText(MovieUtils.formatDate(result.getFirstAirDate()));
 
             Picasso.get()
                     .load(imagePath)
                     .placeholder(R.drawable.ic_image_area)
                     .error(R.drawable.ic_error_image)
-                    .into(holder.posterImageView);
+                    .into(holder.mBackdrop);
         }
     }
 

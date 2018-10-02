@@ -147,8 +147,7 @@ public class MoviesActivity extends AppCompatActivity implements
                     }
                 });
         // use a grid layout manager
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         // specifying an adapter and passing empty list at start
         mAdapter = new RetrofitMoviesAdapter(new ArrayList<ResultMovie>(0), this);
         mRecyclerView.setAdapter(mAdapter);
@@ -321,6 +320,9 @@ public class MoviesActivity extends AppCompatActivity implements
             public void onResponse(Call<MoviesQueryResponse> call, Response<MoviesQueryResponse> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "Movies retrieved: " + response.body().getResults().size());
+                    // Changing a grid layout manager
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(MoviesActivity.this, 2));
+
                     if(mAdapter instanceof RetrofitMoviesAdapter) {
                         ((RetrofitMoviesAdapter) mAdapter).updateData(response.body().getResults());
                         Log.d(TAG, "posts loaded from API");
@@ -355,6 +357,9 @@ public class MoviesActivity extends AppCompatActivity implements
             public void onResponse(Call<TVQueryResponse> call, Response<TVQueryResponse> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "TVs retrieved: " + response.body().getResults().size());
+                    // Changing a grid layout manager
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(MoviesActivity.this, 1));
+
                     if(mAdapter instanceof RetrofitTVsAdapter) {
                         ((RetrofitTVsAdapter) mAdapter).updateData(response.body().getResults());
                         Log.d(TAG, "posts loaded from API");
@@ -389,6 +394,9 @@ public class MoviesActivity extends AppCompatActivity implements
             public void onResponse(Call<PeopleQueryResponse> call, Response<PeopleQueryResponse> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "People retrieved: " + response.body().getResults().size());
+                    // Changing a grid layout manager
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(MoviesActivity.this, 2));
+
                     if(mAdapter instanceof RetrofitPeopleAdapter) {
                         ((RetrofitPeopleAdapter) mAdapter).updateData(response.body().getResults());
                         Log.d(TAG, "posts loaded from API");

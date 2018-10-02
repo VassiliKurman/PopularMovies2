@@ -23,6 +23,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -214,10 +220,35 @@ public class MovieUtils {
      * @return String
      */
     public static String createYearSpanText(String startYear, String endYear) {
-        if(startYear == null || startYear == null) {
+        if(startYear == null || endYear == null) {
             return null;
         }
 
         return "("+startYear.substring(0, 4) + "-" + endYear.substring(0, 4)+")";
+    }
+
+    /**
+     * Constructing and returning String representation of votes average in percents.
+     *
+     * @param voteAverage - Double
+     * @return String
+     */
+    public static String formatPercentage(Double voteAverage) {
+        return NumberFormat.getPercentInstance(Locale.getDefault()).format(voteAverage / 10);
+    }
+
+    /**
+     * Constructing and returning String representation of date.
+     *
+     * @param date - String
+     * @return String
+     */
+    public static String formatDate(String date) {
+        try {
+            Date parsedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(date);
+            return DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault()).format(parsedDate);
+        } catch (ParseException e) {
+            return date;
+        }
     }
 }
