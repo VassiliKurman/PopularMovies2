@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,46 +41,54 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import vkurman.popularmovies2.adapters.VideosAdapter;
 import vkurman.popularmovies2.loaders.VideosLoader;
+import vkurman.popularmovies2.model.Crew;
 import vkurman.popularmovies2.model.Movie;
+import vkurman.popularmovies2.model.MovieModel;
 import vkurman.popularmovies2.model.Video;
 import vkurman.popularmovies2.persistance.MoviesContract;
+import vkurman.popularmovies2.retrofit.ApiUtils;
 import vkurman.popularmovies2.utils.MovieUtils;
+import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
  * MovieDetailsActivity is displaying movie details and allows movie to add to favourites,
  * to read movie reviews and to watch movie trailers.
  *
  * Created by Vassili Kurman on 25/02/2018.
- * Version 1.0
+ * Version 2.0
  */
 public class MovieDetailsActivity extends AppCompatActivity
         implements View.OnClickListener, LoaderManager.LoaderCallbacks<List<Video>> {
 
     // Binding views
-    @BindView(R.id.header_image) ImageView ivMoviePoster;
-
-    @BindView(R.id.poster_iv) ImageView ivBackdrop;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.iv_backdrop) ImageView ivBackdrop;
+    @BindView(R.id.iv_poster) ImageView ivPoster;
     @BindView(R.id.iv_details_favourite) ImageView ivFavourite;
     @BindView(R.id.tv_details_title) TextView tvTitle;
-    @BindView(R.id.release_date_tv) TextView tvReleaseDate;
-    @BindView(R.id.vote_average_tv) TextView tvVoteAverage;
-    @BindView(R.id.plot_synopsis_tv) TextView tvPlotSynopsis;
+    @BindView(R.id.tv_release_date) TextView tvReleaseDate;
+    @BindView(R.id.tv_vote_average) TextView tvVoteAverage;
+    @BindView(R.id.tv_overview) TextView tvOverview;
     @BindView(R.id.rv_videos) RecyclerView mRecyclerView;
-
     @BindView(R.id.btn_reviews) Button btnReviews;
 
     private final static String TAG = "MovieDetailsActivity";
 
     // Reference to Movie object
-    private Movie movie;
+//    private Movie movie;
+    private long movieId;
     // MovieAdapter for Trailers RecycleView
     private VideosAdapter mAdapter;
     // Map of favourite movies
@@ -94,7 +103,6 @@ public class MovieDetailsActivity extends AppCompatActivity
         // Binding views
         ButterKnife.bind(this);
         // Setting Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
@@ -102,59 +110,68 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
 
         Intent intent = getIntent();
-        if (intent == null) {
+        if (intent != null) {
+            movieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, -1L);
+        } else {
             closeOnError();
         }
 
         dataChanged = false;
 
-        movie = intent.getParcelableExtra("movie");
-        // Return from method if movie not set
-        if(movie == null) {
-            return;
-        }
+        // Retrieving api key
+        final Map<String, String> data = new HashMap<>();
+        data.put("api_key", getString(R.string.api_key));
+        data.put("language", "en-US");
+        ApiUtils.getTMDBService().getMovie(movieId, data).enqueue(getMovieCallback());
 
-        Long movieId = movie.getMovieId();
-        String poster = movie.getMoviePoster();
-        String title = movie.getTitle();
-        String releaseDate = movie.getReleaseDate();
-        String voteAverage = movie.getVoteAverage();
-        String plotSynopsis = movie.getPlotSynopsis();
+        // TODO clear bellow
+//        movie = intent.getParcelableExtra("movie");
+//        // Return from method if movie not set
+//        if(movie == null) {
+//            return;
+//        }
+//
+//        Long movieId = movie.getMovieId();
+//        String poster = movie.getMoviePoster();
+//        String title = movie.getTitle();
+//        String releaseDate = movie.getReleaseDate();
+//        String voteAverage = movie.getVoteAverage();
+//        String plotSynopsis = movie.getPlotSynopsis();
+//
+//        // Setting text to text views
+//        tvTitle.setText(title);
+//        tvReleaseDate.setText(releaseDate.substring(0, 4));
+//        tvVoteAverage.setText(voteAverage);
+//        tvPlotSynopsis.setText(plotSynopsis);
+//        // Setting OnClickListener
+//        btnReviews.setOnClickListener(this);
+//        ivFavourite.setOnClickListener(this);
+//
+//        Picasso.get()
+//                .load(MovieUtils.createFullBackdropPath(poster))
+//                .placeholder(R.drawable.ic_image_area)
+//                .error(R.drawable.ic_error_image)
+//                .into(ivBackdrop);
+//
+//        Picasso.get()
+//                .load(MovieUtils.createFullPosterPath(poster))
+//                .placeholder(R.drawable.ic_image_area)
+//                .error(R.drawable.ic_error_image)
+//                .into(ivPoster);
 
-        // Setting text to text views
-        tvTitle.setText(title);
-        tvReleaseDate.setText(releaseDate.substring(0, 4));
-        tvVoteAverage.setText(voteAverage);
-        tvPlotSynopsis.setText(plotSynopsis);
-        // Setting OnClickListener
-        btnReviews.setOnClickListener(this);
-        ivFavourite.setOnClickListener(this);
-
-        Picasso.get()
-                .load(MovieUtils.createFullBackdropPath(poster))
-                .placeholder(R.drawable.ic_image_area)
-                .error(R.drawable.ic_error_image)
-                .into(ivBackdrop);
-
-        Picasso.get()
-                .load(MovieUtils.createFullPosterPath(poster))
-                .placeholder(R.drawable.ic_image_area)
-                .error(R.drawable.ic_error_image)
-                .into(ivMoviePoster);
-
-        loadFavourites();
-
-        if (favourites.get(movieId) != null) {
-            ivFavourite.setImageResource(R.drawable.ic_heart);
-        } else {
-            ivFavourite.setImageResource(R.drawable.ic_heart_outline);
-        }
-
-        setTitle(getString(R.string.activity_title_movie_details));
+        // TODO refactor bellow for favourite movies
+//        loadFavourites();
+//
+//        if (favourites.get(movieId) != null) {
+//            ivFavourite.setImageResource(R.drawable.ic_heart);
+//        } else {
+//            ivFavourite.setImageResource(R.drawable.ic_heart_outline);
+//        }
+//
+//        setTitle(getString(R.string.activity_title_movie_details));
 
         // Setting recycle view for trailers
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mAdapter = new VideosAdapter(new ArrayList<Video>());
         mRecyclerView.setAdapter(mAdapter);
 
@@ -196,14 +213,6 @@ public class MovieDetailsActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * Closes and displays message when error occurs
-     */
-    private void closeOnError() {
-        finish();
-        Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
     // TODO fix issue with favourite in details
@@ -259,24 +268,27 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
     }
 
+    // TODO refactor for reviews
     @Override
     public void onClick(View view) {
         if(view == btnReviews) {
-            if(movie != null) {
+            if(movieId >= 0) {
                 Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
-                intent.putExtra("movie", movie);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, movieId);
                 startActivity(intent);
             }
         } else if(view == ivFavourite) {
+            // TODO
+            Toast.makeText(this, "Favourite clicked", Toast.LENGTH_SHORT).show();
             // Sending message to adapter that image for favourite movie is clicked
-            favouriteClicked(view, movie);
+//            favouriteClicked(view, movie);
         }
     }
 
     @NonNull
     @Override
     public Loader<List<Video>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new VideosLoader(this, String.valueOf(movie.getMovieId()));
+        return new VideosLoader(this, String.valueOf(movieId));
     }
 
     @Override
@@ -295,4 +307,74 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Video>> loader) {}
+
+
+    /**
+     * Creates and returns movies callback for retrofit enqueue method.
+     *
+     * @return - Callback<MovieModel>
+     */
+    private Callback<MovieModel> getMovieCallback() {
+        return new Callback<MovieModel>() {
+            @Override
+            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
+                if(response.isSuccessful()) {
+                    MovieModel movieModel = response.body();
+                    Log.d(TAG, "Movie retrieved: " + movieModel.getTitle());
+
+                    // Setting title for Toolbar
+                    toolbar.setTitle(movieModel.getTitle());
+                    // Setting details
+                    tvTitle.setText(movieModel.getTitle());
+                    tvReleaseDate.setText(movieModel.getReleaseDate());
+                    tvVoteAverage.setText(MovieUtils.formatPercentage(movieModel.getVoteAverage()));
+                    tvOverview.setText(movieModel.getOverview());
+                    // Setting OnClickListener
+                    btnReviews.setOnClickListener(MovieDetailsActivity.this);
+                    ivFavourite.setOnClickListener(MovieDetailsActivity.this);
+
+                    Picasso.get()
+                            .load(MovieUtils.createFullBackdropPath(movieModel.getBackdropPath()))
+                            .placeholder(R.drawable.ic_image_area)
+                            .error(R.drawable.ic_error_image)
+                            .into(ivBackdrop);
+
+                    Picasso.get()
+                            .load(MovieUtils.createFullPosterPath(movieModel.getPosterPath()))
+                            .placeholder(R.drawable.ic_image_area)
+                            .error(R.drawable.ic_error_image)
+                            .into(ivPoster);
+
+                    // Loading trailers
+                    getSupportLoaderManager().initLoader(VideosLoader.ID, null, MovieDetailsActivity.this).forceLoad();
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.e(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieModel> call, Throwable t) {
+                showErrorMessage();
+                Log.e(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
+     * Displays message when error occurs during request.
+     */
+    private void showErrorMessage() {
+        Toast.makeText(this, "Error retrieving data from TMDB", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Closes and displays message when error occurs
+     */
+    private void closeOnError() {
+        finish();
+        Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
+    }
 }

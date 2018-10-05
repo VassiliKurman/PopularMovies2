@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package vkurman.popularmovies2;
 
 import android.content.Intent;
@@ -22,20 +37,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import vkurman.popularmovies2.adapters.ReviewsAdapter;
 import vkurman.popularmovies2.loaders.ReviewsLoader;
-import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.model.Review;
+import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
  * Activity that displays movie reviews
  */
 public class MovieReviewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Review>> {
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_reviews_title) TextView tvTitle;
     @BindView(R.id.rv_reviews) RecyclerView mRecyclerView;
 
-    private static final String TITLE = "Reviews";
     private ReviewsAdapter mAdapter;
-    private Movie movie;
+    private long mMovieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +59,6 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
         // Binding views
         ButterKnife.bind(this);
         // Setting Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
@@ -52,22 +66,16 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
         }
 
         Intent intent = getIntent();
-        if (intent == null) {
+        if (intent != null) {
+            mMovieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, -1L);
+        } else {
             closeOnError();
         }
-
-        movie = intent.getParcelableExtra("movie");
-        // Return from method if movie not set
-        if(movie == null) {
-            return;
-        }
-
-        tvTitle.setText(movie.getTitle());
-        setTitle(TITLE);
+        // Toolbar title
+        toolbar.setTitle("Reviews");
 
         // Setting recycle view for reviews
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new ReviewsAdapter(new ArrayList<Review>());
         mRecyclerView.setAdapter(mAdapter);
 
@@ -97,7 +105,7 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
     @NonNull
     @Override
     public Loader<List<Review>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new ReviewsLoader(this, String.valueOf(movie.getMovieId()));
+        return new ReviewsLoader(this, String.valueOf(mMovieId));
     }
 
     @Override
