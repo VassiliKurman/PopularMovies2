@@ -21,11 +21,13 @@
                     <item
                         android:id="@+id/navigation_drawer_discover_movies"
                         android:icon="@drawable/ic_magnify"
-                        android:title="@string/navigation_drawer_title_discover_movies" />
+                        android:title="@string/navigation_drawer_title_discover_movies"
+                        android:enabled="false"/>
                     <item
                         android:id="@+id/navigation_drawer_discover_tv_shows"
                         android:icon="@drawable/ic_magnify"
-                        android:title="@string/navigation_drawer_title_discover_tv_shows" />
+                        android:title="@string/navigation_drawer_title_discover_tv_shows"
+                        android:enabled="false"/>
                 </group>
             </menu>
         </item>
