@@ -119,7 +119,7 @@ public class ShowDetailsActivity extends AppCompatActivity {
                     toolbar.setTitle(showModel.getName());
                     // Setting details
                     tvTitle.setText(showModel.getName());
-                    tvYear.setText(MovieUtils.createYearSpanText(showModel.getFirstAirDate(), showModel.getLastAirDate()));
+                    tvYear.setText(MovieUtils.formatYearSpanText(showModel.getFirstAirDate(), showModel.getLastAirDate()));
                     tvOverview.setText(showModel.getOverview());
                     if(showModel.getCreatedBy() != null && !showModel.getCreatedBy().isEmpty()) {
                         // TODO create horizontal RecyclerView

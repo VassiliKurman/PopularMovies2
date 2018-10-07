@@ -32,7 +32,6 @@
     <string name="iv_person_poster_description">Person poster</string>
     <string name="iv_favourite_icon_description">Favourite icon</string>
     <string name="tv_title">Title</string>
-    <string name="tv_rating">Rating</string>
 
     // Navigation Drawer
     <string name="description_navigation_drawer_image">Header image for navigation drawer</string>
@@ -64,10 +63,16 @@
     <string name="link_toolbar_image">https://pixabay.com/en/film-cinema-movie-entertainment-2891853/</string>
     <string name="author_toolbar_image">QuinceMedia</string>
 
-    // Details activity
+    // Movie Details activity
     <string name="activity_title_movie_details">Movie Details</string>
+    <string name="tv_rating">User score:</string>
     <string name="btn_reviews">Reviews</string>
+    <string name="text_overview_title">Overview</string>
+    <string name="text_crew_title">Featured Crew</string>
+    <string name="text_cast_title">Top Billed Cast</string>
     <string name="text_trailers">Trailers</string>
+
+    <!-- People details activity -->
     <string name="text_biography">Biography</string>
     <string name="text_birthday">Birthday</string>
     <string name="text_place_of_birth">Place of birth</string>

@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.MovieModel;
 import vkurman.popularmovies2.model.MoviesQueryResponse;
 import vkurman.popularmovies2.model.PeopleQueryResponse;
@@ -107,4 +108,13 @@ public interface TMDBService {
      */
     @GET("tv/{id}")
     Call<ShowModel> getShow(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param selection - String for {@link Path @Path} which should be popular.
+     * @param options - should include api_key as minimum
+     * @return Call<PeopleQueryResponse>
+     */
+    @GET("movie/{selection}/credits")
+    Call<CreditsMovie> getMovieCredits(@Path("selection") Long selection, @QueryMap Map<String, String> options);
 }

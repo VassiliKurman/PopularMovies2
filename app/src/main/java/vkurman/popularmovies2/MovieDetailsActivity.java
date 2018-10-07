@@ -26,6 +26,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -51,14 +52,20 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vkurman.popularmovies2.adapters.MovieCrewAdapter;
+import vkurman.popularmovies2.adapters.RetrofitPeopleAdapter;
 import vkurman.popularmovies2.adapters.VideosAdapter;
+import vkurman.popularmovies2.listeners.ResultListener;
 import vkurman.popularmovies2.loaders.VideosLoader;
-import vkurman.popularmovies2.model.Crew;
+import vkurman.popularmovies2.model.CreditsMovie;
+import vkurman.popularmovies2.model.CrewMovie;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.model.MovieModel;
+import vkurman.popularmovies2.model.PeopleQueryResponse;
 import vkurman.popularmovies2.model.Video;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.retrofit.ApiUtils;
+import vkurman.popularmovies2.ui.PersonDetailsActivity;
 import vkurman.popularmovies2.utils.MovieUtils;
 import vkurman.popularmovies2.utils.MoviesConstants;
 
@@ -70,7 +77,7 @@ import vkurman.popularmovies2.utils.MoviesConstants;
  * Version 2.0
  */
 public class MovieDetailsActivity extends AppCompatActivity
-        implements View.OnClickListener, LoaderManager.LoaderCallbacks<List<Video>> {
+        implements View.OnClickListener, LoaderManager.LoaderCallbacks<List<Video>>, ResultListener {
 
     // Binding views
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -81,7 +88,8 @@ public class MovieDetailsActivity extends AppCompatActivity
     @BindView(R.id.tv_release_date) TextView tvReleaseDate;
     @BindView(R.id.tv_vote_average) TextView tvVoteAverage;
     @BindView(R.id.tv_overview) TextView tvOverview;
-    @BindView(R.id.rv_videos) RecyclerView mRecyclerView;
+    @BindView(R.id.rv_videos) RecyclerView mRecyclerViewTrailers;
+    @BindView(R.id.recyclerview_crew) RecyclerView mRecyclerViewCrew;
     @BindView(R.id.btn_reviews) Button btnReviews;
 
     private final static String TAG = "MovieDetailsActivity";
@@ -89,8 +97,10 @@ public class MovieDetailsActivity extends AppCompatActivity
     // Reference to Movie object
 //    private Movie movie;
     private long movieId;
-    // MovieAdapter for Trailers RecycleView
-    private VideosAdapter mAdapter;
+    // VideosAdapter for Trailers RecycleView
+    private VideosAdapter mTrailersAdapter;
+    // MovieCrewAdapter for Crew RecycleView
+    private MovieCrewAdapter mCrewAdapter;
     // Map of favourite movies
     private Map<Long, Long> favourites = new TreeMap<>();;
     // Indicator that data changed for result intent
@@ -170,10 +180,20 @@ public class MovieDetailsActivity extends AppCompatActivity
 //
 //        setTitle(getString(R.string.activity_title_movie_details));
 
+        // Setting recycle view for crew
+        mRecyclerViewCrew.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
+        mCrewAdapter = new MovieCrewAdapter(new ArrayList<CrewMovie>(), this);
+        mRecyclerViewCrew.setAdapter(mCrewAdapter);
+        // Loading data
+        // Retrieving api key
+        final Map<String, String> creditsData = new HashMap<>();
+        creditsData.put("api_key", getString(R.string.api_key));
+        ApiUtils.getTMDBService().getMovieCredits(movieId, creditsData).enqueue(getCreditsMovieCallback());
+
         // Setting recycle view for trailers
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
-        mAdapter = new VideosAdapter(new ArrayList<Video>());
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerViewTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
+        mTrailersAdapter = new VideosAdapter(new ArrayList<Video>());
+        mRecyclerViewTrailers.setAdapter(mTrailersAdapter);
 
         getSupportLoaderManager().initLoader(VideosLoader.ID, null, this).forceLoad();
     }
@@ -297,11 +317,11 @@ public class MovieDetailsActivity extends AppCompatActivity
             return;
         }
 
-        if(mAdapter == null) {
-            mAdapter = new VideosAdapter(data);
-            mRecyclerView.setAdapter(mAdapter);
+        if(mTrailersAdapter == null) {
+            mTrailersAdapter = new VideosAdapter(data);
+            mRecyclerViewTrailers.setAdapter(mTrailersAdapter);
         } else {
-            mAdapter.updateVideos(data);
+            mTrailersAdapter.updateVideos(data);
         }
     }
 
@@ -326,7 +346,7 @@ public class MovieDetailsActivity extends AppCompatActivity
                     toolbar.setTitle(movieModel.getTitle());
                     // Setting details
                     tvTitle.setText(movieModel.getTitle());
-                    tvReleaseDate.setText(movieModel.getReleaseDate());
+                    tvReleaseDate.setText(MovieUtils.formatYearText(movieModel.getReleaseDate()));
                     tvVoteAverage.setText(MovieUtils.formatPercentage(movieModel.getVoteAverage()));
                     tvOverview.setText(movieModel.getOverview());
                     // Setting OnClickListener
@@ -364,6 +384,36 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
     /**
+     * Creates and returns credits callback for retrofit enqueue method.
+     *
+     * @return - Callback<CreditsMovie>
+     */
+    private Callback<CreditsMovie> getCreditsMovieCallback() {
+        return new Callback<CreditsMovie>() {
+            @Override
+            public void onResponse(Call<CreditsMovie> call, Response<CreditsMovie> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Crew retrieved: " + response.body().getCrew().size());
+
+                    mCrewAdapter.updateData(response.body().getCrew());
+                    Log.d(TAG, "data loaded from API");
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.d(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditsMovie> call, Throwable t) {
+                showErrorMessage();
+                Log.d(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
      * Displays message when error occurs during request.
      */
     private void showErrorMessage() {
@@ -376,5 +426,12 @@ public class MovieDetailsActivity extends AppCompatActivity
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResultClick(long id) {
+        Intent intent = new Intent(this, PersonDetailsActivity.class);
+        intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+        startActivity(intent);
     }
 }

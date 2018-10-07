@@ -230,12 +230,26 @@ public class MovieUtils {
      * @param endYear - String
      * @return String
      */
-    public static String createYearSpanText(String startYear, String endYear) {
+    public static String formatYearSpanText(String startYear, String endYear) {
         if(startYear == null || endYear == null) {
             return null;
         }
 
         return "("+startYear.substring(0, 4) + "-" + endYear.substring(0, 4)+")";
+    }
+
+    /**
+     * Constructing and returning String to display from - to years as text.
+     *
+     * @param date - String
+     * @return String
+     */
+    public static String formatYearText(String date) {
+        if(date == null) {
+            return null;
+        }
+
+        return "("+date.substring(0, 4) +")";
     }
 
     /**

@@ -83,22 +83,22 @@
                 style="@style/DefaultView"
                 android:id="@+id/tv_details_title"
                 android:paddingTop="@dimen/default_text_padding"
-                android:textSize="@dimen/details_year_text_size"
+                android:textSize="@dimen/details_subtitle_text_size"
                 app:layout_constraintStart_toEndOf="@id/iv_poster"
                 app:layout_constraintTop_toBottomOf="@id/iv_backdrop" />
 
             <TextView
                 style="@style/DefaultView"
                 android:id="@+id/tv_release_date"
-                android:textSize="@dimen/details_year_text_size"
-                app:layout_constraintStart_toStartOf="@id/tv_details_title"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_title" />
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toEndOf="@id/tv_details_title"
+                app:layout_constraintTop_toTopOf="@id/tv_details_title" />
 
             <TextView
                 style="@style/DefaultView"
                 android:id="@+id/tv_rating"
-                app:layout_constraintStart_toStartOf="@id/tv_release_date"
-                app:layout_constraintTop_toBottomOf="@id/tv_release_date"
+                app:layout_constraintStart_toStartOf="@id/tv_details_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_title"
                 android:text="@string/tv_rating"/>
 
             <TextView
@@ -124,24 +124,46 @@
 
             <TextView
                 style="@style/DefaultView"
-                android:id="@+id/tv_overview"
-                android:paddingTop="@dimen/default_text_padding"
-                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/tv_overview_title"
+                android:padding="@dimen/default_text_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                android:text="@string/text_overview_title"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_reviews" />
 
-            <View
-                android:id="@+id/divider_trailers"
-                style="@style/HorizontalDivider"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_overview"/>
+            <TextView
+                style="@style/DefaultView"
+                android:id="@+id/tv_overview"
+                android:padding="@dimen/default_text_padding"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_overview_title" />
+
+            <TextView
+                style="@style/DefaultView"
+                android:id="@+id/tv_details_crew_title"
+                android:padding="@dimen/default_text_padding"
+                android:text="@string/text_crew_title"
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_overview" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_crew"
+                android:scrollbars="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_crew_title" />
 
             <TextView
                 android:id="@+id/tv_trailers_text"
                 style="@style/DefaultView"
+                android:padding="@dimen/default_text_padding"
                 android:text="@string/text_trailers"
-                android:textSize="@dimen/details_title_text_size"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_trailers"/>
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_crew"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_videos"
@@ -149,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_trailers_text"/>
 
         </android.support.constraint.ConstraintLayout>
