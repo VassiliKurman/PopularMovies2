@@ -40,4 +40,21 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
+    <style name="InlineTitle" parent="InlineText">
+        <item name="android:paddingBottom">@dimen/default_no_padding</item>
+        <item name="android:paddingStart">@dimen/details_text_padding_start</item>
+        <item name="android:paddingEnd">@dimen/default_no_padding</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="InlineText" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/default_no_padding</item>
+        <item name="android:paddingBottom">@dimen/details_default_padding</item>
+        <item name="android:paddingStart">@dimen/details_subtext_padding_start</item>
+        <item name="android:paddingEnd">@dimen/details_default_padding</item>
+        <item name="android:textSize">@dimen/details_normal_text_size</item>
+    </style>
+
 </resources>

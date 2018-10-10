@@ -74,66 +74,179 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_text_padding"
                 android:textSize="@dimen/details_title_text_size"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/poster_iv" />
 
             <TextView
-                android:id="@+id/tv_details_birthday_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/default_text_padding"
-                android:textSize="@dimen/details_subtitle_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_name"
-                android:text="@string/text_birthday"/>
-
-            <TextView
-                android:id="@+id/tv_details_birthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/default_text_padding"
-                android:textSize="@dimen/details_normal_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_birthday_title" />
-
-            <TextView
-                android:id="@+id/tv_details_place_of_birth_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/default_text_padding"
-                android:textSize="@dimen/details_subtitle_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_birthday"
-                android:text="@string/text_place_of_birth"/>
-
-            <TextView
-                android:id="@+id/tv_details_place_of_birth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/default_text_padding"
-                android:textSize="@dimen/details_normal_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth_title" />
-
-            <TextView
                 android:id="@+id/tv_details_biography_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/default_text_padding"
+                android:padding="@dimen/details_default_padding"
                 android:textSize="@dimen/details_subtitle_text_size"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth"
-                android:text="@string/text_biography"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_details_name"
+                android:text="@string/text_people_details_biography"/>
 
             <TextView
                 android:id="@+id/tv_details_biography"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/default_text_padding"
+                android:paddingTop="@dimen/default_no_padding"
+                android:paddingBottom="@dimen/details_default_padding"
+                android:paddingStart="@dimen/details_text_padding_start"
+                android:paddingEnd="@dimen/details_default_padding"
                 android:textSize="@dimen/details_normal_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_biography_title" />
+
+            <TextView
+                android:id="@+id/tv_details_known_for_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/details_default_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_biography"
+                android:text="@string/text_people_details_known_for"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_known_for"
+                android:scrollbars="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_known_for_title"/>
+
+            <TextView
+                android:id="@+id/tv_details_acting_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/details_default_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_known_for"
+                android:text="@string/text_people_details_acting"/>
+
+            <TextView
+                android:id="@+id/tv_details_acting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/details_default_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_acting_title"
+                android:text="Details will go here"/>
+
+            <!-- Personal Info -->
+            <TextView
+                android:id="@+id/tv_details_personal_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/details_default_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_acting"
+                android:text="@string/text_people_details_personal_info"/>
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/tv_details_known_for_text_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_personal_info_title"
+                android:text="@string/text_people_details_known_for"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/tv_details_known_for_text"
+                app:layout_constraintStart_toStartOf="@id/tv_details_known_for_text_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_known_for_text_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/tv_details_gender_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_known_for_text"
+                android:text="@string/text_people_details_gender"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/tv_details_gender"
+                app:layout_constraintStart_toStartOf="@id/tv_details_gender_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_gender_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/tv_details_known_credits_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_gender"
+                android:text="@string/text_people_details_known_credits"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/tv_details_known_credits"
+                app:layout_constraintStart_toStartOf="@id/tv_details_known_credits_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_known_credits_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/tv_details_birthday_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_known_credits"
+                android:text="@string/text_people_details_birthday"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/tv_details_birthday"
+                app:layout_constraintStart_toStartOf="@id/tv_details_birthday_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_birthday_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/tv_details_place_of_birth_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_birthday"
+                android:text="@string/text_people_details_place_of_birth"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/tv_details_place_of_birth"
+                app:layout_constraintStart_toStartOf="@id/tv_details_place_of_birth_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/tv_details_official_site_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth"
+                android:text="@string/text_people_details_official_site"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/tv_details_official_site"
+                app:layout_constraintStart_toStartOf="@id/tv_details_official_site_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_official_site_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/tv_details_also_known_as_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_official_site"
+                android:text="@string/text_people_details_also_known_as"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/tv_details_also_known_as"
+                app:layout_constraintStart_toStartOf="@id/tv_details_also_known_as_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_also_known_as_title" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

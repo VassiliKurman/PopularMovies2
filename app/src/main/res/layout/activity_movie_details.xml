@@ -90,15 +90,14 @@
             <TextView
                 style="@style/DefaultView"
                 android:id="@+id/tv_release_date"
-                android:textSize="@dimen/details_subtitle_text_size"
-                app:layout_constraintStart_toEndOf="@id/tv_details_title"
-                app:layout_constraintTop_toTopOf="@id/tv_details_title" />
+                app:layout_constraintStart_toStartOf="@id/tv_details_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_title" />
 
             <TextView
                 style="@style/DefaultView"
                 android:id="@+id/tv_rating"
-                app:layout_constraintStart_toStartOf="@id/tv_details_title"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_title"
+                app:layout_constraintStart_toStartOf="@id/tv_release_date"
+                app:layout_constraintTop_toBottomOf="@id/tv_release_date"
                 android:text="@string/tv_rating"/>
 
             <TextView

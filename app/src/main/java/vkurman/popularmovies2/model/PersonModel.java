@@ -34,7 +34,7 @@ public class PersonModel {
     private String knownForDepartment;
     @SerializedName("deathday")
     @Expose
-    private Object deathday;
+    private String deathday;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -67,7 +67,7 @@ public class PersonModel {
     private String imdbId;
     @SerializedName("homepage")
     @Expose
-    private Object homepage;
+    private String homepage;
 
     public String getBirthday() {
         return birthday;
@@ -85,11 +85,11 @@ public class PersonModel {
         this.knownForDepartment = knownForDepartment;
     }
 
-    public Object getDeathday() {
+    public String getDeathday() {
         return deathday;
     }
 
-    public void setDeathday(Object deathday) {
+    public void setDeathday(String deathday) {
         this.deathday = deathday;
     }
 
@@ -173,11 +173,11 @@ public class PersonModel {
         this.imdbId = imdbId;
     }
 
-    public Object getHomepage() {
+    public String getHomepage() {
         return homepage;
     }
 
-    public void setHomepage(Object homepage) {
+    public void setHomepage(String homepage) {
         this.homepage = homepage;
     }
 }

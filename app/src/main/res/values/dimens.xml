@@ -49,6 +49,7 @@
     <dimen name="details_default_padding">8dp</dimen>
     <dimen name="details_subtitle_padding_start">8dp</dimen>
     <dimen name="details_text_padding_start">16dp</dimen>
+    <dimen name="details_subtext_padding_start">24dp</dimen>
     <dimen name="details_year_padding_top">0dp</dimen>
 
 </resources>

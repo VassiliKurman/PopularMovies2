@@ -73,9 +73,20 @@
     <string name="text_trailers">Trailers</string>
 
     <!-- People details activity -->
-    <string name="text_biography">Biography</string>
-    <string name="text_birthday">Birthday</string>
-    <string name="text_place_of_birth">Place of birth</string>
+    <string name="text_people_details_biography">Biography</string>
+    <string name="text_people_details_known_for">Known For</string>
+    <string name="text_people_details_acting">Acting</string>
+    <string name="text_people_details_personal_info">Personal Info</string>
+    <string name="text_people_details_gender">Gender</string>
+    <string name="text_people_details_known_credits">Known Credits</string>
+    <string name="text_people_details_birthday">Birthday</string>
+    <string name="text_people_details_place_of_birth">Place of Birth</string>
+    <string name="text_people_details_official_site">Official Site</string>
+    <string name="text_people_details_also_known_as">Also Known As</string>
+    <string name="text_people_details_female">Female</string>
+    <string name="text_people_details_male">Male</string>
+    <string name="text_people_details_unspecified">Unspecified</string>
+    <string name="text_people_details_empty">-</string>
 
     // TV Show Details Activity
     <string name="iv_tv_show_backdrop">TV Show backdrop</string>

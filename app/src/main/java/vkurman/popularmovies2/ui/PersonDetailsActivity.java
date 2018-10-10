@@ -16,9 +16,10 @@
 package vkurman.popularmovies2.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -55,9 +56,15 @@ public class PersonDetailsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.poster_iv) ImageView ivPoster;
     @BindView(R.id.tv_details_name) TextView tvName;
+    @BindView(R.id.tv_details_biography) TextView tvBiography;
+    @BindView(R.id.recyclerview_known_for) RecyclerView recyclerViewKnownFor;
+    @BindView(R.id.tv_details_known_for_text) TextView tvKnownFor;
+    @BindView(R.id.tv_details_gender) TextView tvGender;
+    @BindView(R.id.tv_details_known_credits) TextView tvKnownCredits;
     @BindView(R.id.tv_details_birthday) TextView tvBirthday;
     @BindView(R.id.tv_details_place_of_birth) TextView tvPlaceOfBirth;
-    @BindView(R.id.tv_details_biography) TextView tvBiography;
+    @BindView(R.id.tv_details_official_site) TextView tvOfficialSite;
+    @BindView(R.id.tv_details_also_known_as) TextView tvAlsoKnownAs;
 
     private TMDBService mService;
     private long personId;
@@ -114,10 +121,25 @@ public class PersonDetailsActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     PersonModel personModel = response.body();
                     Log.d(TAG, "Person retrieved: " + personModel.getName());
+                    // Setting toolbar title
+                    toolbar.setTitle(personModel.getName());
+                    // Setting details
                     tvName.setText(personModel.getName());
                     tvBiography.setText(personModel.getBiography());
+                    // TODO create recyclerview
+//                    recyclerViewKnownFor;
+                    tvKnownFor.setText(personModel.getKnownForDepartment());
+                    // TODO call to get gender
+                    tvGender.setText(personModel.getGender() == 1 ?
+                            getString(R.string.text_people_details_female) : personModel.getGender() == 2 ?
+                            getString(R.string.text_people_details_male) : getString(R.string.text_people_details_unspecified));
+                    // TODO get credit count
+                    tvKnownCredits.setText("0");
                     tvBirthday.setText(personModel.getBirthday());
                     tvPlaceOfBirth.setText(personModel.getPlaceOfBirth());
+                    tvOfficialSite.setText(personModel.getHomepage() == null ? getString(R.string.text_people_details_empty) : personModel.getHomepage());
+                    // TODO add MovieUtils call to display as string
+                    tvAlsoKnownAs.setText(personModel.getAlsoKnownAs().toString());
 
                     Picasso.get()
                             .load(MovieUtils.createFullPosterPath(personModel.getProfilePath()))
