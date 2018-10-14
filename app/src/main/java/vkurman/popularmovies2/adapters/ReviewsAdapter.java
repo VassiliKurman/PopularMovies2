@@ -1,8 +1,23 @@
+/*
+ * Copyright (C) 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package vkurman.popularmovies2.adapters;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,65 +25,59 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import vkurman.popularmovies2.R;
-import vkurman.popularmovies2.model.Review;
+import vkurman.popularmovies2.model.ResultMovieReview;
 
 /**
- * ReviewsListAdapter
+ * ReviewsListAdapter is adapter for movie reviews recycler view
  * Created by Vassili Kurman on 23/03/2018.
  * Version 1.0
  */
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsViewHolder> {
 
-    private List<Review> reviews;
-    private int mExpandedPosition = -1;
+    private List<ResultMovieReview> reviews;
 
     /**
      * Provides a reference to the views for each data item.
      */
-    public static class ReviewsViewHolder extends RecyclerView.ViewHolder {
+    class ReviewsViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mAuthor;
-        public TextView mContent;
-        public Button mExpandableButton;
+        @BindView(R.id.tv_author) TextView mAuthor;
+        @BindView(R.id.tv_review) TextView mContent;
+        @BindView(R.id.btn_expand) Button mExpandableButton;
 
-        public ReviewsViewHolder(View view) {
+        ReviewsViewHolder(View view) {
             super(view);
-
-            mAuthor = view.findViewById(R.id.tv_author);
-            mContent = view.findViewById(R.id.tv_review);
-            mExpandableButton = view.findViewById(R.id.btn_expand);
+            // Binding views
+            ButterKnife.bind(this, itemView);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ReviewsAdapter(List<Review> reviews) {
+    public ReviewsAdapter(List<ResultMovieReview> reviews) {
         this.reviews = reviews;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ReviewsAdapter.ReviewsViewHolder onCreateViewHolder(ViewGroup parent,
+    @NonNull
+    public ReviewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                    int viewType) {
-        Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.list_review_layout;
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        View view = inflater.inflate(layoutIdForListItem, parent, false);
-
-        return new ReviewsAdapter.ReviewsViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.list_review_layout, parent, false);
+        return new ReviewsViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ReviewsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReviewsViewHolder holder, int position) {
         if(position >= 0 && position < reviews.size()) {
-            final Review review = reviews.get(position);
+            final ResultMovieReview review = reviews.get(position);
+            Log.d(ReviewsAdapter.class.getSimpleName(), "Review id: " + review.getId());
+            Log.d(ReviewsAdapter.class.getSimpleName(), "Review author: " + review.getAuthor());
+            Log.d(ReviewsAdapter.class.getSimpleName(), "Review content: " + review.getContent());
 
-            if(review == null) {
-                return;
-            }
             holder.mAuthor.setText(review.getAuthor());
             holder.mContent.setText(review.getContent());
             final int maxLines = 5;
@@ -104,9 +113,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     /**
      * Updates reviews.
      *
-     * @param reviews
+     * @param reviews - List<ResultMovieReview>
      */
-    public void updateReviews(List<Review> reviews) {
+    public void updateReviews(List<ResultMovieReview> reviews) {
         this.reviews = reviews;
         notifyDataSetChanged();
     }

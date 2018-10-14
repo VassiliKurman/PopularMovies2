@@ -96,7 +96,8 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     // Reference to Movie object
 //    private Movie movie;
-    private long movieId;
+    private long mMovieId;
+    private String mMovieTitle;
     // VideosAdapter for Trailers RecycleView
     private VideosAdapter mTrailersAdapter;
     // MovieCrewAdapter for Crew RecycleView
@@ -121,7 +122,7 @@ public class MovieDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         if (intent != null) {
-            movieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, -1L);
+            mMovieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, -1L);
         } else {
             closeOnError();
         }
@@ -132,7 +133,7 @@ public class MovieDetailsActivity extends AppCompatActivity
         final Map<String, String> data = new HashMap<>();
         data.put("api_key", getString(R.string.api_key));
         data.put("language", "en-US");
-        ApiUtils.getTMDBService().getMovie(movieId, data).enqueue(getMovieCallback());
+        ApiUtils.getTMDBService().getMovie(mMovieId, data).enqueue(getMovieCallback());
 
         // TODO clear bellow
 //        movie = intent.getParcelableExtra("movie");
@@ -184,11 +185,12 @@ public class MovieDetailsActivity extends AppCompatActivity
         mRecyclerViewCrew.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mCrewAdapter = new MovieCrewAdapter(new ArrayList<CrewMovie>(), this);
         mRecyclerViewCrew.setAdapter(mCrewAdapter);
-        // Loading data
+
         // Retrieving api key
         final Map<String, String> creditsData = new HashMap<>();
         creditsData.put("api_key", getString(R.string.api_key));
-        ApiUtils.getTMDBService().getMovieCredits(movieId, creditsData).enqueue(getCreditsMovieCallback());
+        // Requesting for data
+        ApiUtils.getTMDBService().getMovieCredits(mMovieId, creditsData).enqueue(getCreditsMovieCallback());
 
         // Setting recycle view for trailers
         mRecyclerViewTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
@@ -219,6 +221,7 @@ public class MovieDetailsActivity extends AppCompatActivity
             Long id = cursor.getLong(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID));
             favourites.put(id, id);
         }
+        cursor.close();
     }
 
 
@@ -292,9 +295,10 @@ public class MovieDetailsActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         if(view == btnReviews) {
-            if(movieId >= 0) {
+            if(mMovieId >= 0) {
                 Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
-                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, movieId);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, mMovieId);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_TITLE, mMovieTitle);
                 startActivity(intent);
             }
         } else if(view == ivFavourite) {
@@ -308,7 +312,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     @NonNull
     @Override
     public Loader<List<Video>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new VideosLoader(this, String.valueOf(movieId));
+        return new VideosLoader(this, String.valueOf(mMovieId));
     }
 
     @Override
@@ -344,6 +348,9 @@ public class MovieDetailsActivity extends AppCompatActivity
 
                     // Setting title for Toolbar
                     toolbar.setTitle(movieModel.getTitle());
+                    // Setting title
+                    mMovieTitle = movieModel.getTitle();
+
                     // Setting details
                     tvTitle.setText(movieModel.getTitle());
                     tvReleaseDate.setText(MovieUtils.formatYearText(movieModel.getReleaseDate()));
@@ -394,8 +401,15 @@ public class MovieDetailsActivity extends AppCompatActivity
             public void onResponse(Call<CreditsMovie> call, Response<CreditsMovie> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "Crew retrieved: " + response.body().getCrew().size());
+                    // Removing incomplete crew members
+                    List<CrewMovie> crew = new ArrayList<>();
+                    for(CrewMovie c: response.body().getCrew()) {
+                        if(c.getProfilePath() != null) {
+                            crew.add(c);
+                        }
+                    }
 
-                    mCrewAdapter.updateData(response.body().getCrew());
+                    mCrewAdapter.updateData(crew);
                     Log.d(TAG, "data loaded from API");
                 } else {
                     int statusCode  = response.code();

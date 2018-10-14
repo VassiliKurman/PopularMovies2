@@ -20,12 +20,14 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.MovieModel;
 import vkurman.popularmovies2.model.MoviesQueryResponse;
 import vkurman.popularmovies2.model.PeopleQueryResponse;
 import vkurman.popularmovies2.model.PersonModel;
+import vkurman.popularmovies2.model.ResultMovieReviews;
 import vkurman.popularmovies2.model.ShowModel;
 import vkurman.popularmovies2.model.TVQueryResponse;
 
@@ -113,8 +115,17 @@ public interface TMDBService {
      *
      * @param selection - String for {@link Path @Path} which should be popular.
      * @param options - should include api_key as minimum
-     * @return Call<PeopleQueryResponse>
+     * @return Call<CreditsMovie>
      */
     @GET("movie/{selection}/credits")
     Call<CreditsMovie> getMovieCredits(@Path("selection") Long selection, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param selection - String for {@link Path @Path} which should be popular.
+     * @param options - should include api_key as minimum
+     * @return Call<ResultMovieReviews>
+     */
+    @GET("movie/{selection}/reviews")
+    Call<ResultMovieReviews> getMovieReviews(@Path("selection") Long selection, @QueryMap Map<String, String> options);
 }

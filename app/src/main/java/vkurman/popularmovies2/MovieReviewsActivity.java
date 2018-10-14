@@ -16,34 +16,38 @@
 package vkurman.popularmovies2;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import vkurman.popularmovies2.adapters.ReviewsAdapter;
-import vkurman.popularmovies2.loaders.ReviewsLoader;
-import vkurman.popularmovies2.model.Review;
+import vkurman.popularmovies2.model.ResultMovieReview;
+import vkurman.popularmovies2.model.ResultMovieReviews;
+import vkurman.popularmovies2.retrofit.ApiUtils;
 import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
  * Activity that displays movie reviews
  */
-public class MovieReviewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Review>> {
+public class MovieReviewsActivity extends AppCompatActivity {
+
+    private static final String TAG = MovieReviewsActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_reviews_title) TextView tvTitle;
@@ -51,6 +55,7 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
 
     private ReviewsAdapter mAdapter;
     private long mMovieId;
+    private String mMovieTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +73,22 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
         Intent intent = getIntent();
         if (intent != null) {
             mMovieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, -1L);
+            mMovieTitle = intent.getStringExtra(MoviesConstants.INTENT_EXTRA_MOVIE_TITLE);
+            Log.d(TAG, "Retrieved movie id [ " + mMovieId + " ] and movie title: " + mMovieTitle);
         } else {
             closeOnError();
         }
-        // Toolbar title
-        toolbar.setTitle("Reviews");
 
         // Setting recycle view for reviews
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ReviewsAdapter(new ArrayList<Review>());
+        mAdapter = new ReviewsAdapter(new ArrayList<ResultMovieReview>());
         mRecyclerView.setAdapter(mAdapter);
 
-        // Setting loaders
-        getSupportLoaderManager().initLoader(ReviewsLoader.ID, null, this).forceLoad();
+        // Retrieving api key
+        final Map<String, String> reviewsData = new HashMap<>();
+        reviewsData.put("api_key", getString(R.string.api_key));
+        // Requesting for data
+        ApiUtils.getTMDBService().getMovieReviews(mMovieId, reviewsData).enqueue(getReviewsMovieCallback());
     }
 
     @Override
@@ -102,26 +110,42 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    @NonNull
-    @Override
-    public Loader<List<Review>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new ReviewsLoader(this, String.valueOf(mMovieId));
+    /**
+     * Creates and returns reviews callback for retrofit enqueue method.
+     *
+     * @return - Callback<ResultMovieReviews>
+     */
+    private Callback<ResultMovieReviews> getReviewsMovieCallback() {
+        return new Callback<ResultMovieReviews>() {
+            @Override
+            public void onResponse(Call<ResultMovieReviews> call, Response<ResultMovieReviews> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Reviews retrieved: " + response.body().getResults().size());
+
+                    mAdapter.updateReviews(response.body().getResults());
+                    // Toolbar title
+                    toolbar.setTitle(mMovieTitle);
+                    Log.d(TAG, "data loaded from API");
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.d(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultMovieReviews> call, Throwable t) {
+                showErrorMessage();
+                Log.d(TAG, "error loading from API");
+
+            }
+        };
     }
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<List<Review>> loader, List<Review> data) {
-        if(data == null) {
-            return;
-        }
-
-        if(mAdapter == null) {
-            mAdapter = new ReviewsAdapter(data);
-            mRecyclerView.setAdapter(mAdapter);
-        } else {
-            mAdapter.updateReviews(data);
-        }
+    /**
+     * Displays message when error occurs during request.
+     */
+    private void showErrorMessage() {
+        Toast.makeText(this, "Error retrieving data from TMDB", Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<List<Review>> loader) {}
 }
