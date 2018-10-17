@@ -69,7 +69,7 @@ public class RetrofitTVsAdapter extends RecyclerView.Adapter<RetrofitTVsAdapter.
             int position = getAdapterPosition();
             if(position >= 0 && position < mResults.size()) {
                 ResultTV result = mResults.get(position);
-                mResultListener.onResultClick(result.getId());
+                mResultListener.onResultClick(result.getId(), null);
             }
         }
     }

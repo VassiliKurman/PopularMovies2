@@ -15,11 +15,13 @@
  */
 package vkurman.popularmovies2.listeners;
 
+import android.os.Bundle;
+
 /**
  * ResultListener for adapters.
  * Created by Vassili Kurman on 23/09/2018.
  * Version 1.0
  */
 public interface ResultListener {
-    void onResultClick(long id);
+    void onResultClick(long id, Bundle bundle);
 }

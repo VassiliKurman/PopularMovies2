@@ -15,6 +15,10 @@
  */
 package vkurman.popularmovies2.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -24,7 +28,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Vassili Kurman on 22/09/2018.
  * Version 1.0
  */
-public class KnownFor {
+public class KnownFor implements Parcelable {
     @SerializedName("vote_average")
     @Expose
     private Double voteAverage;
@@ -57,7 +61,7 @@ public class KnownFor {
     private String originalTitle;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds = null;
+    private List<Integer> genreIds = new ArrayList<>();
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
@@ -81,7 +85,40 @@ public class KnownFor {
     private String firstAirDate;
     @SerializedName("origin_country")
     @Expose
-    private List<String> originCountry = null;
+    private List<String> originCountry = new ArrayList<>();
+
+    public static final Parcelable.Creator<KnownFor> CREATOR
+            = new Parcelable.Creator<KnownFor>() {
+        public KnownFor createFromParcel(Parcel in) {
+            return new KnownFor(in);
+        }
+
+        public KnownFor[] newArray(int size) {
+            return new KnownFor[size];
+        }
+    };
+
+    KnownFor(Parcel in) {
+        voteAverage = in.readDouble();
+        voteCount = in.readInt();
+        id = in.readInt();
+        video = in.readByte() != 0;
+        mediaType = in.readString();
+        title = in.readString();
+        popularity = in.readDouble();
+        posterPath = in.readString();
+        originalLanguage = in.readString();
+        originalTitle = in.readString();
+        in.readList(genreIds, Integer.class.getClassLoader());
+        backdropPath = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        releaseDate = in.readString();
+        originalName = in.readString();
+        name = in.readString();
+        firstAirDate = in.readString();
+        in.readList(originCountry, String.class.getClassLoader());
+    }
 
     public Double getVoteAverage() {
         return voteAverage;
@@ -233,5 +270,33 @@ public class KnownFor {
 
     public void setOriginCountry(List<String> originCountry) {
         this.originCountry = originCountry;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(voteAverage);
+        dest.writeInt(voteCount);
+        dest.writeInt(id);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeString(mediaType);
+        dest.writeString(title);
+        dest.writeDouble(popularity);
+        dest.writeString(posterPath);
+        dest.writeString(originalLanguage);
+        dest.writeString(originalTitle);
+        dest.writeList(genreIds);
+        dest.writeString(backdropPath);
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+        dest.writeString(originalName);
+        dest.writeString(name);
+        dest.writeString(firstAirDate);
+        dest.writeList(originCountry);
     }
 }

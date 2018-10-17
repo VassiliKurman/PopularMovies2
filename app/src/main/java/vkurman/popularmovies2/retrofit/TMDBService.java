@@ -26,6 +26,7 @@ import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.MovieModel;
 import vkurman.popularmovies2.model.MoviesQueryResponse;
 import vkurman.popularmovies2.model.PeopleQueryResponse;
+import vkurman.popularmovies2.model.PersonCombinedCredits;
 import vkurman.popularmovies2.model.PersonModel;
 import vkurman.popularmovies2.model.ResultMovieReviews;
 import vkurman.popularmovies2.model.ShowModel;
@@ -101,6 +102,15 @@ public interface TMDBService {
      */
     @GET("person/{id}")
     Call<PersonModel> getPerson(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be persons id.
+     * @param options - should include api_key as minimum
+     * @return Call<PersonCombinedCredits>
+     */
+    @GET("person/{id}/combined_credits")
+    Call<PersonCombinedCredits> getPersonCombinedCredits(@Path("id") Long id, @QueryMap Map<String, String> options);
 
     /**
      *

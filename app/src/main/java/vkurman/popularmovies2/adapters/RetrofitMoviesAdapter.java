@@ -80,7 +80,7 @@ public class RetrofitMoviesAdapter extends RecyclerView.Adapter<RetrofitMoviesAd
                     // Sending message to adapter that image for favourite movie is clicked
                     favouriteClicked(view, result);
                 } else {
-                    mResultListener.onResultClick(result.getId());
+                    mResultListener.onResultClick(result.getId(), null);
                 }
             }
         }

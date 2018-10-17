@@ -428,7 +428,7 @@ public class MoviesActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onResultClick(long id) {
+    public void onResultClick(long id, Bundle bundle) {
         if(mAdapter instanceof RetrofitMoviesAdapter) {
             Intent intent = new Intent(this, MovieDetailsActivity.class);
             intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
@@ -444,6 +444,9 @@ public class MoviesActivity extends AppCompatActivity implements
         } else if(mAdapter instanceof RetrofitPeopleAdapter) {
             Intent intent = new Intent(this, PersonDetailsActivity.class);
             intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+            if(bundle != null) {
+                intent.putParcelableArrayListExtra(MoviesConstants.INTENT_EXTRA_PERSON_KNOWN_FOR, bundle.getParcelableArrayList(MoviesConstants.INTENT_EXTRA_PERSON_KNOWN_FOR));
+            }
             startActivity(intent);
         } else {
             Toast.makeText(this, getString(R.string.error_identifying_adapter), Toast.LENGTH_SHORT).show();

@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -32,29 +31,25 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.listeners.ResultListener;
-import vkurman.popularmovies2.model.CrewMovie;
+import vkurman.popularmovies2.model.KnownFor;
 import vkurman.popularmovies2.utils.MovieUtils;
 
 /**
- * MovieCrewAdapter
- * Created by Vassili Kurman on 07/10/2018.
+ * KnownForAdapter
+ * Created by Vassili Kurman on 14/10/2018.
  * Version 1.0
  */
-public class MovieCrewAdapter extends RecyclerView.Adapter<MovieCrewAdapter.MovieCrewViewHolder> {
+public class KnownForAdapter extends RecyclerView.Adapter<KnownForAdapter.KnownForViewHolder> {
 
-    private List<CrewMovie> mCrew;
+    private List<KnownFor> mKnownFor;
     private ResultListener mResultListener;
 
-    public class MovieCrewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class KnownForViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        @BindView(R.id.iv_list_person_poster)
+        @BindView(R.id.iv_list_poster_movie)
         ImageView mPersonPoster;
-        @BindView(R.id.tv_list_person_name)
-        TextView mPersonName;
-        @BindView(R.id.tv_list_person_job)
-        TextView mPersonJob;
 
-        MovieCrewViewHolder(View itemView, ResultListener resultListener) {
+        KnownForViewHolder(View itemView, ResultListener resultListener) {
             super(itemView);
             // Binding views
             ButterKnife.bind(this, itemView);
@@ -65,46 +60,41 @@ public class MovieCrewAdapter extends RecyclerView.Adapter<MovieCrewAdapter.Movi
 
         @Override
         public void onClick(View view) {
-            if(mCrew == null) {
+            if(mKnownFor == null) {
                 return;
             }
             int position = getAdapterPosition();
-            if(position >= 0 && position < mCrew.size()) {
-                CrewMovie crew = mCrew.get(position);
-                mResultListener.onResultClick(crew.getId(), null);
+            if(position >= 0 && position < mKnownFor.size()) {
+                KnownFor knownFor = mKnownFor.get(position);
+                mResultListener.onResultClick(knownFor.getId(), null);
             }
         }
     }
 
-    public MovieCrewAdapter(List<CrewMovie> crew, ResultListener resultListener) {
-        mCrew = crew;
+    public KnownForAdapter(List<KnownFor> knownFor, ResultListener resultListener) {
+        mKnownFor = knownFor;
         mResultListener = resultListener;
     }
 
     @NonNull
     @Override
-    public MovieCrewAdapter.MovieCrewViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public KnownForViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.list_movie_crew_layout;
-
+        int layoutIdForListItem = R.layout.list_person_known_for_layout;
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
-        return new MovieCrewAdapter.MovieCrewViewHolder(view, mResultListener);
+        return new KnownForViewHolder(view, mResultListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieCrewViewHolder holder, int position) {
-        if(position >= 0 && position < mCrew.size()) {
-            final CrewMovie crew = mCrew.get(position);
-            final long crewId = crew.getId();
+    public void onBindViewHolder(@NonNull KnownForViewHolder holder, int position) {
+        if(position >= 0 && position < mKnownFor.size()) {
+            final KnownFor knownFor = mKnownFor.get(position);
+            final long knownForId = knownFor.getId();
 
-            String imagePath = MovieUtils.createFullPosterPath(crew.getProfilePath());
+            String imagePath = MovieUtils.createFullPosterPath(knownFor.getPosterPath());
 
-            holder.itemView.setTag(crewId);
-
-            holder.mPersonName.setText(crew.getName());
-            holder.mPersonJob.setText(crew.getJob());
+            holder.itemView.setTag(knownForId);
 
             Picasso.get()
                     .load(imagePath)
@@ -116,11 +106,11 @@ public class MovieCrewAdapter extends RecyclerView.Adapter<MovieCrewAdapter.Movi
 
     @Override
     public int getItemCount() {
-        return mCrew == null ? 0 : mCrew.size();
+        return mKnownFor == null ? 0 : mKnownFor.size();
     }
 
-    public void updateData(List<CrewMovie> crew) {
-        mCrew = crew;
+    public void updateData(List<KnownFor> knownFor) {
+        mKnownFor = knownFor;
         notifyDataSetChanged();
     }
 }

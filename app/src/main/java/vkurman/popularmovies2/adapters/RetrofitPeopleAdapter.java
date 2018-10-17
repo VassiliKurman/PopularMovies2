@@ -16,6 +16,8 @@
 package vkurman.popularmovies2.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,6 +37,7 @@ import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.listeners.ResultListener;
 import vkurman.popularmovies2.model.ResultPerson;
 import vkurman.popularmovies2.utils.MovieUtils;
+import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
  * RetrofitPeopleAdapter
@@ -69,7 +73,9 @@ public class RetrofitPeopleAdapter extends RecyclerView.Adapter<RetrofitPeopleAd
             int position = getAdapterPosition();
             if(position >= 0 && position < mResults.size()) {
                 ResultPerson result = mResults.get(position);
-                mResultListener.onResultClick(result.getId());
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(MoviesConstants.INTENT_EXTRA_PERSON_KNOWN_FOR, (ArrayList<? extends Parcelable>) result.getKnownFor());
+                mResultListener.onResultClick(result.getId(), bundle);
             }
         }
     }

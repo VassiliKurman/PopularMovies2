@@ -15,6 +15,7 @@
  */
 package vkurman.popularmovies2.utils;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -28,8 +29,11 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+
+import vkurman.popularmovies2.R;
 
 /**
  * Project Popular Movies stage 2.
@@ -244,12 +248,26 @@ public class MovieUtils {
      * @param date - String
      * @return String
      */
-    public static String formatYearText(String date) {
-        if(date == null) {
-            return null;
+    public static String formatYearTextWithBrackets(String date) {
+        if(date == null || date.isEmpty()) {
+            return "(????)";
         }
 
         return "("+date.substring(0, 4) +")";
+    }
+
+    /**
+     * Constructing and returning String to display from - to years as text.
+     *
+     * @param date - String
+     * @return String
+     */
+    public static String formatYearTextWithoutBrackets(String date) {
+        if(date == null || date.isEmpty()) {
+            return "????";
+        }
+
+        return date.substring(0, 4);
     }
 
     /**
@@ -275,5 +293,33 @@ public class MovieUtils {
         } catch (ParseException e) {
             return date;
         }
+    }
+
+    /**
+     * Constructing and returning String representation of List<String>.
+     *
+     * @param list - List<String>
+     * @return String
+     */
+    public static String formatListToString(List<String> list) {
+        if(list == null || list.isEmpty()) {
+            return "-";
+        }
+
+        String listAsString = list.toString();
+
+        return listAsString.substring(1, listAsString.length() - 1);
+    }
+
+    /**
+     * Constructing and returning String from int input.
+     *
+     * @param gender - int
+     * @return String
+     */
+    public static String genderFromInt(Context context, int gender) {
+        return gender == 1 ? context.getString(R.string.text_people_details_female)
+                : gender == 2 ? context.getString(R.string.text_people_details_male)
+                : context.getString(R.string.text_people_details_unspecified);
     }
 }

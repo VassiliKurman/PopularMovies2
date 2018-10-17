@@ -59,4 +59,5 @@ public class MoviesConstants {
     public static final String INTENT_EXTRA_SHOW_ID = "showId";
     public static final String INTENT_EXTRA_PERSON_ID = "personId";
     public static final String INTENT_EXTRA_MOVIE_TITLE = "movieTitle";
+    public static final String INTENT_EXTRA_PERSON_KNOWN_FOR = "knownFor";
 }

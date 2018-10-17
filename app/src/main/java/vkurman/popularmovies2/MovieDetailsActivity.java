@@ -353,7 +353,7 @@ public class MovieDetailsActivity extends AppCompatActivity
 
                     // Setting details
                     tvTitle.setText(movieModel.getTitle());
-                    tvReleaseDate.setText(MovieUtils.formatYearText(movieModel.getReleaseDate()));
+                    tvReleaseDate.setText(MovieUtils.formatYearTextWithBrackets(movieModel.getReleaseDate()));
                     tvVoteAverage.setText(MovieUtils.formatPercentage(movieModel.getVoteAverage()));
                     tvOverview.setText(movieModel.getOverview());
                     // Setting OnClickListener
@@ -443,7 +443,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResultClick(long id) {
+    public void onResultClick(long id, Bundle bundle) {
         Intent intent = new Intent(this, PersonDetailsActivity.class);
         intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
         startActivity(intent);

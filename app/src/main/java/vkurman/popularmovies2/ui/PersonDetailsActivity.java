@@ -19,17 +19,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -37,7 +43,13 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vkurman.popularmovies2.MovieDetailsActivity;
 import vkurman.popularmovies2.R;
+import vkurman.popularmovies2.adapters.KnownForAdapter;
+import vkurman.popularmovies2.listeners.ResultListener;
+import vkurman.popularmovies2.model.CastPersonCombinedCredits;
+import vkurman.popularmovies2.model.KnownFor;
+import vkurman.popularmovies2.model.PersonCombinedCredits;
 import vkurman.popularmovies2.model.PersonModel;
 import vkurman.popularmovies2.retrofit.ApiUtils;
 import vkurman.popularmovies2.retrofit.TMDBService;
@@ -49,7 +61,7 @@ import vkurman.popularmovies2.utils.MoviesConstants;
  * Created by Vassili Kurman on 30/09/2018.
  * Version 1.0
  */
-public class PersonDetailsActivity extends AppCompatActivity {
+public class PersonDetailsActivity extends AppCompatActivity implements ResultListener {
 
     private final static String TAG = PersonDetailsActivity.class.getSimpleName();
 
@@ -58,6 +70,7 @@ public class PersonDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_details_name) TextView tvName;
     @BindView(R.id.tv_details_biography) TextView tvBiography;
     @BindView(R.id.recyclerview_known_for) RecyclerView recyclerViewKnownFor;
+    @BindView(R.id.table_details_acting) TableLayout tableDetailsActing;
     @BindView(R.id.tv_details_known_for_text) TextView tvKnownFor;
     @BindView(R.id.tv_details_gender) TextView tvGender;
     @BindView(R.id.tv_details_known_credits) TextView tvKnownCredits;
@@ -68,6 +81,8 @@ public class PersonDetailsActivity extends AppCompatActivity {
 
     private TMDBService mService;
     private long personId;
+    private List<KnownFor> mKnownForList;
+    private KnownForAdapter mKnownForAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +102,25 @@ public class PersonDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             personId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, -1L);
+            mKnownForList = intent.getParcelableArrayListExtra(MoviesConstants.INTENT_EXTRA_PERSON_KNOWN_FOR);
         } else {
             closeOnError();
         }
+
+        // Setting LayoutManager
+        recyclerViewKnownFor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        // specifying an adapter and passing empty list at start
+        mKnownForAdapter = new KnownForAdapter(mKnownForList, this);
+        recyclerViewKnownFor.setAdapter(mKnownForAdapter);
 
         // Retrieving api key
         final Map<String, String> data = new HashMap<>();
         data.put("api_key", getString(R.string.api_key));
         data.put("language", "en-US");
+        // Requesting for person details
         mService.getPerson(personId, data).enqueue(getPersonCallback());
+        // Requesting for person credits
+        mService.getPersonCombinedCredits(personId, data).enqueue(getPersonCombinedCreditsCallback());
     }
 
     @Override
@@ -126,20 +151,12 @@ public class PersonDetailsActivity extends AppCompatActivity {
                     // Setting details
                     tvName.setText(personModel.getName());
                     tvBiography.setText(personModel.getBiography());
-                    // TODO create recyclerview
-//                    recyclerViewKnownFor;
                     tvKnownFor.setText(personModel.getKnownForDepartment());
-                    // TODO call to get gender
-                    tvGender.setText(personModel.getGender() == 1 ?
-                            getString(R.string.text_people_details_female) : personModel.getGender() == 2 ?
-                            getString(R.string.text_people_details_male) : getString(R.string.text_people_details_unspecified));
-                    // TODO get credit count
-                    tvKnownCredits.setText("0");
+                    tvGender.setText(MovieUtils.genderFromInt(PersonDetailsActivity.this, personModel.getGender()));
                     tvBirthday.setText(personModel.getBirthday());
                     tvPlaceOfBirth.setText(personModel.getPlaceOfBirth());
                     tvOfficialSite.setText(personModel.getHomepage() == null ? getString(R.string.text_people_details_empty) : personModel.getHomepage());
-                    // TODO add MovieUtils call to display as string
-                    tvAlsoKnownAs.setText(personModel.getAlsoKnownAs().toString());
+                    tvAlsoKnownAs.setText(MovieUtils.formatListToString(personModel.getAlsoKnownAs()));
 
                     Picasso.get()
                             .load(MovieUtils.createFullPosterPath(personModel.getProfilePath()))
@@ -163,6 +180,73 @@ public class PersonDetailsActivity extends AppCompatActivity {
     }
 
     /**
+     * Creates and Callback<PersonCombinedCredits> callback for retrofit enqueue method.
+     *
+     * @return - Callback<PersonCombinedCredits>
+     */
+    private Callback<PersonCombinedCredits> getPersonCombinedCreditsCallback() {
+        return new Callback<PersonCombinedCredits>() {
+            @Override
+            public void onResponse(Call<PersonCombinedCredits> call, Response<PersonCombinedCredits> response) {
+                if(response.isSuccessful()) {
+                    PersonCombinedCredits personCombinedCredits = response.body();
+                    int castCredits = (personCombinedCredits.getCast() == null
+                            || personCombinedCredits.getCast().isEmpty()) ? 0 : personCombinedCredits.getCast().size();
+                    int crewCredits = (personCombinedCredits.getCrew() == null
+                            || personCombinedCredits.getCrew().isEmpty()) ? 0 : personCombinedCredits.getCrew().size();
+                    tvKnownCredits.setText(Integer.toString(castCredits + crewCredits));
+
+                    List<CastPersonCombinedCredits> list = personCombinedCredits.getCast();
+                    Collections.sort(list, new Comparator<CastPersonCombinedCredits>() {
+                        @Override
+                        public int compare(CastPersonCombinedCredits c1, CastPersonCombinedCredits c2) {
+                            String date1 = (c1.getReleaseDate() == null || c1.getReleaseDate().isEmpty())
+                                    ? c1.getFirstAirDate() : c1.getReleaseDate();
+                            String date2 = (c2.getReleaseDate() == null || c2.getReleaseDate().isEmpty())
+                                    ? c2.getFirstAirDate() : c2.getReleaseDate();
+
+                            if(date1 == null || date2 == null) {
+                                return -1;
+                            }
+
+                            return date1.compareTo(date2);
+                        }
+                    });
+                    Collections.reverse(list);
+                    for(CastPersonCombinedCredits cpcc: list) {
+                        TableRow tr = new TableRow(PersonDetailsActivity.this);
+                        TextView year = new TextView(PersonDetailsActivity.this);
+                        year.setText(MovieUtils.formatYearTextWithoutBrackets(cpcc.getReleaseDate() == null
+                                ? cpcc.getFirstAirDate()
+                                : cpcc.getReleaseDate()));
+                        tr.addView(year);
+
+                        TextView dash = new TextView(PersonDetailsActivity.this);
+                        dash.setText(" - ");
+                        tr.addView(dash);
+
+                        TextView title = new TextView(PersonDetailsActivity.this);
+                        title.setText(cpcc.getTitle() == null ? cpcc.getName() : cpcc.getTitle());
+                        tr.addView(title);
+                        tableDetailsActing.addView(tr);
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.e(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PersonCombinedCredits> call, Throwable t) {
+                showErrorMessage();
+                Log.e(TAG, "error loading from API: " + t.getMessage());
+
+            }
+        };
+    }
+
+    /**
      * Displays message when error occurs during request.
      */
     private void showErrorMessage() {
@@ -175,5 +259,12 @@ public class PersonDetailsActivity extends AppCompatActivity {
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResultClick(long id, Bundle bundle) {
+        Intent intent = new Intent(PersonDetailsActivity.this, MovieDetailsActivity.class);
+        intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
+        startActivity(intent);
     }
 }

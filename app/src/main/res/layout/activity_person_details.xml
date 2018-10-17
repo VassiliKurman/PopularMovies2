@@ -116,9 +116,13 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_known_for"
                 android:scrollbars="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:paddingTop="@dimen/default_no_padding"
+                android:paddingBottom="@dimen/details_default_padding"
+                android:paddingStart="@dimen/details_text_padding_start"
+                android:paddingEnd="@dimen/details_default_padding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_known_for_title"/>
@@ -134,16 +138,16 @@
                 app:layout_constraintTop_toBottomOf="@id/recyclerview_known_for"
                 android:text="@string/text_people_details_acting"/>
 
-            <TextView
-                android:id="@+id/tv_details_acting"
+            <TableLayout
+                android:id="@+id/table_details_acting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/details_default_padding"
-                android:textSize="@dimen/details_subtitle_text_size"
-                android:textStyle="bold"
+                android:paddingTop="@dimen/default_no_padding"
+                android:paddingBottom="@dimen/details_default_padding"
+                android:paddingStart="@dimen/details_text_padding_start"
+                android:paddingEnd="@dimen/details_default_padding"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_acting_title"
-                android:text="Details will go here"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_details_acting_title"/>
 
             <!-- Personal Info -->
             <TextView
@@ -154,7 +158,7 @@
                 android:textSize="@dimen/details_subtitle_text_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_acting"
+                app:layout_constraintTop_toBottomOf="@id/table_details_acting"
                 android:text="@string/text_people_details_personal_info"/>
 
             <TextView
