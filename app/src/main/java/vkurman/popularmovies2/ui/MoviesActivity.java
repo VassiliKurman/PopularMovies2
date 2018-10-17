@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vkurman.popularmovies2;
+package vkurman.popularmovies2.ui;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.adapters.MoviesAdapter;
 import vkurman.popularmovies2.adapters.RetrofitMoviesAdapter;
 import vkurman.popularmovies2.adapters.RetrofitPeopleAdapter;
@@ -56,8 +57,6 @@ import vkurman.popularmovies2.model.ResultMovie;
 import vkurman.popularmovies2.model.TVQueryResponse;
 import vkurman.popularmovies2.retrofit.ApiUtils;
 import vkurman.popularmovies2.retrofit.TMDBService;
-import vkurman.popularmovies2.ui.PersonDetailsActivity;
-import vkurman.popularmovies2.ui.ShowDetailsActivity;
 import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**

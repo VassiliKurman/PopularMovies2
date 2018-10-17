@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vkurman.popularmovies2;
+package vkurman.popularmovies2.ui;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -26,7 +26,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -52,8 +51,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.adapters.MovieCrewAdapter;
-import vkurman.popularmovies2.adapters.RetrofitPeopleAdapter;
 import vkurman.popularmovies2.adapters.VideosAdapter;
 import vkurman.popularmovies2.listeners.ResultListener;
 import vkurman.popularmovies2.loaders.VideosLoader;
@@ -61,11 +60,9 @@ import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.CrewMovie;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.model.MovieModel;
-import vkurman.popularmovies2.model.PeopleQueryResponse;
 import vkurman.popularmovies2.model.Video;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.retrofit.ApiUtils;
-import vkurman.popularmovies2.ui.PersonDetailsActivity;
 import vkurman.popularmovies2.utils.MovieUtils;
 import vkurman.popularmovies2.utils.MoviesConstants;
 

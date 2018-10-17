@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MoviesActivity">
+        <activity android:name=".ui.MoviesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -19,8 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MovieDetailsActivity" />
-        <activity android:name=".MovieReviewsActivity" />
+        <activity android:name=".ui.MovieDetailsActivity" />
+        <activity android:name=".ui.MovieReviewsActivity" />
         <activity android:name=".ui.PersonDetailsActivity" />
         <activity android:name=".ui.ShowDetailsActivity" />
 

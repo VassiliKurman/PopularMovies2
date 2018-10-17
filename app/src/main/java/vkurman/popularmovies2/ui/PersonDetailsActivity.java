@@ -43,7 +43,6 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import vkurman.popularmovies2.MovieDetailsActivity;
 import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.adapters.KnownForAdapter;
 import vkurman.popularmovies2.listeners.ResultListener;

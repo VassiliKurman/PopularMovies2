@@ -17,7 +17,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="vkurman.popularmovies2.MovieReviewsActivity">
+    tools:context="vkurman.popularmovies2.ui.MovieReviewsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/toolbar_container"
@@ -54,7 +54,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context="vkurman.popularmovies2.MovieDetailsActivity">
+            tools:context="vkurman.popularmovies2.ui.MovieDetailsActivity">
 
             <TextView
                 android:id="@+id/tv_reviews_title"

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vkurman.popularmovies2;
+package vkurman.popularmovies2.ui;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.adapters.ReviewsAdapter;
 import vkurman.popularmovies2.model.ResultMovieReview;
 import vkurman.popularmovies2.model.ResultMovieReviews;
