@@ -150,6 +150,13 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_details_acting_title"/>
 
             <!-- Personal Info -->
+            <View
+                android:id="@+id/divider_personal_info"
+                style="@style/HorizontalDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/table_details_acting"/>
+
             <TextView
                 android:id="@+id/tv_details_personal_info_title"
                 android:layout_width="match_parent"
@@ -158,7 +165,7 @@
                 android:textSize="@dimen/details_subtitle_text_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/table_details_acting"
+                app:layout_constraintTop_toBottomOf="@id/divider_personal_info"
                 android:text="@string/text_people_details_personal_info"/>
 
             <TextView
