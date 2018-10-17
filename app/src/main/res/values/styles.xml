@@ -48,7 +48,7 @@
     </style>
 
     <style name="InlineText" parent="AppTheme">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">@dimen/default_no_padding</item>
         <item name="android:paddingBottom">@dimen/details_default_padding</item>
