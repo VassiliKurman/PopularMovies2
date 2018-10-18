@@ -30,6 +30,8 @@ import vkurman.popularmovies2.model.PersonCombinedCredits;
 import vkurman.popularmovies2.model.PersonModel;
 import vkurman.popularmovies2.model.ResultMovieReviews;
 import vkurman.popularmovies2.model.ShowModel;
+import vkurman.popularmovies2.model.TVContentRatings;
+import vkurman.popularmovies2.model.TVKeywords;
 import vkurman.popularmovies2.model.TVQueryResponse;
 
 /**
@@ -120,6 +122,24 @@ public interface TMDBService {
      */
     @GET("tv/{id}")
     Call<ShowModel> getShow(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be tvshow id.
+     * @param options - should include api_key as minimum
+     * @return Call<TVContentRatings>
+     */
+    @GET("tv/{id}/content_ratings")
+    Call<TVContentRatings> getTVShowRatings(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be tvshow id.
+     * @param options - should include api_key as minimum
+     * @return Call<TVKeywords>
+     */
+    @GET("tv/{id}/keywords")
+    Call<TVKeywords> getTVShowKeywords(@Path("id") Long id, @QueryMap Map<String, String> options);
 
     /**
      *

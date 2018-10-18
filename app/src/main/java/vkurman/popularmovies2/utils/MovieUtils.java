@@ -34,6 +34,9 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import vkurman.popularmovies2.R;
+import vkurman.popularmovies2.model.Genre;
+import vkurman.popularmovies2.model.Network;
+import vkurman.popularmovies2.model.ResultTVKeyword;
 
 /**
  * Project Popular Movies stage 2.
@@ -309,6 +312,90 @@ public class MovieUtils {
         String listAsString = list.toString();
 
         return listAsString.substring(1, listAsString.length() - 1);
+    }
+
+    /**
+     * Constructing and returning String representation of List<Integer>.
+     *
+     * @param list - List<Integer>
+     * @return String
+     */
+    public static String formatIntegerListToString(List<Integer> list) {
+        if(list == null || list.isEmpty()) {
+            return "-";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for(Integer integer: list) {
+            builder.append(integer);
+            builder.append("min, ");
+        }
+        builder.deleteCharAt(builder.lastIndexOf(","));
+
+        return builder.toString();
+    }
+
+    /**
+     * Constructing and returning String representation of List<Network>.
+     *
+     * @param list - List<Network>
+     * @return String
+     */
+    public static String formatNetworksListToString(List<Network> list) {
+        if(list == null || list.isEmpty()) {
+            return "-";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for(Network network: list) {
+            builder.append(network.getName());
+            builder.append(", ");
+        }
+        builder.deleteCharAt(builder.lastIndexOf(","));
+
+        return builder.toString();
+    }
+
+    /**
+     * Constructing and returning String representation of List<Genre>.
+     *
+     * @param list - List<Genre>
+     * @return String
+     */
+    public static String formatGenresListToString(List<Genre> list) {
+        if(list == null || list.isEmpty()) {
+            return "-";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for(Genre genre: list) {
+            builder.append(genre.getName());
+            builder.append(", ");
+        }
+        builder.deleteCharAt(builder.lastIndexOf(","));
+
+        return builder.toString();
+    }
+
+    /**
+     * Constructing and returning String representation of List<ResultTVKeyword>.
+     *
+     * @param list - List<ResultTVKeyword>
+     * @return String
+     */
+    public static String formatKeywordsListToString(List<ResultTVKeyword> list) {
+        if(list == null || list.isEmpty()) {
+            return "-";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for(ResultTVKeyword keyword: list) {
+            builder.append(keyword.getName());
+            builder.append(", ");
+        }
+        builder.deleteCharAt(builder.lastIndexOf(","));
+
+        return builder.toString();
     }
 
     /**

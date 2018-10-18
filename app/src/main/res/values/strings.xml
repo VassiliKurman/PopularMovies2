@@ -92,7 +92,20 @@
     <string name="iv_tv_show_backdrop">TV Show backdrop</string>
     <string name="iv_tv_show_poster">TV Show poster</string>
     <string name="text_tv_show_overview">Overview</string>
-    <string name="text_tv_show_crew">Crew</string>
+    <string name="text_tv_show_details_crew">Featured Crew</string>
+    <string name="text_tv_show_details_cast">Top Billed Cast</string>
+    <string name="text_tv_show_details_facts">Facts</string>
+    <string name="text_tv_show_details_status">Status</string>
+    <string name="text_tv_show_details_network">Network</string>
+    <string name="text_tv_show_details_certification">Certification</string>
+    <string name="text_tv_show_details_type">Type</string>
+    <string name="text_tv_show_details_original_language">Original Language</string>
+    <string name="text_tv_show_details_runtime">Runtime</string>
+    <string name="text_tv_show_details_genres">Genres</string>
+    <string name="text_tv_show_details_keywords">Keywords</string>
+    <string name="text_tv_show_details_unspecified">Unspecified</string>
+    <string name="text_tv_show_details_empty">-</string>
+    <string name="text_tv_show_details_creator">Creator</string>
 
     // Extras set to intent as names
     <string name="extra_poster">poster</string>

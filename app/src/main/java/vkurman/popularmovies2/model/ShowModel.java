@@ -15,6 +15,7 @@
  */
 package vkurman.popularmovies2.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -40,7 +41,7 @@ public class ShowModel {
     private String firstAirDate;
     @SerializedName("genres")
     @Expose
-    private List<Object> genres = null;
+    private List<Genre> genres = new ArrayList<>();
     @SerializedName("homepage")
     @Expose
     private String homepage;
@@ -143,11 +144,11 @@ public class ShowModel {
         this.firstAirDate = firstAirDate;
     }
 
-    public List<Object> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Object> genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
 

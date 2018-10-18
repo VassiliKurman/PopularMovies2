@@ -19,10 +19,10 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -40,6 +41,9 @@ import retrofit2.Response;
 import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.model.Crew;
 import vkurman.popularmovies2.model.ShowModel;
+import vkurman.popularmovies2.model.TVContentRatings;
+import vkurman.popularmovies2.model.TVKeywords;
+import vkurman.popularmovies2.model.TVRating;
 import vkurman.popularmovies2.retrofit.ApiUtils;
 import vkurman.popularmovies2.utils.MovieUtils;
 import vkurman.popularmovies2.utils.MoviesConstants;
@@ -54,13 +58,22 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private final static String TAG = ShowDetailsActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.iv_backdrop) ImageView ivBackdrop;
-    @BindView(R.id.iv_poster) ImageView ivPoster;
-    @BindView(R.id.tv_details_title) TextView tvTitle;
-    @BindView(R.id.tv_details_year) TextView tvYear;
-    @BindView(R.id.tv_details_overview_text) TextView tvOverview;
-    @BindView(R.id.tv_details_crew_title) TextView tvCrewTitle;
-    @BindView(R.id.tv_details_crew_text) TextView tvCrew;
+    @BindView(R.id.iv_show_backdrop) ImageView ivBackdrop;
+    @BindView(R.id.iv_show_poster) ImageView ivPoster;
+    @BindView(R.id.tv_show_details_title) TextView tvTitle;
+    @BindView(R.id.tv_show_details_year) TextView tvYear;
+    @BindView(R.id.tv_show_details_overview_text) TextView tvOverview;
+    @BindView(R.id.tv_show_details_crew_text) TextView tvCrew;
+    @BindView(R.id.recyclerview_show_details_cast) RecyclerView mRecyclerViewCast;
+    // Facts
+    @BindView(R.id.tv_show_details_status_text) TextView tvStatus;
+    @BindView(R.id.tv_show_details_network_text) TextView tvNetwork;
+    @BindView(R.id.tv_show_details_certification_text) TextView tvCertification;
+    @BindView(R.id.tv_show_details_type_text) TextView tvType;
+    @BindView(R.id.tv_show_details_original_language_text) TextView tvOriginalLanguage;
+    @BindView(R.id.tv_show_details_runtime_text) TextView tvRuntime;
+    @BindView(R.id.tv_show_details_genres_text) TextView tvGenres;
+    @BindView(R.id.tv_show_details_keywords_text) TextView tvKeywords;
 
     private long showId;
 
@@ -89,6 +102,8 @@ public class ShowDetailsActivity extends AppCompatActivity {
         data.put("api_key", getString(R.string.api_key));
         data.put("language", "en-US");
         ApiUtils.getTMDBService().getShow(showId, data).enqueue(getShowCallback());
+        ApiUtils.getTMDBService().getTVShowRatings(showId, data).enqueue(getTVShowRatings());
+        ApiUtils.getTMDBService().getTVShowKeywords(showId, data).enqueue(getTVShowKeywords());
     }
 
     @Override
@@ -122,15 +137,22 @@ public class ShowDetailsActivity extends AppCompatActivity {
                     tvYear.setText(MovieUtils.formatYearSpanText(showModel.getFirstAirDate(), showModel.getLastAirDate()));
                     tvOverview.setText(showModel.getOverview());
                     if(showModel.getCreatedBy() != null && !showModel.getCreatedBy().isEmpty()) {
-                        // TODO create horizontal RecyclerView
-                        tvCrewTitle.setVisibility(View.VISIBLE);
                         String crew = "";
                         for(Crew c: showModel.getCreatedBy()) {
                             crew = (crew.isEmpty()) ? c.getName() : crew + ", " + c.getName();
                         }
                         tvCrew.setText(crew);
-                        tvCrew.setVisibility(View.VISIBLE);
                     }
+
+                    // Facts
+                    tvStatus.setText(showModel.getStatus());
+                    tvNetwork.setText(MovieUtils.formatNetworksListToString(showModel.getNetworks()));
+                    tvType.setText(showModel.getType());
+                    tvOriginalLanguage.setText(showModel.getOriginalLanguage() != null
+                            ? new Locale(showModel.getOriginalLanguage()).getDisplayLanguage()
+                            : showModel.getOriginalLanguage());
+                    tvRuntime.setText(MovieUtils.formatIntegerListToString(showModel.getEpisodeRunTime()));
+                    tvGenres.setText(MovieUtils.formatGenresListToString(showModel.getGenres()));
 
                     Picasso.get()
                             .load(MovieUtils.createFullBackdropPath(showModel.getBackdropPath()))
@@ -152,6 +174,75 @@ public class ShowDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ShowModel> call, Throwable t) {
+                showErrorMessage();
+                Log.e(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
+     * Creates and returns tv show ratings callback for retrofit enqueue method.
+     *
+     * @return - Callback<TVContentRatings>
+     */
+    private Callback<TVContentRatings> getTVShowRatings() {
+        return new Callback<TVContentRatings>() {
+            @Override
+            public void onResponse(Call<TVContentRatings> call, Response<TVContentRatings> response) {
+                if(response.isSuccessful()) {
+                    TVContentRatings ratings = response.body();
+                    Log.d(TAG, "TV Show ratings retrieved: " + ratings.getTVRating().size());
+
+                    String ratingString = getString(R.string.text_tv_show_details_unspecified);
+                    // Checking ratings
+                    if(ratings.getTVRating().size() > 0) {
+                        for(TVRating rating: ratings.getTVRating()) {
+                            if(rating.getIso31661().equals(Locale.getDefault().getCountry())) {
+                                ratingString = rating.getRating();
+                            }
+                        }
+                    }
+                    tvCertification.setText(ratingString);
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.e(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TVContentRatings> call, Throwable t) {
+                showErrorMessage();
+                Log.e(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
+     * Creates and returns tv show keywords callback for retrofit enqueue method.
+     *
+     * @return - Callback<TVKeywords>
+     */
+    private Callback<TVKeywords> getTVShowKeywords() {
+        return new Callback<TVKeywords>() {
+            @Override
+            public void onResponse(Call<TVKeywords> call, Response<TVKeywords> response) {
+                if(response.isSuccessful()) {
+                    TVKeywords keywords = response.body();
+                    Log.d(TAG, "TV Show keywords retrieved: " + keywords.getResults().size());
+
+                    tvKeywords.setText(MovieUtils.formatKeywordsListToString(keywords.getResults()));
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.e(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TVKeywords> call, Throwable t) {
                 showErrorMessage();
                 Log.e(TAG, "error loading from API");
 
