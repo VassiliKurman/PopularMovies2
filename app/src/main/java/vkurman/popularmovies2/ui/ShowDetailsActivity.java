@@ -151,7 +151,7 @@ public class ShowDetailsActivity extends AppCompatActivity {
                     tvOriginalLanguage.setText(showModel.getOriginalLanguage() != null
                             ? new Locale(showModel.getOriginalLanguage()).getDisplayLanguage()
                             : showModel.getOriginalLanguage());
-                    tvRuntime.setText(MovieUtils.formatIntegerListToString(showModel.getEpisodeRunTime()));
+                    tvRuntime.setText(MovieUtils.formatRuntimeListToString(showModel.getEpisodeRunTime()));
                     tvGenres.setText(MovieUtils.formatGenresListToString(showModel.getGenres()));
 
                     Picasso.get()

@@ -320,7 +320,7 @@ public class MovieUtils {
      * @param list - List<Integer>
      * @return String
      */
-    public static String formatIntegerListToString(List<Integer> list) {
+    public static String formatRuntimeListToString(List<Integer> list) {
         if(list == null || list.isEmpty()) {
             return "-";
         }
