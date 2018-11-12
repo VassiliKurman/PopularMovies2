@@ -20,15 +20,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * TVKeywords is a response for TV Show keywords request to TMDB.
- * Created by Vassili Kurman on 18/10/2018.
+ * MovieKeywords is a response for Movie keywords request to TMDB.
+ * Created by Vassili Kurman on 12/11/2018.
  * Version 1.0
  */
-public class TVKeywords {
+public class MovieKeywords {
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("results")
+    @SerializedName("keywords")
     @Expose
     private List<ResultKeyword> results = null;
 

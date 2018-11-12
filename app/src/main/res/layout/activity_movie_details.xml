@@ -98,7 +98,7 @@
                 android:id="@+id/tv_rating"
                 app:layout_constraintStart_toStartOf="@id/tv_release_date"
                 app:layout_constraintTop_toBottomOf="@id/tv_release_date"
-                android:text="@string/tv_rating"/>
+                android:text="@string/text_movie_details_user_score"/>
 
             <TextView
                 style="@style/DefaultView"
@@ -113,20 +113,21 @@
                 app:layout_constraintStart_toStartOf="@id/tv_rating"
                 app:layout_constraintTop_toBottomOf="@id/tv_rating"
                 android:contentDescription="@string/iv_favourite_icon_description"/>
+
             <Button
                 style="@style/DefaultView"
                 android:id="@+id/btn_reviews"
                 app:layout_constraintStart_toStartOf="@id/iv_details_favourite"
                 app:layout_constraintTop_toBottomOf="@id/iv_details_favourite"
                 android:background="@drawable/rounded_border_button"
-                android:text="@string/btn_reviews" />
+                android:text="@string/button_all_reviews" />
 
             <TextView
                 style="@style/DefaultView"
                 android:id="@+id/tv_overview_title"
                 android:padding="@dimen/default_text_padding"
                 android:textSize="@dimen/details_subtitle_text_size"
-                android:text="@string/text_overview_title"
+                android:text="@string/text_movie_details_overview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_reviews" />
 
@@ -141,7 +142,7 @@
                 style="@style/DefaultView"
                 android:id="@+id/tv_details_crew_title"
                 android:padding="@dimen/default_text_padding"
-                android:text="@string/text_crew_title"
+                android:text="@string/text_movie_details_featured_crew"
                 android:textSize="@dimen/details_subtitle_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_overview" />
@@ -156,22 +157,198 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_details_crew_title" />
 
             <TextView
-                android:id="@+id/tv_trailers_text"
                 style="@style/DefaultView"
+                android:id="@+id/tv_details_cast_title"
                 android:padding="@dimen/default_text_padding"
-                android:text="@string/text_trailers"
+                android:text="@string/text_movie_details_cast"
                 android:textSize="@dimen/details_subtitle_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerview_crew"/>
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_crew" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_videos"
+                android:id="@+id/recyclerview_cast"
                 android:scrollbars="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_trailers_text"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_details_cast_title" />
+
+            <TextView
+                style="@style/DefaultView"
+                android:id="@+id/tv_details_social_title"
+                android:padding="@dimen/default_text_padding"
+                android:text="@string/text_movie_details_social"
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_cast" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_social"
+                android:scrollbars="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_social_title" />
+
+            <TextView
+                android:id="@+id/tv_media_text"
+                style="@style/DefaultView"
+                android:padding="@dimen/default_text_padding"
+                android:text="@string/text_movie_details_media"
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_social"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_media"
+                android:scrollbars="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_media_text"/>
+
+            <TextView
+                android:id="@+id/tv_movie_details_recommendations"
+                style="@style/DefaultView"
+                android:padding="@dimen/default_text_padding"
+                android:text="@string/text_movie_details_recommendations"
+                android:textSize="@dimen/details_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_media"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_recommendations"
+                android:scrollbars="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_details_recommendations"/>
+
+            <!-- Facts -->
+            <View
+                android:id="@+id/divider_movie_details_facts"
+                style="@style/HorizontalDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_recommendations"/>
+
+            <TextView
+                android:id="@+id/movie_details_facts"
+                style="@style/DefaultView"
+                android:padding="@dimen/details_default_padding"
+                android:textSize="@dimen/details_subtitle_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_movie_details_facts"
+                android:text="@string/text_movie_details_facts"/>
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_status_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_facts"
+                android:text="@string/text_movie_details_status"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_status_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_status_title"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_status_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_release_information"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_status_text"
+                android:text="@string/text_movie_details_release_information"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_release_information_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_release_information"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_release_information" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_original_language_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_release_information_text"
+                android:text="@string/text_movie_details_original_language"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_original_language_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_original_language_title"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_original_language_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_runtime_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_original_language_text"
+                android:text="@string/text_movie_details_runtime"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_runtime_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_runtime_title"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_runtime_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_budget_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_runtime_text"
+                android:text="@string/text_movie_details_budget"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_budget_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_budget_title"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_budget_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_revenue_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_budget_text"
+                android:text="@string/text_movie_details_revenue"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_revenue_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_revenue_title"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_revenue_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_genres_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_revenue_text"
+                android:text="@string/text_movie_details_genres"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_genres_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_genres_title"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_genres_title" />
+
+            <TextView
+                style="@style/InlineTitle"
+                android:id="@+id/movie_details_keywords_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_genres_text"
+                android:text="@string/text_movie_details_keywords"/>
+
+            <TextView
+                style="@style/InlineText"
+                android:id="@+id/movie_details_keywords_text"
+                app:layout_constraintStart_toStartOf="@id/movie_details_keywords_title"
+                app:layout_constraintTop_toBottomOf="@id/movie_details_keywords_title" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

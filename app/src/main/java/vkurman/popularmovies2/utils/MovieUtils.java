@@ -36,7 +36,7 @@ import java.util.Scanner;
 import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.model.Genre;
 import vkurman.popularmovies2.model.Network;
-import vkurman.popularmovies2.model.ResultTVKeyword;
+import vkurman.popularmovies2.model.ResultKeyword;
 
 /**
  * Project Popular Movies stage 2.
@@ -336,6 +336,34 @@ public class MovieUtils {
     }
 
     /**
+     * Constructing and returning runtime as String.
+     *
+     * @param runtime - Integer
+     * @return String
+     */
+    public static String formatRuntimeToString(Integer runtime) {
+        if(runtime == null) {
+            return "-";
+        }
+
+        return runtime + "min";
+    }
+
+    /**
+     * Constructing and returning budget as String.
+     *
+     * @param budget - Integer
+     * @return String
+     */
+    public static String formatBudgetToString(Integer budget) {
+        if(budget == null) {
+            return "-";
+        }
+
+        return NumberFormat.getCurrencyInstance(Locale.getDefault()).format(budget);
+    }
+
+    /**
      * Constructing and returning String representation of List<Network>.
      *
      * @param list - List<Network>
@@ -378,18 +406,18 @@ public class MovieUtils {
     }
 
     /**
-     * Constructing and returning String representation of List<ResultTVKeyword>.
+     * Constructing and returning String representation of List<ResultKeyword>.
      *
-     * @param list - List<ResultTVKeyword>
+     * @param list - List<ResultKeyword>
      * @return String
      */
-    public static String formatKeywordsListToString(List<ResultTVKeyword> list) {
+    public static String formatKeywordsListToString(List<ResultKeyword> list) {
         if(list == null || list.isEmpty()) {
             return "-";
         }
 
         StringBuilder builder = new StringBuilder();
-        for(ResultTVKeyword keyword: list) {
+        for(ResultKeyword keyword: list) {
             builder.append(keyword.getName());
             builder.append(", ");
         }

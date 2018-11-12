@@ -19,11 +19,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * ResultTVKeyword is part of response in {@link TVKeywords @TVKeywords}
+ * ResultKeyword is part of response in {@link TVKeywords @TVKeywords}
  * Created by Vassili Kurman on 18/10/2018.
  * Version 1.0
  */
-public class ResultTVKeyword {
+public class ResultKeyword {
     @SerializedName("name")
     @Expose
     private String name;

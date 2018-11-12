@@ -65,12 +65,23 @@
 
     // Movie Details activity
     <string name="activity_title_movie_details">Movie Details</string>
-    <string name="tv_rating">User score:</string>
-    <string name="btn_reviews">Reviews</string>
-    <string name="text_overview_title">Overview</string>
-    <string name="text_crew_title">Featured Crew</string>
-    <string name="text_cast_title">Top Billed Cast</string>
-    <string name="text_trailers">Trailers</string>
+    <string name="button_all_reviews">All reviews</string>
+    <string name="text_movie_details_user_score">User score:</string>
+    <string name="text_movie_details_overview">Overview</string>
+    <string name="text_movie_details_featured_crew">Featured Crew</string>
+    <string name="text_movie_details_cast">Top Billed Cast</string>
+    <string name="text_movie_details_social">Social</string>
+    <string name="text_movie_details_media">Media</string>
+    <string name="text_movie_details_recommendations">Recommendations</string>
+    <string name="text_movie_details_facts">Facts</string>
+    <string name="text_movie_details_status">Status</string>
+    <string name="text_movie_details_release_information">Release Information</string>
+    <string name="text_movie_details_original_language">Original Language</string>
+    <string name="text_movie_details_runtime">Runtime</string>
+    <string name="text_movie_details_budget">Budget</string>
+    <string name="text_movie_details_revenue">Revenue</string>
+    <string name="text_movie_details_genres">Genres</string>
+    <string name="text_movie_details_keywords">Keywords</string>
 
     <!-- People details activity -->
     <string name="text_people_details_biography">Biography</string>

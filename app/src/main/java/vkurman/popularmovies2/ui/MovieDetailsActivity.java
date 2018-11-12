@@ -43,6 +43,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -59,7 +60,9 @@ import vkurman.popularmovies2.loaders.VideosLoader;
 import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.CrewMovie;
 import vkurman.popularmovies2.model.Movie;
+import vkurman.popularmovies2.model.MovieKeywords;
 import vkurman.popularmovies2.model.MovieModel;
+import vkurman.popularmovies2.model.TVKeywords;
 import vkurman.popularmovies2.model.Video;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.retrofit.ApiUtils;
@@ -85,9 +88,21 @@ public class MovieDetailsActivity extends AppCompatActivity
     @BindView(R.id.tv_release_date) TextView tvReleaseDate;
     @BindView(R.id.tv_vote_average) TextView tvVoteAverage;
     @BindView(R.id.tv_overview) TextView tvOverview;
-    @BindView(R.id.rv_videos) RecyclerView mRecyclerViewTrailers;
     @BindView(R.id.recyclerview_crew) RecyclerView mRecyclerViewCrew;
+    @BindView(R.id.recyclerview_cast) RecyclerView mRecyclerViewCast;
+    @BindView(R.id.recyclerview_social) RecyclerView mRecyclerViewSocial;
+    @BindView(R.id.recyclerview_media) RecyclerView mRecyclerViewMedia;
+    @BindView(R.id.recyclerview_recommendations) RecyclerView mRecyclerViewRecommendations;
     @BindView(R.id.btn_reviews) Button btnReviews;
+    // Facts
+    @BindView(R.id.movie_details_status_text) TextView tvStatus;
+    @BindView(R.id.movie_details_release_information_text) TextView tvReleaseInformation;
+    @BindView(R.id.movie_details_original_language_text) TextView tvOriginalLanguage;
+    @BindView(R.id.movie_details_runtime_text) TextView tvRuntime;
+    @BindView(R.id.movie_details_budget_text) TextView tvBudget;
+    @BindView(R.id.movie_details_revenue_text) TextView tvRevenue;
+    @BindView(R.id.movie_details_genres_text) TextView tvGenres;
+    @BindView(R.id.movie_details_keywords_text) TextView tvKeywords;
 
     private final static String TAG = "MovieDetailsActivity";
 
@@ -188,11 +203,12 @@ public class MovieDetailsActivity extends AppCompatActivity
         creditsData.put("api_key", getString(R.string.api_key));
         // Requesting for data
         ApiUtils.getTMDBService().getMovieCredits(mMovieId, creditsData).enqueue(getCreditsMovieCallback());
+        ApiUtils.getTMDBService().getMovieKeywords(mMovieId, data).enqueue(getMovieKeywords());
 
         // Setting recycle view for trailers
-        mRecyclerViewTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
+        mRecyclerViewMedia.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mTrailersAdapter = new VideosAdapter(new ArrayList<Video>());
-        mRecyclerViewTrailers.setAdapter(mTrailersAdapter);
+        mRecyclerViewMedia.setAdapter(mTrailersAdapter);
 
         getSupportLoaderManager().initLoader(VideosLoader.ID, null, this).forceLoad();
     }
@@ -320,7 +336,7 @@ public class MovieDetailsActivity extends AppCompatActivity
 
         if(mTrailersAdapter == null) {
             mTrailersAdapter = new VideosAdapter(data);
-            mRecyclerViewTrailers.setAdapter(mTrailersAdapter);
+            mRecyclerViewMedia.setAdapter(mTrailersAdapter);
         } else {
             mTrailersAdapter.updateVideos(data);
         }
@@ -356,6 +372,17 @@ public class MovieDetailsActivity extends AppCompatActivity
                     // Setting OnClickListener
                     btnReviews.setOnClickListener(MovieDetailsActivity.this);
                     ivFavourite.setOnClickListener(MovieDetailsActivity.this);
+
+                    // Facts
+                    tvStatus.setText(movieModel.getStatus());
+                    tvReleaseInformation.setText(MovieUtils.formatDate(movieModel.getReleaseDate()));
+                    tvOriginalLanguage.setText(movieModel.getOriginalLanguage() != null
+                            ? new Locale(movieModel.getOriginalLanguage()).getDisplayLanguage()
+                            : movieModel.getOriginalLanguage());
+                    tvRuntime.setText(MovieUtils.formatRuntimeToString(movieModel.getRuntime()));
+                    tvBudget.setText(MovieUtils.formatBudgetToString(movieModel.getBudget()));
+                    tvRevenue.setText(MovieUtils.formatBudgetToString(movieModel.getRevenue()));
+                    tvGenres.setText(MovieUtils.formatGenresListToString(movieModel.getGenres()));
 
                     Picasso.get()
                             .load(MovieUtils.createFullBackdropPath(movieModel.getBackdropPath()))
@@ -419,6 +446,36 @@ public class MovieDetailsActivity extends AppCompatActivity
             public void onFailure(Call<CreditsMovie> call, Throwable t) {
                 showErrorMessage();
                 Log.d(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
+     * Creates and returns keywords callback for retrofit enqueue method.
+     *
+     * @return - Callback<MovieKeywords>
+     */
+    private Callback<MovieKeywords> getMovieKeywords() {
+        return new Callback<MovieKeywords>() {
+            @Override
+            public void onResponse(Call<MovieKeywords> call, Response<MovieKeywords> response) {
+                if(response.isSuccessful()) {
+                    MovieKeywords keywords = response.body();
+                    Log.d(TAG, "Movie keywords retrieved: " + keywords.getResults().size());
+
+                    tvKeywords.setText(MovieUtils.formatKeywordsListToString(keywords.getResults()));
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.e(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieKeywords> call, Throwable t) {
+                showErrorMessage();
+                Log.e(TAG, "error loading from API");
 
             }
         };

@@ -23,6 +23,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import vkurman.popularmovies2.model.CreditsMovie;
+import vkurman.popularmovies2.model.MovieKeywords;
 import vkurman.popularmovies2.model.MovieModel;
 import vkurman.popularmovies2.model.MoviesQueryResponse;
 import vkurman.popularmovies2.model.PeopleQueryResponse;
@@ -140,6 +141,15 @@ public interface TMDBService {
      */
     @GET("tv/{id}/keywords")
     Call<TVKeywords> getTVShowKeywords(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be movie id.
+     * @param options - should include api_key as minimum
+     * @return Call<MovieKeywords>
+     */
+    @GET("movie/{id}/keywords")
+    Call<MovieKeywords> getMovieKeywords(@Path("id") Long id, @QueryMap Map<String, String> options);
 
     /**
      *
