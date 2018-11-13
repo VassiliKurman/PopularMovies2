@@ -60,4 +60,10 @@ public class MoviesConstants {
     public static final String INTENT_EXTRA_PERSON_ID = "personId";
     public static final String INTENT_EXTRA_MOVIE_TITLE = "movieTitle";
     public static final String INTENT_EXTRA_PERSON_KNOWN_FOR = "knownFor";
+
+    // Bundle extras
+    public static final String BUNDLE_EXTRA_TYPE = "type";
+    public static final String BUNDLE_EXTRA_MOVIE = "movie";
+    public static final String BUNDLE_EXTRA_TV_SHOW = "tvShow";
+    public static final String BUNDLE_EXTRA_PERSON = "person";
 }

@@ -54,6 +54,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.adapters.MovieCrewAdapter;
+import vkurman.popularmovies2.adapters.RecommendationsMovieAdapter;
 import vkurman.popularmovies2.adapters.VideosAdapter;
 import vkurman.popularmovies2.listeners.ResultListener;
 import vkurman.popularmovies2.loaders.VideosLoader;
@@ -62,7 +63,8 @@ import vkurman.popularmovies2.model.CrewMovie;
 import vkurman.popularmovies2.model.Movie;
 import vkurman.popularmovies2.model.MovieKeywords;
 import vkurman.popularmovies2.model.MovieModel;
-import vkurman.popularmovies2.model.TVKeywords;
+import vkurman.popularmovies2.model.RecommendationsMovieRequest;
+import vkurman.popularmovies2.model.RecommendationsMovieResult;
 import vkurman.popularmovies2.model.Video;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.retrofit.ApiUtils;
@@ -114,6 +116,8 @@ public class MovieDetailsActivity extends AppCompatActivity
     private VideosAdapter mTrailersAdapter;
     // MovieCrewAdapter for Crew RecycleView
     private MovieCrewAdapter mCrewAdapter;
+    // RecommendationsMovieAdapter for Recommendations RecycleView
+    private RecommendationsMovieAdapter mRecommendationsMovieAdapter;
     // Map of favourite movies
     private Map<Long, Long> favourites = new TreeMap<>();;
     // Indicator that data changed for result intent
@@ -198,11 +202,17 @@ public class MovieDetailsActivity extends AppCompatActivity
         mCrewAdapter = new MovieCrewAdapter(new ArrayList<CrewMovie>(), this);
         mRecyclerViewCrew.setAdapter(mCrewAdapter);
 
+        // Setting recycle view for recommendations
+        mRecyclerViewRecommendations.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
+        mRecommendationsMovieAdapter = new RecommendationsMovieAdapter(new ArrayList<RecommendationsMovieResult>(), this);
+        mRecyclerViewRecommendations.setAdapter(mRecommendationsMovieAdapter);
+
         // Retrieving api key
         final Map<String, String> creditsData = new HashMap<>();
         creditsData.put("api_key", getString(R.string.api_key));
         // Requesting for data
         ApiUtils.getTMDBService().getMovieCredits(mMovieId, creditsData).enqueue(getCreditsMovieCallback());
+        ApiUtils.getTMDBService().getMovieRecommendations(mMovieId, data).enqueue(getRecommendationsMovieCallback());
         ApiUtils.getTMDBService().getMovieKeywords(mMovieId, data).enqueue(getMovieKeywords());
 
         // Setting recycle view for trailers
@@ -452,6 +462,35 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
     /**
+     * Creates and returns RecommendationsMovieRequest callback for retrofit enqueue method.
+     *
+     * @return - Callback<RecommendationsMovieRequest>
+     */
+    private Callback<RecommendationsMovieRequest> getRecommendationsMovieCallback() {
+        return new Callback<RecommendationsMovieRequest>() {
+            @Override
+            public void onResponse(Call<RecommendationsMovieRequest> call, Response<RecommendationsMovieRequest> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Recommendations retrieved: " + response.body().getResults().size());
+                    mRecommendationsMovieAdapter.updateData(response.body().getResults());
+                    Log.d(TAG, " recommendations loaded from API");
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.d(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecommendationsMovieRequest> call, Throwable t) {
+                showErrorMessage();
+                Log.d(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
      * Creates and returns keywords callback for retrofit enqueue method.
      *
      * @return - Callback<MovieKeywords>
@@ -498,8 +537,17 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     @Override
     public void onResultClick(long id, Bundle bundle) {
-        Intent intent = new Intent(this, PersonDetailsActivity.class);
-        intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
-        startActivity(intent);
+        String bundleExtra = bundle.getString(MoviesConstants.BUNDLE_EXTRA_TYPE);
+        if(bundleExtra != null) {
+            if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_MOVIE)) {
+                Intent intent = new Intent(this, MovieDetailsActivity.class);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, PersonDetailsActivity.class);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+                startActivity(intent);
+            }
+        }
     }
 }

@@ -20,7 +20,6 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.MovieKeywords;
@@ -29,6 +28,8 @@ import vkurman.popularmovies2.model.MoviesQueryResponse;
 import vkurman.popularmovies2.model.PeopleQueryResponse;
 import vkurman.popularmovies2.model.PersonCombinedCredits;
 import vkurman.popularmovies2.model.PersonModel;
+import vkurman.popularmovies2.model.RecommendationsMovieRequest;
+import vkurman.popularmovies2.model.RecommendationsTVShowRequest;
 import vkurman.popularmovies2.model.ResultMovieReviews;
 import vkurman.popularmovies2.model.ShowModel;
 import vkurman.popularmovies2.model.TVContentRatings;
@@ -150,6 +151,24 @@ public interface TMDBService {
      */
     @GET("movie/{id}/keywords")
     Call<MovieKeywords> getMovieKeywords(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be tvshow id.
+     * @param options - should include api_key as minimum
+     * @return Call<RecommendationsTVShowRequest>
+     */
+    @GET("tv/{id}/recommendations")
+    Call<RecommendationsTVShowRequest> getTVShowRecommendations(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be movie id.
+     * @param options - should include api_key as minimum
+     * @return Call<RecommendationsTVShowRequest>
+     */
+    @GET("movie/{id}/recommendations")
+    Call<RecommendationsMovieRequest> getMovieRecommendations(@Path("id") Long id, @QueryMap Map<String, String> options);
 
     /**
      *

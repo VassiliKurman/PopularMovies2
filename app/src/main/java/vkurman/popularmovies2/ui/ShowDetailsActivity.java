@@ -19,16 +19,19 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -39,7 +42,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vkurman.popularmovies2.R;
+import vkurman.popularmovies2.adapters.RecommendationsTVShowAdapter;
+import vkurman.popularmovies2.listeners.ResultListener;
 import vkurman.popularmovies2.model.Crew;
+import vkurman.popularmovies2.model.RecommendationsTVShowRequest;
+import vkurman.popularmovies2.model.RecommendationsTVShowResult;
 import vkurman.popularmovies2.model.ShowModel;
 import vkurman.popularmovies2.model.TVContentRatings;
 import vkurman.popularmovies2.model.TVKeywords;
@@ -53,7 +60,7 @@ import vkurman.popularmovies2.utils.MoviesConstants;
  * Created by Vassili Kurman on 02/10/2018.
  * Version 1.0
  */
-public class ShowDetailsActivity extends AppCompatActivity {
+public class ShowDetailsActivity extends AppCompatActivity implements ResultListener {
 
     private final static String TAG = ShowDetailsActivity.class.getSimpleName();
 
@@ -65,6 +72,7 @@ public class ShowDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_show_details_overview_text) TextView tvOverview;
     @BindView(R.id.tv_show_details_crew_text) TextView tvCrew;
     @BindView(R.id.recyclerview_show_details_cast) RecyclerView mRecyclerViewCast;
+    @BindView(R.id.recyclerview_recommendations) RecyclerView mRecyclerViewRecommendations;
     // Facts
     @BindView(R.id.tv_show_details_status_text) TextView tvStatus;
     @BindView(R.id.tv_show_details_network_text) TextView tvNetwork;
@@ -76,6 +84,8 @@ public class ShowDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_show_details_keywords_text) TextView tvKeywords;
 
     private long showId;
+    // RecommendationsMovieAdapter for Recommendations RecycleView
+    private RecommendationsTVShowAdapter mRecommendationsTVShowAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +107,11 @@ public class ShowDetailsActivity extends AppCompatActivity {
             closeOnError();
         }
 
+        // Setting recycle view for recommendations
+        mRecyclerViewRecommendations.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
+        mRecommendationsTVShowAdapter = new RecommendationsTVShowAdapter(new ArrayList<RecommendationsTVShowResult>(), this);
+        mRecyclerViewRecommendations.setAdapter(mRecommendationsTVShowAdapter);
+
         // Retrieving api key
         final Map<String, String> data = new HashMap<>();
         data.put("api_key", getString(R.string.api_key));
@@ -104,6 +119,7 @@ public class ShowDetailsActivity extends AppCompatActivity {
         ApiUtils.getTMDBService().getShow(showId, data).enqueue(getShowCallback());
         ApiUtils.getTMDBService().getTVShowRatings(showId, data).enqueue(getTVShowRatings());
         ApiUtils.getTMDBService().getTVShowKeywords(showId, data).enqueue(getTVShowKeywords());
+        ApiUtils.getTMDBService().getTVShowRecommendations(showId, data).enqueue(getRecommendationsTVShowCallback());
     }
 
     @Override
@@ -251,6 +267,35 @@ public class ShowDetailsActivity extends AppCompatActivity {
     }
 
     /**
+     * Creates and returns RecommendationsMovieRequest callback for retrofit enqueue method.
+     *
+     * @return - Callback<RecommendationsMovieRequest>
+     */
+    private Callback<RecommendationsTVShowRequest> getRecommendationsTVShowCallback() {
+        return new Callback<RecommendationsTVShowRequest>() {
+            @Override
+            public void onResponse(Call<RecommendationsTVShowRequest> call, Response<RecommendationsTVShowRequest> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Recommendations retrieved: " + response.body().getResults().size());
+                    mRecommendationsTVShowAdapter.updateData(response.body().getResults());
+                    Log.d(TAG, " recommendations loaded from API");
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.d(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecommendationsTVShowRequest> call, Throwable t) {
+                showErrorMessage();
+                Log.d(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
      * Displays message when error occurs during request.
      */
     private void showErrorMessage() {
@@ -263,5 +308,17 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResultClick(long id, Bundle bundle) {
+        String bundleExtra = bundle.getString(MoviesConstants.BUNDLE_EXTRA_TYPE);
+        if(bundleExtra != null) {
+            if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_TV_SHOW)) {
+                Intent intent = new Intent(this, ShowDetailsActivity.class);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
+                startActivity(intent);
+            }
+        }
     }
 }

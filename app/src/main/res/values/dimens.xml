@@ -51,5 +51,6 @@
     <dimen name="details_text_padding_start">16dp</dimen>
     <dimen name="details_subtext_padding_start">24dp</dimen>
     <dimen name="details_year_padding_top">0dp</dimen>
+    <dimen name="recommendation_card_width">248dp</dimen>
 
 </resources>
