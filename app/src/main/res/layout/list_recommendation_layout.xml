@@ -25,19 +25,19 @@
     android:elevation="@dimen/cardview_elevation"
     app:pressedTranslationZ="@dimen/cardview_elevation_raised" >
 
-    <ImageView
-        android:id="@+id/iv_list_recommendation_backdrop"
-        android:layout_width="match_parent"
-        android:adjustViewBounds="true"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/iv_movie_recommendation_poster_description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/iv_list_recommendation_backdrop"
+            android:layout_width="match_parent"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/iv_movie_recommendation_poster_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tv_list_recommendation_name"
@@ -50,6 +50,6 @@
             android:textSize="@dimen/cardview_main_text_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/iv_list_recommendation_backdrop"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
