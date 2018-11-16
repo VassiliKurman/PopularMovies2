@@ -53,11 +53,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vkurman.popularmovies2.R;
+import vkurman.popularmovies2.adapters.MovieCastAdapter;
 import vkurman.popularmovies2.adapters.MovieCrewAdapter;
 import vkurman.popularmovies2.adapters.RecommendationsMovieAdapter;
 import vkurman.popularmovies2.adapters.VideosAdapter;
 import vkurman.popularmovies2.listeners.ResultListener;
 import vkurman.popularmovies2.loaders.VideosLoader;
+import vkurman.popularmovies2.model.CastMovie;
 import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.CrewMovie;
 import vkurman.popularmovies2.model.Movie;
@@ -116,6 +118,8 @@ public class MovieDetailsActivity extends AppCompatActivity
     private VideosAdapter mTrailersAdapter;
     // MovieCrewAdapter for Crew RecycleView
     private MovieCrewAdapter mCrewAdapter;
+    // MovieCrewAdapter for Crew RecycleView
+    private MovieCastAdapter mCastAdapter;
     // RecommendationsMovieAdapter for Recommendations RecycleView
     private RecommendationsMovieAdapter mRecommendationsMovieAdapter;
     // Map of favourite movies
@@ -201,6 +205,11 @@ public class MovieDetailsActivity extends AppCompatActivity
         mRecyclerViewCrew.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mCrewAdapter = new MovieCrewAdapter(new ArrayList<CrewMovie>(), this);
         mRecyclerViewCrew.setAdapter(mCrewAdapter);
+
+        // Setting recycle view for cast
+        mRecyclerViewCast.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
+        mCastAdapter = new MovieCastAdapter(new ArrayList<CastMovie>(), this);
+        mRecyclerViewCast.setAdapter(mCastAdapter);
 
         // Setting recycle view for recommendations
         mRecyclerViewRecommendations.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
@@ -435,6 +444,7 @@ public class MovieDetailsActivity extends AppCompatActivity
             public void onResponse(Call<CreditsMovie> call, Response<CreditsMovie> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "Crew retrieved: " + response.body().getCrew().size());
+                    Log.d(TAG, "Cast retrieved: " + response.body().getCast().size());
                     // Removing incomplete crew members
                     List<CrewMovie> crew = new ArrayList<>();
                     for(CrewMovie c: response.body().getCrew()) {
@@ -442,8 +452,10 @@ public class MovieDetailsActivity extends AppCompatActivity
                             crew.add(c);
                         }
                     }
-
+                    // Setting crew
                     mCrewAdapter.updateData(crew);
+                    // Setting cast
+                    mCastAdapter.updateData(response.body().getCast());
                     Log.d(TAG, "data loaded from API");
                 } else {
                     int statusCode  = response.code();

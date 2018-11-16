@@ -34,10 +34,11 @@
     <dimen name="cardview_main_text_size">16sp</dimen>
     <dimen name="cardview_secondary_text_size">12sp</dimen>
     <dimen name="cardview_image_size">36dp</dimen>
+    <dimen name="cardview_person_poster_width">144dp</dimen>
     <dimen name="cardview_elevation">1dp</dimen>
     <dimen name="cardview_elevation_raised">8dp</dimen>
     <dimen name="cardview_layout_margin_left">4dp</dimen>
-    <dimen name="cardview_layout_margin_rigth">4dp</dimen>
+    <dimen name="cardview_layout_margin_right">4dp</dimen>
     <dimen name="cardview_layout_margin_top">4dp</dimen>
     <dimen name="cardview_layout_margin_bottom">4dp</dimen>
 

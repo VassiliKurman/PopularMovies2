@@ -16,7 +16,7 @@
     android:layout_width="@dimen/recommendation_card_width"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/cardview_layout_margin_left"
-    android:layout_marginEnd="@dimen/cardview_layout_margin_rigth"
+    android:layout_marginEnd="@dimen/cardview_layout_margin_right"
     android:layout_marginTop="@dimen/cardview_layout_margin_top"
     android:layout_marginBottom="@dimen/cardview_layout_margin_bottom"
     android:clickable="true"
