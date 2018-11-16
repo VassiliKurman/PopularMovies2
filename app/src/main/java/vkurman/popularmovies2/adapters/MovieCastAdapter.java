@@ -16,6 +16,7 @@
 package vkurman.popularmovies2.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import vkurman.popularmovies2.R;
 import vkurman.popularmovies2.listeners.ResultListener;
 import vkurman.popularmovies2.model.CastMovie;
 import vkurman.popularmovies2.utils.MovieUtils;
+import vkurman.popularmovies2.utils.MoviesConstants;
 
 /**
  * MovieCastAdapter
@@ -71,7 +73,9 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Movi
             int position = getAdapterPosition();
             if(position >= 0 && position < mCast.size()) {
                 CastMovie crew = mCast.get(position);
-                mResultListener.onResultClick(crew.getId(), null);
+                Bundle bundle = new Bundle();
+                bundle.putString(MoviesConstants.BUNDLE_EXTRA_TYPE, MoviesConstants.BUNDLE_EXTRA_PERSON);
+                mResultListener.onResultClick(crew.getId(), bundle);
             }
         }
     }

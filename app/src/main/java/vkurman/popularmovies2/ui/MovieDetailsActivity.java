@@ -555,7 +555,7 @@ public class MovieDetailsActivity extends AppCompatActivity
                 Intent intent = new Intent(this, MovieDetailsActivity.class);
                 intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
                 startActivity(intent);
-            } else {
+            } else if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_PERSON)) {
                 Intent intent = new Intent(this, PersonDetailsActivity.class);
                 intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
                 startActivity(intent);
