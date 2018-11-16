@@ -97,10 +97,15 @@ public class MoviesActivity extends AppCompatActivity implements
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
+                    MenuItem selectedMenuItem;
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         // set item as selected to persist highlight
-                        menuItem.setChecked(true);
+                        if(selectedMenuItem != null) {
+                            selectedMenuItem.setChecked(false);
+                        }
+                        selectedMenuItem = menuItem;
+                        selectedMenuItem.setChecked(true);
                         // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
 
