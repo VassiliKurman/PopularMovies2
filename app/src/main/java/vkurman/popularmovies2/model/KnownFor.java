@@ -282,7 +282,7 @@ public class KnownFor implements Parcelable {
         dest.writeDouble(voteAverage);
         dest.writeInt(voteCount);
         dest.writeInt(id);
-        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeByte((byte) (video == null || !video ? 0 : 1));
         dest.writeString(mediaType);
         dest.writeString(title);
         dest.writeDouble(popularity);
@@ -291,7 +291,7 @@ public class KnownFor implements Parcelable {
         dest.writeString(originalTitle);
         dest.writeList(genreIds);
         dest.writeString(backdropPath);
-        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeByte((byte) (adult == null || !adult ? 0 : 1));
         dest.writeString(overview);
         dest.writeString(releaseDate);
         dest.writeString(originalName);
