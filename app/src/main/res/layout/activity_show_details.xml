@@ -193,7 +193,6 @@
             <View
                 android:id="@+id/divider_facts"
                 style="@style/HorizontalDivider"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recyclerview_recommendations"/>
@@ -205,7 +204,6 @@
                 android:padding="@dimen/details_default_padding"
                 android:textSize="@dimen/details_subtitle_text_size"
                 android:textStyle="bold"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_facts"
                 android:text="@string/text_tv_show_details_facts"/>
@@ -213,7 +211,6 @@
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_status_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_facts_title"
                 android:text="@string/text_tv_show_details_status"/>
@@ -221,14 +218,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_status_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_status_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_status_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_network_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_status_text"
                 android:text="@string/text_tv_show_details_network"/>
@@ -236,14 +231,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_network_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_network_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_network_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_certification_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_network_text"
                 android:text="@string/text_tv_show_details_certification"/>
@@ -251,14 +244,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_certification_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_certification_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_certification_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_type_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_certification_text"
                 android:text="@string/text_tv_show_details_type"/>
@@ -266,14 +257,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_type_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_type_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_type_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_original_language_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_type_text"
                 android:text="@string/text_tv_show_details_original_language"/>
@@ -281,14 +270,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_original_language_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_original_language_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_original_language_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_runtime_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_original_language_text"
                 android:text="@string/text_tv_show_details_runtime"/>
@@ -296,14 +283,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_runtime_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_runtime_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_runtime_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_genres_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_runtime_text"
                 android:text="@string/text_tv_show_details_genres"/>
@@ -311,14 +296,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_genres_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_genres_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_genres_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_show_details_keywords_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_genres_text"
                 android:text="@string/text_tv_show_details_keywords"/>
@@ -326,7 +309,6 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_show_details_keywords_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_show_details_keywords_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_show_details_keywords_title" />
 

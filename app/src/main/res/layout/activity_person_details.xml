@@ -86,7 +86,6 @@
                 android:padding="@dimen/details_default_padding"
                 android:textSize="@dimen/details_subtitle_text_size"
                 android:textStyle="bold"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_name"
                 android:text="@string/text_people_details_biography"/>
@@ -100,7 +99,6 @@
                 android:paddingStart="@dimen/details_text_padding_start"
                 android:paddingEnd="@dimen/details_default_padding"
                 android:textSize="@dimen/details_normal_text_size"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_biography_title" />
 
@@ -155,7 +153,6 @@
             <View
                 android:id="@+id/divider_personal_info"
                 style="@style/HorizontalDivider"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/table_details_acting"/>
@@ -167,7 +164,6 @@
                 android:padding="@dimen/details_default_padding"
                 android:textSize="@dimen/details_subtitle_text_size"
                 android:textStyle="bold"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_personal_info"
                 android:text="@string/text_people_details_personal_info"/>
@@ -175,7 +171,6 @@
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_details_known_for_text_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_personal_info_title"
                 android:text="@string/text_people_details_known_for"/>
@@ -183,14 +178,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_details_known_for_text"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_details_known_for_text_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_known_for_text_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_details_gender_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_known_for_text"
                 android:text="@string/text_people_details_gender"/>
@@ -198,14 +191,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_details_gender"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_details_gender_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_gender_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_details_known_credits_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_gender"
                 android:text="@string/text_people_details_known_credits"/>
@@ -213,14 +204,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_details_known_credits"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_details_known_credits_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_known_credits_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_details_birthday_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_known_credits"
                 android:text="@string/text_people_details_birthday"/>
@@ -228,14 +217,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_details_birthday"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_details_birthday_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_birthday_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_details_place_of_birth_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_birthday"
                 android:text="@string/text_people_details_place_of_birth"/>
@@ -243,14 +230,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_details_place_of_birth"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_details_place_of_birth_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_details_official_site_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_place_of_birth"
                 android:text="@string/text_people_details_official_site"/>
@@ -258,14 +243,12 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_details_official_site"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_details_official_site_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_official_site_title" />
 
             <TextView
                 style="@style/InlineTitle"
                 android:id="@+id/tv_details_also_known_as_title"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_official_site"
                 android:text="@string/text_people_details_also_known_as"/>
@@ -273,7 +256,6 @@
             <TextView
                 style="@style/InlineText"
                 android:id="@+id/tv_details_also_known_as"
-                android:background="@color/colorPrimaryLighter"
                 app:layout_constraintStart_toStartOf="@id/tv_details_also_known_as_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_also_known_as_title" />
 

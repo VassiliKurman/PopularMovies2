@@ -318,6 +318,10 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
                 Intent intent = new Intent(this, ShowDetailsActivity.class);
                 intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
                 startActivity(intent);
+            } else if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_PERSON)) {
+                Intent intent = new Intent(this, PersonDetailsActivity.class);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, id);
+                startActivity(intent);
             }
         }
     }
