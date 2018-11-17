@@ -142,4 +142,7 @@
     <!-- Error messages -->
     <string name="error_identifying_adapter">Error in identifying adapter</string>
 
+    <!-- Content Descriptions -->
+    <string name="text_content_description_trailer">Trailer</string>
+
 </resources>
