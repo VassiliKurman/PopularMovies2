@@ -360,7 +360,7 @@ public class MovieUtils {
             return "-";
         }
 
-        return NumberFormat.getCurrencyInstance(Locale.getDefault()).format(budget);
+        return NumberFormat.getCurrencyInstance(Locale.US).format(budget);
     }
 
     /**

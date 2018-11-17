@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -51,7 +52,6 @@ import vkurman.popularmovies2.model.KnownFor;
 import vkurman.popularmovies2.model.PersonCombinedCredits;
 import vkurman.popularmovies2.model.PersonModel;
 import vkurman.popularmovies2.retrofit.ApiUtils;
-import vkurman.popularmovies2.retrofit.TMDBService;
 import vkurman.popularmovies2.utils.MovieUtils;
 import vkurman.popularmovies2.utils.MoviesConstants;
 
@@ -68,6 +68,7 @@ public class PersonDetailsActivity extends AppCompatActivity implements ResultLi
     @BindView(R.id.poster_iv) ImageView ivPoster;
     @BindView(R.id.tv_details_name) TextView tvName;
     @BindView(R.id.tv_details_biography) TextView tvBiography;
+    @BindView(R.id.tv_details_known_for_title) TextView tvKnownForTitle;
     @BindView(R.id.recyclerview_known_for) RecyclerView recyclerViewKnownFor;
     @BindView(R.id.table_details_acting) TableLayout tableDetailsActing;
     @BindView(R.id.tv_details_known_for_text) TextView tvKnownFor;
@@ -78,10 +79,8 @@ public class PersonDetailsActivity extends AppCompatActivity implements ResultLi
     @BindView(R.id.tv_details_official_site) TextView tvOfficialSite;
     @BindView(R.id.tv_details_also_known_as) TextView tvAlsoKnownAs;
 
-    private TMDBService mService;
     private long personId;
     private List<KnownFor> mKnownForList;
-    private KnownForAdapter mKnownForAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +95,6 @@ public class PersonDetailsActivity extends AppCompatActivity implements ResultLi
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mService = ApiUtils.getTMDBService();
-
         Intent intent = getIntent();
         if (intent != null) {
             personId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_PERSON_ID, -1L);
@@ -107,19 +104,23 @@ public class PersonDetailsActivity extends AppCompatActivity implements ResultLi
         }
 
         // Setting LayoutManager
-        recyclerViewKnownFor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        // specifying an adapter and passing empty list at start
-        mKnownForAdapter = new KnownForAdapter(mKnownForList, this);
-        recyclerViewKnownFor.setAdapter(mKnownForAdapter);
+        if(mKnownForList != null && !mKnownForList.isEmpty()) {
+            recyclerViewKnownFor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            // specifying an adapter and passing empty list at start
+            recyclerViewKnownFor.setAdapter(new KnownForAdapter(mKnownForList, this));
+        } else {
+            tvKnownForTitle.setVisibility(View.GONE);
+            recyclerViewKnownFor.setVisibility(View.GONE);
+        }
 
         // Retrieving api key
         final Map<String, String> data = new HashMap<>();
         data.put("api_key", getString(R.string.api_key));
         data.put("language", "en-US");
         // Requesting for person details
-        mService.getPerson(personId, data).enqueue(getPersonCallback());
+        ApiUtils.getTMDBService().getPerson(personId, data).enqueue(getPersonCallback());
         // Requesting for person credits
-        mService.getPersonCombinedCredits(personId, data).enqueue(getPersonCombinedCreditsCallback());
+        ApiUtils.getTMDBService().getPersonCombinedCredits(personId, data).enqueue(getPersonCombinedCreditsCallback());
     }
 
     @Override
@@ -193,7 +194,8 @@ public class PersonDetailsActivity extends AppCompatActivity implements ResultLi
                             || personCombinedCredits.getCast().isEmpty()) ? 0 : personCombinedCredits.getCast().size();
                     int crewCredits = (personCombinedCredits.getCrew() == null
                             || personCombinedCredits.getCrew().isEmpty()) ? 0 : personCombinedCredits.getCrew().size();
-                    tvKnownCredits.setText(Integer.toString(castCredits + crewCredits));
+                    String total = Integer.toString(castCredits + crewCredits);
+                    tvKnownCredits.setText(total);
 
                     List<CastPersonCombinedCredits> list = personCombinedCredits.getCast();
                     Collections.sort(list, new Comparator<CastPersonCombinedCredits>() {
