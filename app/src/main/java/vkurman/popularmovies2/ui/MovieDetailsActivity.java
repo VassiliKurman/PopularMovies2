@@ -128,7 +128,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     // RecommendationsMovieAdapter for Recommendations RecycleView
     private RecommendationsMovieAdapter mRecommendationsMovieAdapter;
     // Map of favourite movies
-    private Map<Long, Long> favourites = new TreeMap<>();;
+    private Map<Long, Long> favourites = new TreeMap<>();
     // Indicator that data changed for result intent
     private boolean dataChanged;
 
