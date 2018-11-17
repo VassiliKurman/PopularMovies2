@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,8 +43,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vkurman.popularmovies2.R;
+import vkurman.popularmovies2.adapters.MovieCastAdapter;
 import vkurman.popularmovies2.adapters.RecommendationsTVShowAdapter;
 import vkurman.popularmovies2.listeners.ResultListener;
+import vkurman.popularmovies2.model.CastMovie;
+import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.Crew;
 import vkurman.popularmovies2.model.RecommendationsTVShowRequest;
 import vkurman.popularmovies2.model.RecommendationsTVShowResult;
@@ -70,6 +74,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
     @BindView(R.id.tv_show_details_title) TextView tvTitle;
     @BindView(R.id.tv_show_details_year) TextView tvYear;
     @BindView(R.id.tv_show_details_overview_text) TextView tvOverview;
+    @BindView(R.id.tv_show_details_crew_title) TextView tvCrewTitle;
     @BindView(R.id.tv_show_details_crew_text) TextView tvCrew;
     @BindView(R.id.recyclerview_show_details_cast) RecyclerView mRecyclerViewCast;
     @BindView(R.id.recyclerview_recommendations) RecyclerView mRecyclerViewRecommendations;
@@ -84,6 +89,8 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
     @BindView(R.id.tv_show_details_keywords_text) TextView tvKeywords;
 
     private long showId;
+    // MovieCastAdapter for Cast RecycleView
+    private MovieCastAdapter mCastAdapter;
     // RecommendationsMovieAdapter for Recommendations RecycleView
     private RecommendationsTVShowAdapter mRecommendationsTVShowAdapter;
 
@@ -107,6 +114,11 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
             closeOnError();
         }
 
+        // Setting recycle view for cast
+        mRecyclerViewCast.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
+        mCastAdapter = new MovieCastAdapter(new ArrayList<CastMovie>(), this);
+        mRecyclerViewCast.setAdapter(mCastAdapter);
+
         // Setting recycle view for recommendations
         mRecyclerViewRecommendations.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mRecommendationsTVShowAdapter = new RecommendationsTVShowAdapter(new ArrayList<RecommendationsTVShowResult>(), this);
@@ -119,6 +131,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
         ApiUtils.getTMDBService().getShow(showId, data).enqueue(getShowCallback());
         ApiUtils.getTMDBService().getTVShowRatings(showId, data).enqueue(getTVShowRatings());
         ApiUtils.getTMDBService().getTVShowKeywords(showId, data).enqueue(getTVShowKeywords());
+        ApiUtils.getTMDBService().getTVShowCredits(showId, data).enqueue(getCreditsTVShowCallback());
         ApiUtils.getTMDBService().getTVShowRecommendations(showId, data).enqueue(getRecommendationsTVShowCallback());
     }
 
@@ -158,6 +171,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
                             crew = (crew.isEmpty()) ? c.getName() : crew + ", " + c.getName();
                         }
                         tvCrew.setText(crew);
+                    } else {
+                        tvCrewTitle.setVisibility(View.GONE);
+                        tvCrew.setVisibility(View.GONE);
                     }
 
                     // Facts
@@ -261,6 +277,37 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
             public void onFailure(Call<TVKeywords> call, Throwable t) {
                 showErrorMessage();
                 Log.e(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
+     * Creates and returns credits callback for retrofit enqueue method.
+     *
+     * @return - Callback<CreditsMovie>
+     */
+    private Callback<CreditsMovie> getCreditsTVShowCallback() {
+        return new Callback<CreditsMovie>() {
+            @Override
+            public void onResponse(Call<CreditsMovie> call, Response<CreditsMovie> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Crew retrieved: " + response.body().getCrew().size());
+                    Log.d(TAG, "Cast retrieved: " + response.body().getCast().size());
+                    // Setting cast
+                    mCastAdapter.updateData(response.body().getCast());
+                    Log.d(TAG, "data loaded from API");
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.d(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditsMovie> call, Throwable t) {
+                showErrorMessage();
+                Log.d(TAG, "error loading from API");
 
             }
         };

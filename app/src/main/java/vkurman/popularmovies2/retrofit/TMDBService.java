@@ -172,19 +172,28 @@ public interface TMDBService {
 
     /**
      *
-     * @param selection - String for {@link Path @Path} which should be popular.
+     * @param id - String for {@link Path @Path} which should be id.
      * @param options - should include api_key as minimum
      * @return Call<CreditsMovie>
      */
-    @GET("movie/{selection}/credits")
-    Call<CreditsMovie> getMovieCredits(@Path("selection") Long selection, @QueryMap Map<String, String> options);
+    @GET("tv/{id}/credits")
+    Call<CreditsMovie> getTVShowCredits(@Path("id") Long id, @QueryMap Map<String, String> options);
 
     /**
      *
-     * @param selection - String for {@link Path @Path} which should be popular.
+     * @param id - String for {@link Path @Path} which should be id.
+     * @param options - should include api_key as minimum
+     * @return Call<CreditsMovie>
+     */
+    @GET("movie/{id}/credits")
+    Call<CreditsMovie> getMovieCredits(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be id.
      * @param options - should include api_key as minimum
      * @return Call<ResultMovieReviews>
      */
-    @GET("movie/{selection}/reviews")
-    Call<ResultMovieReviews> getMovieReviews(@Path("selection") Long selection, @QueryMap Map<String, String> options);
+    @GET("movie/{id}/reviews")
+    Call<ResultMovieReviews> getMovieReviews(@Path("id") Long id, @QueryMap Map<String, String> options);
 }
