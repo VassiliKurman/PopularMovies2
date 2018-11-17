@@ -265,7 +265,7 @@ public class PersonDetailsActivity extends AppCompatActivity implements ResultLi
     @Override
     public void onResultClick(long id, Bundle bundle) {
         Intent intent = new Intent(PersonDetailsActivity.this, MovieDetailsActivity.class);
-        intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
+        intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, id);
         startActivity(intent);
     }
 }

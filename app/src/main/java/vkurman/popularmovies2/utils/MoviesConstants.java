@@ -55,11 +55,14 @@ public class MoviesConstants {
     public static final String PATH_SELECTION_PEOPLE_PUPOLAR = "popular";
 
     // Intent extras
-    public static final String INTENT_EXTRA_MOVIE_ID = "movieId";
-    public static final String INTENT_EXTRA_SHOW_ID = "showId";
+    public static final String INTENT_EXTRA_ID = "id";
+    public static final String INTENT_EXTRA_TITLE = "title";
     public static final String INTENT_EXTRA_PERSON_ID = "personId";
-    public static final String INTENT_EXTRA_MOVIE_TITLE = "movieTitle";
     public static final String INTENT_EXTRA_PERSON_KNOWN_FOR = "knownFor";
+    public static final String INTENT_EXTRA_TYPE = "type";
+    public static final String INTENT_EXTRA_TYPE_MOVIE = "movie";
+    public static final String INTENT_EXTRA_TYPE_TV_SHOW = "tvShow";
+    public static final String INTENT_EXTRA_TYPE_PERSON = "person";
 
     // Bundle extras
     public static final String BUNDLE_EXTRA_TYPE = "type";

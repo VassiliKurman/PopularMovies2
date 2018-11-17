@@ -19,12 +19,14 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,6 +53,8 @@ import vkurman.popularmovies2.model.CreditsMovie;
 import vkurman.popularmovies2.model.Crew;
 import vkurman.popularmovies2.model.RecommendationsTVShowRequest;
 import vkurman.popularmovies2.model.RecommendationsTVShowResult;
+import vkurman.popularmovies2.model.ResultMovieReview;
+import vkurman.popularmovies2.model.ResultMovieReviews;
 import vkurman.popularmovies2.model.ShowModel;
 import vkurman.popularmovies2.model.TVContentRatings;
 import vkurman.popularmovies2.model.TVKeywords;
@@ -64,7 +68,7 @@ import vkurman.popularmovies2.utils.MoviesConstants;
  * Created by Vassili Kurman on 02/10/2018.
  * Version 1.0
  */
-public class ShowDetailsActivity extends AppCompatActivity implements ResultListener {
+public class ShowDetailsActivity extends AppCompatActivity implements View.OnClickListener, ResultListener {
 
     private final static String TAG = ShowDetailsActivity.class.getSimpleName();
 
@@ -77,6 +81,10 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
     @BindView(R.id.tv_show_details_crew_title) TextView tvCrewTitle;
     @BindView(R.id.tv_show_details_crew_text) TextView tvCrew;
     @BindView(R.id.recyclerview_show_details_cast) RecyclerView mRecyclerViewCast;
+    @BindView(R.id.cardview_show_social)CardView mCardViewReviews;
+    @BindView(R.id.tv_show_review_author) TextView mReviewAuthor;
+    @BindView(R.id.tv_show_review_content) TextView mReviewContent;
+    @BindView(R.id.btn_show_reviews) Button btnReviews;
     @BindView(R.id.recyclerview_recommendations) RecyclerView mRecyclerViewRecommendations;
     // Facts
     @BindView(R.id.tv_show_details_status_text) TextView tvStatus;
@@ -88,7 +96,10 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
     @BindView(R.id.tv_show_details_genres_text) TextView tvGenres;
     @BindView(R.id.tv_show_details_keywords_text) TextView tvKeywords;
 
+    // Show id
     private long showId;
+    // Show title
+    private String showTitle;
     // MovieCastAdapter for Cast RecycleView
     private MovieCastAdapter mCastAdapter;
     // RecommendationsMovieAdapter for Recommendations RecycleView
@@ -109,10 +120,13 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
 
         Intent intent = getIntent();
         if (intent != null) {
-            showId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, -1L);
+            showId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_ID, -1L);
         } else {
             closeOnError();
         }
+
+        // Setting OnClickListener
+        btnReviews.setOnClickListener(ShowDetailsActivity.this);
 
         // Setting recycle view for cast
         mRecyclerViewCast.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
@@ -132,6 +146,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
         ApiUtils.getTMDBService().getTVShowRatings(showId, data).enqueue(getTVShowRatings());
         ApiUtils.getTMDBService().getTVShowKeywords(showId, data).enqueue(getTVShowKeywords());
         ApiUtils.getTMDBService().getTVShowCredits(showId, data).enqueue(getCreditsTVShowCallback());
+        ApiUtils.getTMDBService().getTVShowReviews(showId, data).enqueue(getReviewsShowCallback());
         ApiUtils.getTMDBService().getTVShowRecommendations(showId, data).enqueue(getRecommendationsTVShowCallback());
     }
 
@@ -143,6 +158,19 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view == btnReviews) {
+            if(showId >= 0) {
+                Intent intent = new Intent(ShowDetailsActivity.this, ReviewsActivity.class);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, showId);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_TITLE, showTitle);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_TYPE, MoviesConstants.INTENT_EXTRA_TYPE_TV_SHOW);
+                startActivity(intent);
+            }
         }
     }
 
@@ -158,6 +186,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
                 if(response.isSuccessful()) {
                     ShowModel showModel = response.body();
                     Log.d(TAG, "Show retrieved: " + showModel.getName());
+
+                    showId = showModel.getId();
+                    showTitle = showModel.getName();
 
                     // Setting title for Toolbar
                     toolbar.setTitle(showModel.getName());
@@ -314,6 +345,42 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
     }
 
     /**
+     * Creates and returns reviews callback for retrofit enqueue method.
+     *
+     * @return - Callback<ResultMovieReviews>
+     */
+    private Callback<ResultMovieReviews> getReviewsShowCallback() {
+        return new Callback<ResultMovieReviews>() {
+            @Override
+            public void onResponse(Call<ResultMovieReviews> call, Response<ResultMovieReviews> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Reviews retrieved: " + response.body().getResults().size());
+                    if(response.body().getResults().size() > 0) {
+                        ResultMovieReview review = response.body().getResults().get(0);
+                        mReviewAuthor.setText(String.format("%s %s", getString(R.string.text_tv_show_details_reviews_by), review.getAuthor()));
+                        mReviewContent.setText(review.getContent());
+                        Log.d(TAG, "data loaded from API");
+                    } else {
+                        mCardViewReviews.setVisibility(View.GONE);
+                        btnReviews.setEnabled(false);
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.d(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultMovieReviews> call, Throwable t) {
+                showErrorMessage();
+                Log.d(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
      * Creates and returns RecommendationsMovieRequest callback for retrofit enqueue method.
      *
      * @return - Callback<RecommendationsMovieRequest>
@@ -363,7 +430,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements ResultList
         if(bundleExtra != null) {
             if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_TV_SHOW)) {
                 Intent intent = new Intent(this, ShowDetailsActivity.class);
-                intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, id);
                 startActivity(intent);
             } else if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_PERSON)) {
                 Intent intent = new Intent(this, PersonDetailsActivity.class);

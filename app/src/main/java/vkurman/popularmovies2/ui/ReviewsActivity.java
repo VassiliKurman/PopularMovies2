@@ -46,17 +46,18 @@ import vkurman.popularmovies2.utils.MoviesConstants;
 /**
  * Activity that displays movie reviews
  */
-public class MovieReviewsActivity extends AppCompatActivity {
+public class ReviewsActivity extends AppCompatActivity {
 
-    private static final String TAG = MovieReviewsActivity.class.getSimpleName();
+    private static final String TAG = ReviewsActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_reviews_title) TextView tvTitle;
     @BindView(R.id.rv_reviews) RecyclerView mRecyclerView;
 
     private ReviewsAdapter mAdapter;
-    private long mMovieId;
-    private String mMovieTitle;
+    private long mId;
+    private String mTitle;
+    private String mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +74,11 @@ public class MovieReviewsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            mMovieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, -1L);
-            mMovieTitle = intent.getStringExtra(MoviesConstants.INTENT_EXTRA_MOVIE_TITLE);
-            Log.d(TAG, "Retrieved movie id [ " + mMovieId + " ] and movie title: " + mMovieTitle);
+            mId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_ID, -1L);
+            mTitle = intent.getStringExtra(MoviesConstants.INTENT_EXTRA_TITLE);
+            mType = intent.getStringExtra(MoviesConstants.INTENT_EXTRA_TYPE);
+
+            Log.d(TAG, "Retrieved id [ " + mId + " ] and title: " + mTitle);
         } else {
             closeOnError();
         }
@@ -89,7 +92,14 @@ public class MovieReviewsActivity extends AppCompatActivity {
         final Map<String, String> reviewsData = new HashMap<>();
         reviewsData.put("api_key", getString(R.string.api_key));
         // Requesting for data
-        ApiUtils.getTMDBService().getMovieReviews(mMovieId, reviewsData).enqueue(getReviewsMovieCallback());
+        switch(mType) {
+            case MoviesConstants.INTENT_EXTRA_TYPE_MOVIE:
+                ApiUtils.getTMDBService().getMovieReviews(mId, reviewsData).enqueue(getReviewsMovieCallback());
+                break;
+            case MoviesConstants.INTENT_EXTRA_TYPE_TV_SHOW:
+                ApiUtils.getTMDBService().getTVShowReviews(mId, reviewsData).enqueue(getReviewsMovieCallback());
+                break;
+        }
     }
 
     @Override
@@ -125,7 +135,7 @@ public class MovieReviewsActivity extends AppCompatActivity {
 
                     mAdapter.updateReviews(response.body().getResults());
                     // Toolbar title
-                    toolbar.setTitle(mMovieTitle);
+                    toolbar.setTitle(mTitle);
                     Log.d(TAG, "data loaded from API");
                 } else {
                     int statusCode  = response.code();

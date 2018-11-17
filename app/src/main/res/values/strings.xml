@@ -67,6 +67,7 @@
     <string name="activity_title_movie_details">Movie Details</string>
     <string name="iv_movie_recommendation_poster_description">Recommendation poster</string>
     <string name="button_all_reviews">Read All Reviews</string>
+    <string name="text_movie_details_reviews_by">Review by</string>
     <string name="text_movie_details_user_score">User score:</string>
     <string name="text_movie_details_overview">Overview</string>
     <string name="text_movie_details_featured_crew">Featured Crew</string>
@@ -103,6 +104,7 @@
     // TV Show Details Activity
     <string name="iv_tv_show_backdrop">TV Show backdrop</string>
     <string name="iv_tv_show_recommendation_poster_description">Recommendation poster</string>
+    <string name="text_tv_show_details_reviews_by">Review by</string>
     <string name="iv_tv_show_poster">TV Show poster</string>
     <string name="text_tv_show_overview">Overview</string>
     <string name="text_tv_show_details_crew">Featured Crew</string>

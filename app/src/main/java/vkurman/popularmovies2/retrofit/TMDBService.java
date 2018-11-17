@@ -194,6 +194,15 @@ public interface TMDBService {
      * @param options - should include api_key as minimum
      * @return Call<ResultMovieReviews>
      */
+    @GET("tv/{id}/reviews")
+    Call<ResultMovieReviews> getTVShowReviews(@Path("id") Long id, @QueryMap Map<String, String> options);
+
+    /**
+     *
+     * @param id - String for {@link Path @Path} which should be id.
+     * @param options - should include api_key as minimum
+     * @return Call<ResultMovieReviews>
+     */
     @GET("movie/{id}/reviews")
     Call<ResultMovieReviews> getMovieReviews(@Path("id") Long id, @QueryMap Map<String, String> options);
 }

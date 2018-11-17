@@ -147,7 +147,7 @@ public class MovieDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         if (intent != null) {
-            mMovieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, -1L);
+            mMovieId = intent.getLongExtra(MoviesConstants.INTENT_EXTRA_ID, -1L);
         } else {
             closeOnError();
         }
@@ -328,9 +328,10 @@ public class MovieDetailsActivity extends AppCompatActivity
     public void onClick(View view) {
         if(view == btnReviews) {
             if(mMovieId >= 0) {
-                Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewsActivity.class);
-                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, mMovieId);
-                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_TITLE, mMovieTitle);
+                Intent intent = new Intent(MovieDetailsActivity.this, ReviewsActivity.class);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, mMovieId);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_TITLE, mMovieTitle);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_TYPE, MoviesConstants.INTENT_EXTRA_TYPE_MOVIE);
                 startActivity(intent);
             }
         } else if(view == ivFavourite) {
@@ -485,7 +486,7 @@ public class MovieDetailsActivity extends AppCompatActivity
                     Log.d(TAG, "Reviews retrieved: " + response.body().getResults().size());
                     if(response.body().getResults().size() > 0) {
                         ResultMovieReview review = response.body().getResults().get(0);
-                        mReviewAuthor.setText("Review by " + review.getAuthor());
+                        mReviewAuthor.setText(String.format("%s %s", getString(R.string.text_movie_details_reviews_by), review.getAuthor()));
                         mReviewContent.setText(review.getContent());
                         Log.d(TAG, "data loaded from API");
                     } else {
@@ -588,7 +589,7 @@ public class MovieDetailsActivity extends AppCompatActivity
         if(bundleExtra != null) {
             if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_MOVIE)) {
                 Intent intent = new Intent(this, MovieDetailsActivity.class);
-                intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
+                intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, id);
                 startActivity(intent);
             } else if (bundleExtra.equals(MoviesConstants.BUNDLE_EXTRA_PERSON)) {
                 Intent intent = new Intent(this, PersonDetailsActivity.class);

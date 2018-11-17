@@ -435,15 +435,15 @@ public class MoviesActivity extends AppCompatActivity implements
     public void onResultClick(long id, Bundle bundle) {
         if(mAdapter instanceof RetrofitMoviesAdapter) {
             Intent intent = new Intent(this, MovieDetailsActivity.class);
-            intent.putExtra(MoviesConstants.INTENT_EXTRA_MOVIE_ID, id);
+            intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, id);
             startActivity(intent);
         } else if(mAdapter instanceof MoviesAdapter) {
             Intent intent = new Intent(this, MovieDetailsActivity.class);
-            intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
+            intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, id);
             startActivity(intent);
         } else if(mAdapter instanceof RetrofitTVsAdapter) {
             Intent intent = new Intent(this, ShowDetailsActivity.class);
-            intent.putExtra(MoviesConstants.INTENT_EXTRA_SHOW_ID, id);
+            intent.putExtra(MoviesConstants.INTENT_EXTRA_ID, id);
             startActivity(intent);
         } else if(mAdapter instanceof RetrofitPeopleAdapter) {
             Intent intent = new Intent(this, PersonDetailsActivity.class);
