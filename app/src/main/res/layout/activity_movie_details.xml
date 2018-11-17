@@ -79,6 +79,14 @@
                 app:layout_constraintWidth_percent=".25"
                 android:elevation="@dimen/details_poster_elevation"/>
 
+            <ImageView
+                style="@style/DefaultView"
+                android:id="@+id/iv_details_favourite"
+                android:src="@drawable/ic_heart_outline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/iv_favourite_icon_description"/>
+
             <TextView
                 style="@style/DefaultView"
                 android:id="@+id/tv_details_title"
@@ -106,22 +114,6 @@
                 app:layout_constraintStart_toEndOf="@id/tv_rating"
                 app:layout_constraintTop_toTopOf="@id/tv_rating" />
 
-            <ImageView
-                style="@style/DefaultView"
-                android:id="@+id/iv_details_favourite"
-                android:src="@drawable/ic_heart_outline"
-                app:layout_constraintStart_toStartOf="@id/tv_rating"
-                app:layout_constraintTop_toBottomOf="@id/tv_rating"
-                android:contentDescription="@string/iv_favourite_icon_description"/>
-
-            <Button
-                style="@style/DefaultView"
-                android:id="@+id/btn_reviews"
-                app:layout_constraintStart_toStartOf="@id/iv_details_favourite"
-                app:layout_constraintTop_toBottomOf="@id/iv_details_favourite"
-                android:background="@drawable/rounded_border_button"
-                android:text="@string/button_all_reviews" />
-
             <TextView
                 android:id="@+id/tv_overview_title"
                 android:layout_width="wrap_content"
@@ -133,7 +125,7 @@
                 android:textSize="@dimen/details_subtitle_text_size"
                 android:text="@string/text_movie_details_overview"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_reviews" />
+                app:layout_constraintTop_toBottomOf="@id/tv_rating" />
 
             <TextView
                 android:id="@+id/tv_overview"
@@ -183,6 +175,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_details_cast_title" />
 
+            <View
+                android:id="@+id/divider_movie_details_cast"
+                style="@style/HorizontalDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_cast"/>
+
             <TextView
                 style="@style/DefaultView"
                 android:id="@+id/tv_details_social_title"
@@ -190,17 +189,66 @@
                 android:text="@string/text_movie_details_social"
                 android:textSize="@dimen/details_subtitle_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerview_cast" />
+                app:layout_constraintTop_toBottomOf="@id/divider_movie_details_cast" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview_social"
-                android:scrollbars="horizontal"
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardview_social"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:elevation="@dimen/cardview_elevation"
+                app:pressedTranslationZ="@dimen/cardview_elevation_raised"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_details_social_title" >
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:id="@+id/tv_movie_review_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/default_text_padding"
+                        android:textSize="@dimen/cardview_main_text_size"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_movie_review_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/default_text_padding"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_movie_review_author"/>
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
+                android:layout_margin="@dimen/default_margin"
+                android:padding="@dimen/default_text_padding"
+                android:text="@string/button_all_reviews"
+                android:background="?android:attr/selectableItemBackground"
+                android:textAllCaps="false"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_social_title" />
+                app:layout_constraintTop_toBottomOf="@id/cardview_social" />
 
+            <View
+                android:id="@+id/divider_movie_details_social"
+                style="@style/HorizontalDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_reviews"/>
+
+            <!-- Media -->
             <TextView
                 android:id="@+id/tv_media_text"
                 style="@style/DefaultView"
@@ -208,7 +256,7 @@
                 android:text="@string/text_movie_details_media"
                 android:textSize="@dimen/details_subtitle_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerview_social"/>
+                app:layout_constraintTop_toBottomOf="@id/divider_movie_details_social"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_media"

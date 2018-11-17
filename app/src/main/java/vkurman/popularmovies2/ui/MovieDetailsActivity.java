@@ -26,6 +26,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -67,6 +68,8 @@ import vkurman.popularmovies2.model.MovieKeywords;
 import vkurman.popularmovies2.model.MovieModel;
 import vkurman.popularmovies2.model.RecommendationsMovieRequest;
 import vkurman.popularmovies2.model.RecommendationsMovieResult;
+import vkurman.popularmovies2.model.ResultMovieReview;
+import vkurman.popularmovies2.model.ResultMovieReviews;
 import vkurman.popularmovies2.model.Video;
 import vkurman.popularmovies2.persistance.MoviesContract;
 import vkurman.popularmovies2.retrofit.ApiUtils;
@@ -94,10 +97,12 @@ public class MovieDetailsActivity extends AppCompatActivity
     @BindView(R.id.tv_overview) TextView tvOverview;
     @BindView(R.id.recyclerview_crew) RecyclerView mRecyclerViewCrew;
     @BindView(R.id.recyclerview_cast) RecyclerView mRecyclerViewCast;
-    @BindView(R.id.recyclerview_social) RecyclerView mRecyclerViewSocial;
+    @BindView(R.id.cardview_social) CardView mCardViewReviews;
+    @BindView(R.id.tv_movie_review_author) TextView mReviewAuthor;
+    @BindView(R.id.tv_movie_review_content) TextView mReviewContent;
+    @BindView(R.id.btn_reviews) Button btnReviews;
     @BindView(R.id.recyclerview_media) RecyclerView mRecyclerViewMedia;
     @BindView(R.id.recyclerview_recommendations) RecyclerView mRecyclerViewRecommendations;
-    @BindView(R.id.btn_reviews) Button btnReviews;
     // Facts
     @BindView(R.id.movie_details_status_text) TextView tvStatus;
     @BindView(R.id.movie_details_release_information_text) TextView tvReleaseInformation;
@@ -110,9 +115,9 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     private final static String TAG = "MovieDetailsActivity";
 
-    // Reference to Movie object
-//    private Movie movie;
+    // Movie id
     private long mMovieId;
+    // Movie title
     private String mMovieTitle;
     // VideosAdapter for Trailers RecycleView
     private VideosAdapter mTrailersAdapter;
@@ -148,12 +153,6 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
 
         dataChanged = false;
-
-        // Retrieving api key
-        final Map<String, String> data = new HashMap<>();
-        data.put("api_key", getString(R.string.api_key));
-        data.put("language", "en-US");
-        ApiUtils.getTMDBService().getMovie(mMovieId, data).enqueue(getMovieCallback());
 
         // TODO clear bellow
 //        movie = intent.getParcelableExtra("movie");
@@ -217,10 +216,12 @@ public class MovieDetailsActivity extends AppCompatActivity
         mRecyclerViewRecommendations.setAdapter(mRecommendationsMovieAdapter);
 
         // Retrieving api key
-        final Map<String, String> creditsData = new HashMap<>();
-        creditsData.put("api_key", getString(R.string.api_key));
-        // Requesting for data
-        ApiUtils.getTMDBService().getMovieCredits(mMovieId, creditsData).enqueue(getCreditsMovieCallback());
+        final Map<String, String> data = new HashMap<>();
+        data.put("api_key", getString(R.string.api_key));
+        data.put("language", "en-US");
+        ApiUtils.getTMDBService().getMovie(mMovieId, data).enqueue(getMovieCallback());
+        ApiUtils.getTMDBService().getMovieCredits(mMovieId, data).enqueue(getCreditsMovieCallback());
+        ApiUtils.getTMDBService().getMovieReviews(mMovieId, data).enqueue(getReviewsMovieCallback());
         ApiUtils.getTMDBService().getMovieRecommendations(mMovieId, data).enqueue(getRecommendationsMovieCallback());
         ApiUtils.getTMDBService().getMovieKeywords(mMovieId, data).enqueue(getMovieKeywords());
 
@@ -323,7 +324,6 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
     }
 
-    // TODO refactor for reviews
     @Override
     public void onClick(View view) {
         if(view == btnReviews) {
@@ -363,7 +363,6 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Video>> loader) {}
-
 
     /**
      * Creates and returns movies callback for retrofit enqueue method.
@@ -466,6 +465,42 @@ public class MovieDetailsActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<CreditsMovie> call, Throwable t) {
+                showErrorMessage();
+                Log.d(TAG, "error loading from API");
+
+            }
+        };
+    }
+
+    /**
+     * Creates and returns reviews callback for retrofit enqueue method.
+     *
+     * @return - Callback<ResultMovieReviews>
+     */
+    private Callback<ResultMovieReviews> getReviewsMovieCallback() {
+        return new Callback<ResultMovieReviews>() {
+            @Override
+            public void onResponse(Call<ResultMovieReviews> call, Response<ResultMovieReviews> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "Reviews retrieved: " + response.body().getResults().size());
+                    if(response.body().getResults().size() > 0) {
+                        ResultMovieReview review = response.body().getResults().get(0);
+                        mReviewAuthor.setText("Review by " + review.getAuthor());
+                        mReviewContent.setText(review.getContent());
+                        Log.d(TAG, "data loaded from API");
+                    } else {
+                        mCardViewReviews.setVisibility(View.GONE);
+                        btnReviews.setEnabled(false);
+                    }
+                } else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                    Log.d(TAG, "Error status code: " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultMovieReviews> call, Throwable t) {
                 showErrorMessage();
                 Log.d(TAG, "error loading from API");
 
