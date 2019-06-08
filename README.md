@@ -8,7 +8,7 @@ Popular Movies 2 is a stage 2 Android App project created for Android Developer 
 ### Common Project Requirements
 * App is written solely in the Java Programming Language.
 
-* App conforms to common standards found in the Android Nanodegree General Project Guidelines [udacity.github.io]
+* App conforms to common standards found in the [Android Nanodegree General Project Guidelines](https://udacity.github.io/android-nanodegree-guidelines/index.html "Udacity Android Developer Nanodegree Guidelines")
 
  
 
